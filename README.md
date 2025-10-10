@@ -4,7 +4,7 @@ GitStory is a command-line tool that helps developers quickly understand the his
 
 GitStory is especially useful for:
 - New developers onboarding onto large or unfamiliar codebases  
-- Engineering managers or professors reviewing team progress  
+- Engineering managers, nontechnical PMs, or professors reviewing team progress  
 - Open-source contributors exploring new projects  
 
 Our long-term vision is to make project history as easy to understand as reading a short narrative — one that highlights when, how, and why major changes occurred.
