@@ -45,7 +45,7 @@ Stretch Goals
 | Adwita Garg | Backend Developer |
 | Vishal Sathambakkam | AI Developer |
 | Ian Limasi | Backend Developer |
-| ShengYao Liu | Product Manager |
+| ShengYao Liu | Product Manager, UI Designer |
 | Derick Chiem | Backend Developer |
 
 ---
