@@ -1,0 +1,17 @@
+requires = ["tox>=4.19"]
+env_list = ["lint", "test"]
+
+[env.lint]
+description = "runs linter ruff"
+deps = [
+    "ruff>=0.14"
+]
+commands = [["ruff", "check"]]
+
+[env.test]
+description = "install pytest in a virtual environment and invoke it on the tests folder"
+deps = [
+    "pytest>=8",
+    "pytest-sugar",
+]
+commands = [["pytest", "tests"]]
