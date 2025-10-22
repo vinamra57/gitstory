@@ -17,7 +17,6 @@ jobs:
     - name: Install uv based on version declared in uv.toml
       uses: astral-sh/setup-uv@v7
       with:
-        version-file: pyproject.toml
         python-version: "3.13"
     # UV means no manual dependency grabbing fox uvx tox, I think
     - name: Hit it with the tox suite
