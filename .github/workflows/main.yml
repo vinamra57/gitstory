@@ -20,7 +20,7 @@ jobs:
         python-version: "3.13"
     - name: Install tox. Duh
       run: |
-        uvx pip install tox
+        uvx tool install tox
     - name: Hit it with the tox suite
       run: |
         tox
