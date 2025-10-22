@@ -3,28 +3,32 @@
 
 name: Altered python application
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 permissions:
   contents: read
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
     steps:
+    # Checkouts the git repo, which I somehow didn't do for the last 20000000 pushes before I realized what was going on
     - uses: actions/checkout@v5
-    - name: Where is this occuring again???
-      run: |
-        ls
     - name: Install uv based on version declared in uv.toml
       uses: astral-sh/setup-uv@v7
       with:
+        version-file: pyproject.toml
         python-version: "3.13"
     - name: Install tox. Duh
       run: |
         uv tool install --python-preference only-managed --python 3.14 tox --with tox-uv --with tox-gh
     - name: Hit it with the tox suite
       run: |
-        tox
+        tox run
