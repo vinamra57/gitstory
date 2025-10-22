@@ -18,7 +18,9 @@ jobs:
       uses: astral-sh/setup-uv@v7
       with:
         python-version: "3.13"
-    # UV means no manual dependency grabbing fox uvx tox, I think
+    - name: Install tox. Duh
+      run: |
+        uvx pip install tox
     - name: Hit it with the tox suite
       run: |
-        uvx tox
+        tox
