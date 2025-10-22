@@ -6,3 +6,10 @@ repos:
       - id: uv-lock
       - id: pip-compile
         args: [requirements.in, -o, requirements.txt]
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    # black version
+    rev: 25.9.0
+    hooks:    
+      - id: black
+default_language_version:
+    python: python3.13
