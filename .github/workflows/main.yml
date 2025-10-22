@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Where is this occuring again???
+      run: |
+        ls
     - name: Install uv based on version declared in uv.toml
       uses: astral-sh/setup-uv@v7
       with:
