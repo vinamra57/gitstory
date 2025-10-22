@@ -1,0 +1,25 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Altered python application
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install uv based on version declared in uv.toml
+      uses: astral-sh/setup-uv@v7
+      with:
+        version-file: uv.toml
+        python-version: "3.13"
+    # UV means no manual dependency grabbing fox uvx tox, I think
+    - name: Hit it with the tox suite
+      run: |
+        uvx tox
