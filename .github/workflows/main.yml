@@ -3,11 +3,7 @@
 
 name: Altered python application
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 permissions:
   contents: read
@@ -18,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v5
     - name: Where is this occuring again???
       run: |
         ls
