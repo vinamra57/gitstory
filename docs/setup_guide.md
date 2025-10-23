@@ -24,6 +24,8 @@ Next, setup the virtual enviorment:<br>
 When you want to run a Python file from this point forward, you would do:<br>
 `uv run <file_location>`
 
+**IMPORTANT NOTE:** When committing to git, make sure that uv.lock is added to the commit if a change has occurred to it, otherwise there will be problems! This should be caught automatically, but I am noting it anyways.
+
 ## Step 3: Setting Up pre-commit
 All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit: <br>
 `uv tool install pre-commit`<br>
@@ -37,5 +39,6 @@ After that, you can run the entire testing suite at any time with: <br>
 `tox run` <br>
 If you want to put in more tests (which I hope you do), we are using the [pytest framework](https://docs.pytest.org/en/stable/). Make sure to put your tests within the `tests` folder and to follow the naming scheme, or else the tests will not be detected. <br>
 **Side note:** If you are interested in running the formatter we are using (Ruff) by itself, you can call `uvx ruff format`. It is also in the tox suite, but in it's linter form.
+
 ## Thank you!!!
 If there are any problems with installation, please tell me (Derick Chiem) ASAP!
