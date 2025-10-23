@@ -12,6 +12,6 @@ commands = [["ruff", "check"]]
 description = "install pytest in a virtual environment and invoke it on the tests folder"
 deps = [
     "pytest>=8",
-    "pytest-sugar",
+    "pytest-sugar>=1",
 ]
 commands = [["pytest", "tests"]]
