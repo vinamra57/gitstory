@@ -1,2 +1,3 @@
 *.pyc
 gitstory.egg-info/*
+.vscode/*
