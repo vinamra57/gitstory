@@ -17,8 +17,12 @@ Windows:<br>
 
 Next, install Python locally to the directory:<br>
 `uv python install` or `uv python install 3.13` should both work.<br>
-Next, setup the virtual enviorment:
-`uv venv`
+
+Next, setup the virtual enviorment:<br>
+`uv venv` <br>
+
+When you want to run a Python file from this point forward, you would do:<br>
+`uv run <file_location>`
 
 ## Step 3: Setting Up pre-commit
 All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit: <br>
