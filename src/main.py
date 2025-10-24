@@ -6,8 +6,10 @@
 # ///
 import click
 
-# make any changes to this file? check the relative test file, cuz it'll
-# definitely break that and piss it off -Derick :3
+# make any changes to this file? it will certainly break
+# it's respective test file in tests/test_main.py
+# make sure you update those tests when you make changes
+# - Derick C.
 
 
 @click.group()
