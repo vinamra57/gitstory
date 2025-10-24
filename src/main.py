@@ -6,30 +6,34 @@
 # ///
 import click
 
+# make any changes to this file? check the relative test file, cuz it'll
+# definitely break that and piss it off -Derick :3
+
 
 @click.group()
 def cli():
     click.echo("Welcome to GitStory")
 
 
-@cli.command("run", short_help="running is good exercize")
+@cli.command("run", short_help="runs on repo")
 def run():
-    click.echo("TO BE COMPLETED")
+    click.echo("RUN TO BE COMPLETED")
 
 
-@cli.command("compare", short_help="comparing isn't good exercize")
+@cli.command("compare", short_help="compares two branches")
 def compare():
-    click.echo("TO BE COMPLETED")
+    click.echo("COMPARE TO BE COMPLETED")
 
 
-'''@cli.command("pname", short_help = "implementation of the click name pgrm")
-@click.option('--count', default=1, help='Number of greetings.')
-@click.option('--name', prompt='Your name',
-              help='The person to greet.')
-def pname(count, name):
-    """Simple program that greets NAME for a total of COUNT times."""
-    for x in range(count):
-        click.echo(f"Hello {name}!")'''
+@cli.command("dashboard", short_help="generates html dashboard about repo")
+def dashboard():
+    click.echo("DASHBOARD TO BE COMPLETED")
+
+
+@cli.command("since", short_help='i have no idea what "since" does')
+def since():
+    click.echo("SINCE TO BE COMPLETED")
+
 
 if __name__ == "__main__":
     cli()
