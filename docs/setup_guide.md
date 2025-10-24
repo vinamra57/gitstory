@@ -24,6 +24,8 @@ Next, setup the virtual enviorment:<br>
 When you want to run a Python file from this point forward, you would do:<br>
 `uv run <file_location>`
 
+UV has a *lot* of features, way too many to cover here. Read [the documentation] to see the *many* features it has.
+
 **IMPORTANT NOTE:** When committing to git, make sure that uv.lock is added to the commit if a change has occurred to it, otherwise there will be problems! This should be caught automatically, but I am noting it anyways.
 
 ## Step 3: Setting Up pre-commit
