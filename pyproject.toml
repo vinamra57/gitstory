@@ -1,0 +1,13 @@
+[project]
+name = "gitstory"
+version = "0.0.1"
+description = "GitStory (IDK the Capitalization) is amazing, I think"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.3.0",
+    "gitpython>=3.1.45",
+    "pytest>=8.4.2",
+]
+[tool.uv]
+required-version = ">=0.9.0"
