@@ -7,9 +7,9 @@
 **Rationale:** PEP 8 is the official Python style guide and the de facto standard in the Python community. It ensures consistency across our codebase, making it easier for team members to read and maintain each other's code. Since our entire team is already familiar with Python, adopting the widely-used PEP 8 standard reduces the learning curve.
 
 **Enforcement:**
-* **Linting:** We use `flake8` to automatically check for PEP 8 violations during development.
-* **Auto-formatting:** We use `black` as our code formatter to ensure consistent styling without manual effort.
-* **Pre-commit hooks:** Git pre-commit hooks run `flake8` and `black` before each commit, preventing non-compliant code from entering the repository.
+* **Linting:** We use `ruff` to automatically check for PEP 8 violations during development.
+* **Auto-formatting:** We use `ruff` and it's formatting functioanlity as our code formatter to ensure consistent styling without manual effort.
+* **Pre-commit hooks:** Git pre-commit hooks run `ruff` before each commit, preventing non-compliant code from entering the repository.
 * **CI/CD checks:** GitHub Actions will run style checks on all pull requests, blocking merges if violations are found.
 
 ## HTML/CSS/JavaScript (for Visualization Dashboard)
