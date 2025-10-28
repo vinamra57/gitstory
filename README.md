@@ -65,6 +65,7 @@ This repository will include:
 /docs/         →  Milestone write-ups and final report PDFs
 /tests/        →  Unit and integration tests
 README.md      →  Project overview and setup instructions
+DEV_DOC.md     →  Guidelines for developers looking to contribute to GitStory
 
 ```
 
