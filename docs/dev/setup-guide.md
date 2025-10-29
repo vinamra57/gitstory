@@ -46,7 +46,7 @@ Tox is our one-command test suite that automatically does linting and testing. T
 `uv tool install tox --with tox-uv` <br>
 After that, you can run the entire testing suite at any time with: <br>
 `tox run` <br>
-If you want to put in more tests (which I hope you do), we are using the [pytest framework](https://docs.pytest.org/en/stable/). Make sure to put your tests within the `tests` folder and to follow the naming scheme, or else the tests will not be detected. <br>
+If you want to put in more tests (which I hope you do), we are using the [pytest framework](https://docs.pytest.org/en/stable/). Look at the test guide at `test-guide.md` to learn about how to use it<br>
 **Side note:** If you are interested in running the formatter we are using (Ruff) by itself, you can call `uvx ruff format`. It is also in the tox suite, but in it's linter form.
 
 ## Thank you!!!

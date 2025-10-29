@@ -1,3 +1,5 @@
+# Directory Layout
+
 Here is a layout of how GitStory’s files are structured:
 - `.github/workflows`: Contains main.yml, which configure the Python dependencies, tests, and linter for GitHub Actions and continuous integration.
 - `docs`: Contains documentation and guidelines for different users, with a `user` folder for user-related documentation and a `dev` folder for developer information and documentation
