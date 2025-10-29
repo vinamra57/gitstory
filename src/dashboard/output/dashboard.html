@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitStory Dashboard</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <h1>GitStory Dashboard</h1>
+
+    <section>
+        <h2>AI Summary</h2>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at varius dolor. Etiam suscipit lorem consectetur purus pharetra vehicula. Nam vitae pellentesque sapien. Praesent at libero ut velit elementum pharetra nec nec sapien."</p>
+        <small>Model: glm-4-plus, Tokens used: 1500</small>
+    </section>
+
+    <section>
+        <h2>Repository Stats</h2>
+        <p>Total commits: 297</p>
+        <h3>Commits by type:</h3>
+        <ul>
+        
+            <li>feature: 120</li>
+        
+            <li>bugfix: 80</li>
+        
+        </ul>
+
+        <h3>Commits by author:</h3>
+        <ul>
+        
+            <li>Jane: 247 commits</li>
+        
+            <li>Noah: 50 commits</li>
+        
+        </ul>
+    </section>
+
+    <section>
+        <h2>Commits</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Author</th>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Files Changed</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+                <tr>
+                    <td>abc123</td>
+                    <td>Jane</td>
+                    <td>2024-10-15T10:30:00</td>
+                    <td>First Commit</td>
+                    <td>feature</td>
+                    <td>5</td>
+                    <td>247</td>
+                </tr>
+            
+                <tr>
+                    <td>abc456</td>
+                    <td>Noah</td>
+                    <td>2024-10-15T12:30:00</td>
+                    <td>Fixed Bugs</td>
+                    <td>feature</td>
+                    <td>1</td>
+                    <td>50</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </section>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
