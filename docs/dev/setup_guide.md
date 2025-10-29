@@ -1,8 +1,15 @@
 #  Setting Up All The Stuff
-This is a short writeup from Derick Chiem about setting up your computer to be able to run the project and it's tools! Please visit the documentation for these projects if you have any questions about the tools. This guide covers the process for Mac, Linux, and Windows
+This is a short writeup from Derick Chiem about setting up your computer to be able to run the project and it's tools! Please visit the documentation for these projects if you have any questions about the tools. This guide covers the process for Mac, Linux, and Windows.
+
+**NOTE:** I have not found out how to make these tools well-integrated with VSCode or any IDE (I just call the console commands directly and refer to them). Please make a pull request if you find a way to integrate them well so that everyone can have an easier time.
 
 ## Step 0: Install git
 I will presume that you have git installed already, and I assume you are smart enough to install it if you need to.
+
+## Step 0.5: Clone the Gitstory Repository
+Use the `git clone` command to clone the repository using the link provided at the GitHub, which itself is linked [here](https://github.com/vinamra57/gitstory). You can also use tools packed in with the text editor or IDE of one's choosing for this task. The following command is the most basic command for cloning the repository if you don't want to do anything else special:<br>
+`git clone https://github.com/vinamra57/gitstory.git`
+
 ## Step 1: Downloading Python 3.13 (or newer)
 I would presume Python has been already install, but the minimum version we are requiring is Python 3.13. Grab it [here](https://www.python.org/downloads/). The version we are using is Python 3.13, but it is unnecesary to download this exact version. Newer versions of Python should work fine.
 
