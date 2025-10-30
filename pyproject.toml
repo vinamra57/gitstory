@@ -8,6 +8,12 @@ dependencies = [
     "click>=8.3.0",
     "gitpython>=3.1.45",
     "pytest>=8.4.2",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
 ]
+
+[project.scripts]
+gitstory = "gitstory.cli:cli"
+
 [tool.uv]
 required-version = ">=0.9.0"
