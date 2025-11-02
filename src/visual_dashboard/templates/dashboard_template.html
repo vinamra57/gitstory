@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitStory Dashboard</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <h1>GitStory Dashboard</h1>
+
+    <section>
+        <h2>AI Summary</h2>
+        <p>{{ ai_summary.summary }}</p>
+        <small>Model: {{ ai_summary.metadata.model }}, Tokens used: {{ ai_summary.metadata.tokens_used }}</small>
+    </section>
+
+    <section>
+        <h2>Repository Stats</h2>
+        <p>Total commits: {{ stats.total_commits }}</p>
+        <h3>Commits by type:</h3>
+        <ul>
+        {% for type, count in stats.by_type.items() %}
+            <li>{{ type }}: {{ count }}</li>
+        {% endfor %}
+        </ul>
+
+        <h3>Commits by author:</h3>
+        <ul>
+        {% for author, data in stats.by_author.items() %}
+            <li>{{ author }}: {{ data.count }} commits</li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>Commits</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Author</th>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Files Changed</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for commit in commits %}
+                <tr>
+                    <td>{{ commit.hash }}</td>
+                    <td>{{ commit.author }}</td>
+                    <td>{{ commit.timestamp }}</td>
+                    <td>{{ commit.message }}</td>
+                    <td>{{ commit.type }}</td>
+                    <td>{{ commit.files_changed }}</td>
+                    <td>{{ commit.changes }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
