@@ -1,8 +1,9 @@
 """
 Tests for response handler.
 """
+
 import pytest
-from gitstory.ai.response_handler import ResponseHandler
+from gemini_ai.response_handler import ResponseHandler
 
 
 @pytest.fixture
@@ -15,18 +16,18 @@ def response_handler():
 def mock_gemini_response():
     """Mock successful Gemini API response."""
     return {
-        'candidates': [
+        "candidates": [
             {
-                'content': {
-                    'parts': [
-                        {'text': '# Repository Summary\n\nThis is a test summary with proper formatting.'}
+                "content": {
+                    "parts": [
+                        {
+                            "text": "# Repository Summary\n\nThis is a test summary with proper formatting."
+                        }
                     ]
                 }
             }
         ],
-        'usageMetadata': {
-            'totalTokenCount': 150
-        }
+        "usageMetadata": {"totalTokenCount": 150},
     }
 
 
@@ -40,9 +41,7 @@ def test_process_success(response_handler, mock_gemini_response):
 
 def test_process_invalid_response(response_handler):
     """Test handling of invalid response structure."""
-    invalid_response = {
-        'invalid': 'structure'
-    }
+    invalid_response = {"invalid": "structure"}
 
     with pytest.raises(Exception) as exc_info:
         response_handler.process(invalid_response, "cli")
@@ -52,9 +51,7 @@ def test_process_invalid_response(response_handler):
 
 def test_process_missing_candidates(response_handler):
     """Test handling of missing candidates."""
-    invalid_response = {
-        'candidates': []
-    }
+    invalid_response = {"candidates": []}
 
     with pytest.raises(Exception):
         response_handler.process(invalid_response, "cli")
@@ -106,31 +103,23 @@ def test_format_for_dashboard(response_handler):
 
 def test_extract_error_message_dict(response_handler):
     """Test error extraction from dict."""
-    error_response = {
-        'error': {
-            'message': 'API error occurred'
-        }
-    }
+    error_response = {"error": {"message": "API error occurred"}}
 
     error_msg = response_handler.extract_error_message(error_response)
-    assert error_msg == 'API error occurred'
+    assert error_msg == "API error occurred"
 
 
 def test_extract_error_message_string(response_handler):
     """Test error extraction from string."""
-    error_response = {
-        'error': 'Simple error message'
-    }
+    error_response = {"error": "Simple error message"}
 
     error_msg = response_handler.extract_error_message(error_response)
-    assert error_msg == 'Simple error message'
+    assert error_msg == "Simple error message"
 
 
 def test_extract_error_message_none(response_handler):
     """Test error extraction when no error present."""
-    success_response = {
-        'candidates': [{'content': {'parts': [{'text': 'Success'}]}}]
-    }
+    success_response = {"candidates": [{"content": {"parts": [{"text": "Success"}]}}]}
 
     error_msg = response_handler.extract_error_message(success_response)
     assert error_msg is None
@@ -138,11 +127,7 @@ def test_extract_error_message_none(response_handler):
 
 def test_get_token_usage_success(response_handler):
     """Test token usage extraction."""
-    response = {
-        'usageMetadata': {
-            'totalTokenCount': 250
-        }
-    }
+    response = {"usageMetadata": {"totalTokenCount": 250}}
 
     tokens = response_handler.get_token_usage(response)
     assert tokens == 250
@@ -150,9 +135,7 @@ def test_get_token_usage_success(response_handler):
 
 def test_get_token_usage_missing(response_handler):
     """Test token usage when metadata missing."""
-    response = {
-        'candidates': [{'content': {'parts': [{'text': 'Test'}]}}]
-    }
+    response = {"candidates": [{"content": {"parts": [{"text": "Test"}]}}]}
 
     tokens = response_handler.get_token_usage(response)
     assert tokens == 0
@@ -160,9 +143,7 @@ def test_get_token_usage_missing(response_handler):
 
 def test_get_token_usage_invalid_structure(response_handler):
     """Test token usage with invalid structure."""
-    response = {
-        'usageMetadata': 'invalid'
-    }
+    response = {"usageMetadata": "invalid"}
 
     tokens = response_handler.get_token_usage(response)
     assert tokens == 0
@@ -187,12 +168,10 @@ def test_process_dashboard_format(response_handler, mock_gemini_response):
 def test_process_preserves_content(response_handler):
     """Test that processing preserves actual content."""
     response = {
-        'candidates': [
+        "candidates": [
             {
-                'content': {
-                    'parts': [
-                        {'text': 'Important content that should be preserved'}
-                    ]
+                "content": {
+                    "parts": [{"text": "Important content that should be preserved"}]
                 }
             }
         ]

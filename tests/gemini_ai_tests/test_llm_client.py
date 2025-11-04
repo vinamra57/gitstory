@@ -1,9 +1,10 @@
 """
 Tests for LLM client (Gemini API integration).
 """
+
 import pytest
 from unittest.mock import Mock, patch
-from gitstory.ai.llm_client import LLMClient
+from gemini_ai.llm_client import LLMClient
 
 
 @pytest.fixture
@@ -16,18 +17,8 @@ def llm_client():
 def mock_success_response():
     """Mock successful Gemini API response."""
     return {
-        'candidates': [
-            {
-                'content': {
-                    'parts': [
-                        {'text': 'This is a test summary.'}
-                    ]
-                }
-            }
-        ],
-        'usageMetadata': {
-            'totalTokenCount': 150
-        }
+        "candidates": [{"content": {"parts": [{"text": "This is a test summary."}]}}],
+        "usageMetadata": {"totalTokenCount": 150},
     }
 
 
@@ -40,7 +31,7 @@ def test_init(llm_client):
 
 def test_generate_success(llm_client, mock_success_response):
     """Test successful API call."""
-    with patch('requests.post') as mock_post:
+    with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = mock_success_response
@@ -55,7 +46,7 @@ def test_generate_success(llm_client, mock_success_response):
 
 def test_generate_with_temperature(llm_client, mock_success_response):
     """Test API call with custom temperature."""
-    with patch('requests.post') as mock_post:
+    with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = mock_success_response
@@ -64,13 +55,13 @@ def test_generate_with_temperature(llm_client, mock_success_response):
         llm_client.generate("test prompt", temperature=0.5)
 
         call_args = mock_post.call_args
-        payload = call_args[1]['json']
-        assert payload['generationConfig']['temperature'] == 0.5
+        payload = call_args[1]["json"]
+        assert payload["generationConfig"]["temperature"] == 0.5
 
 
 def test_generate_invalid_api_key(llm_client):
     """Test handling of invalid API key."""
-    with patch('requests.post') as mock_post:
+    with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 401
         mock_post.return_value = mock_response
@@ -83,7 +74,7 @@ def test_generate_invalid_api_key(llm_client):
 
 def test_generate_rate_limit_retry(llm_client, mock_success_response):
     """Test retry logic for rate limiting."""
-    with patch('requests.post') as mock_post, patch('time.sleep'):
+    with patch("requests.post") as mock_post, patch("time.sleep"):
         # First call returns 429, second call succeeds
         mock_response_429 = Mock()
         mock_response_429.status_code = 429
@@ -102,7 +93,7 @@ def test_generate_rate_limit_retry(llm_client, mock_success_response):
 
 def test_generate_rate_limit_max_retries(llm_client):
     """Test rate limit exceeding max retries."""
-    with patch('requests.post') as mock_post, patch('time.sleep'):
+    with patch("requests.post") as mock_post, patch("time.sleep"):
         mock_response = Mock()
         mock_response.status_code = 429
         mock_post.return_value = mock_response
@@ -116,7 +107,7 @@ def test_generate_rate_limit_max_retries(llm_client):
 
 def test_generate_timeout_retry(llm_client, mock_success_response):
     """Test retry logic for timeouts."""
-    with patch('requests.post') as mock_post, patch('time.sleep'):
+    with patch("requests.post") as mock_post, patch("time.sleep"):
         from requests.exceptions import Timeout
 
         # First call times out, second call succeeds
@@ -134,8 +125,9 @@ def test_generate_timeout_retry(llm_client, mock_success_response):
 
 def test_generate_timeout_max_retries(llm_client):
     """Test timeout exceeding max retries."""
-    with patch('requests.post') as mock_post, patch('time.sleep'):
+    with patch("requests.post") as mock_post, patch("time.sleep"):
         from requests.exceptions import Timeout
+
         mock_post.side_effect = Timeout()
 
         with pytest.raises(Exception) as exc_info:
@@ -147,7 +139,7 @@ def test_generate_timeout_max_retries(llm_client):
 
 def test_validate_api_key_success(llm_client):
     """Test API key validation success."""
-    with patch('requests.post') as mock_post:
+    with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_post.return_value = mock_response
@@ -159,7 +151,7 @@ def test_validate_api_key_success(llm_client):
 
 def test_validate_api_key_failure(llm_client):
     """Test API key validation failure."""
-    with patch('requests.post') as mock_post:
+    with patch("requests.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 401
         mock_post.return_value = mock_response
@@ -175,14 +167,10 @@ def test_extract_error():
 
     mock_response = Mock()
     mock_response.status_code = 400
-    mock_response.json.return_value = {
-        'error': {
-            'message': 'Bad request'
-        }
-    }
+    mock_response.json.return_value = {"error": {"message": "Bad request"}}
 
     error_msg = client._extract_error(mock_response)
-    assert error_msg == 'Bad request'
+    assert error_msg == "Bad request"
 
 
 def test_extract_error_fallback():

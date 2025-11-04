@@ -8,6 +8,8 @@ dependencies = [
     "click>=8.3.0",
     "gitpython>=3.1.45",
     "pytest>=8.4.2",
+    "jinja2>=3.1",
+    "requests>=2.31"
 ]
 [tool.uv]
 required-version = ">=0.9.0"

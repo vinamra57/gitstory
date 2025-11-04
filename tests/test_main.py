@@ -22,7 +22,7 @@ class TestMain:
         runner = CliRunner()
         result = runner.invoke(cli, ["dashboard"])
         assert result.exit_code == 0
-        assert "Dashboard saved!" in result.output
+        assert "Dashboard generated:" in result.output
 
     def test_main_since(self):
         runner = CliRunner()
