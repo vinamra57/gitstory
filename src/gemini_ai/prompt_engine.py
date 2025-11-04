@@ -1,13 +1,12 @@
-"""
-Prompt engineering and construction.
-Builds optimized prompts for different output formats.
-"""
+"""Prompt engineering helpers for GitStory summaries."""
+
+from __future__ import annotations
 
 from typing import Dict
 
 
 class PromptEngine:
-    """Constructs prompts for LLM summarization."""
+    """Construct prompts for the Gemini model."""
 
     CLI_SYSTEM_PROMPT = """You are a senior software engineer summarizing code history.
 Create a concise, readable summary that helps developers quickly understand what happened.
@@ -68,61 +67,18 @@ FORMAT:
 """
 
     def build_prompt(self, parsed_data: Dict, output_format: str) -> str:
-        """
-        Build prompt from parsed data.
-
-        Args:
-            parsed_data: Output from RepoParser
-            output_format: "cli" or "dashboard"
-
-        Returns:
-            Complete prompt string
-        """
-        if output_format == "cli":
-            system_prompt = self.CLI_SYSTEM_PROMPT
-        else:
-            system_prompt = self.DASHBOARD_SYSTEM_PROMPT
-
-        # Build data section
+        """Build a complete prompt for the requested output format."""
+        system_prompt = (
+            self.CLI_SYSTEM_PROMPT
+            if output_format == "cli"
+            else self.DASHBOARD_SYSTEM_PROMPT
+        )
         data_section = self._format_data(parsed_data)
-
-        # Combine system prompt with data
-        # Note: Gemini doesn't have separate system messages,
-        # so we prepend system instructions to the user prompt
-        full_prompt = f"{system_prompt}\n\n{data_section}"
-
-        return full_prompt
-
-    def _format_data(self, data: Dict) -> str:
-        """Format parsed data into readable prompt text."""
-        sections = ["# REPOSITORY DATA\n"]
-
-        # Stats section
-        stats = data["stats"]
-        sections.append("## Statistics")
-        sections.append(f"- Total commits: {stats['total_commits']}")
-        sections.append(f"- Commit types: {', '.join(stats['by_type'].keys())}")
-        sections.append(f"- Contributors: {len(stats['by_author'])}")
-        sections.append("")
-
-        # Use pre-formatted summary text from parser
-        sections.append("## Commit History")
-        sections.append(data["summary_text"])
-
-        return "\n".join(sections)
+        return f"{system_prompt}\n\n{data_section}"
 
     def build_comparison_prompt(self, branch1_data: Dict, branch2_data: Dict) -> str:
-        """
-        Build prompt for branch comparison (stretch goal).
-
-        Args:
-            branch1_data: Parsed data for first branch
-            branch2_data: Parsed data for second branch
-
-        Returns:
-            Comparison prompt
-        """
-        prompt = f"""Compare these two branches and highlight:
+        """Generate a prompt comparing two branches (stretch goal)."""
+        return f"""Compare these two branches and highlight:
 1. Unique commits in each branch
 2. Key differences in functionality
 3. Recommended merge strategy
@@ -135,4 +91,18 @@ BRANCH 2 DATA:
 
 Provide a clear comparison summary."""
 
-        return prompt
+    def _format_data(self, data: Dict) -> str:
+        sections = ["# REPOSITORY DATA\n"]
+        stats = data.get("stats", {})
+
+        sections.append("## Statistics")
+        sections.append(f"- Total commits: {stats.get('total_commits', 0)}")
+        types = stats.get("by_type", {}).keys()
+        sections.append(f"- Commit types: {', '.join(types) if types else 'n/a'}")
+        sections.append(f"- Contributors: {len(stats.get('by_author', {}))}")
+        sections.append("")
+
+        sections.append("## Commit History")
+        sections.append(data.get("summary_text", ""))
+
+        return "\n".join(sections)
