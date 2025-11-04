@@ -1,140 +1,115 @@
-"""
-LLM API client with retry logic and rate limiting.
-Handles all direct API communication with Google Gemini API.
-"""
+"""Low-level Google Gemini client with retry and validation support."""
+
+from __future__ import annotations
+
+import time
+from typing import Any, Dict, Optional
 
 import requests
-import time
-from typing import Dict
+
+
+# Define exceptions inline since we're in gemini_ai not gitstory
+class ConfigurationError(Exception):
+    """Configuration related errors."""
+
+    pass
+
+
+class SummarizationError(Exception):
+    """LLM summarization errors."""
+
+    pass
 
 
 class LLMClient:
-    """Client for Gemini API interactions."""
+    """Handles outbound requests to the Google Gemini API."""
 
     BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
     MAX_RETRIES = 3
-    RETRY_DELAY = 60  # seconds for rate limits
-    TIMEOUT_RETRY_DELAY = 5  # seconds for timeouts
+    RETRY_DELAY_SECONDS = 60
+    TIMEOUT_RETRY_DELAY_SECONDS = 5
 
-    def __init__(self, api_key: str, model: str = "gemini-2.5-pro"):
-        """
-        Initialize LLM client.
-
-        Args:
-            api_key: Google AI API key for authentication
-            model: Model identifier (default: gemini-2.5-pro)
-        """
+    def __init__(self, api_key: str, model: str = "gemini-2.5-pro") -> None:
+        if not api_key:
+            raise ConfigurationError("Missing Gemini API key.")
         self.api_key = api_key
         self.model = model
         self.endpoint = f"{self.BASE_URL}/{model}:generateContent"
 
-    def generate(self, prompt: str, temperature: float = 0.7) -> Dict:
-        """
-        Generate completion from Gemini LLM.
-
-        Args:
-            prompt: Input prompt text
-            temperature: Sampling temperature (0.0-1.0)
-
-        Returns:
-            API response dictionary
-
-        Raises:
-            Exception: If API call fails after retries
-        """
+    def generate(self, prompt: str, *, temperature: float = 0.7) -> Dict[str, Any]:
+        """Generate content from Gemini, retrying on recoverable failures."""
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": temperature, "maxOutputTokens": 2000},
+            "generationConfig": {
+                "temperature": temperature,
+                "maxOutputTokens": 2000,
+            },
         }
 
-        for attempt in range(self.MAX_RETRIES):
+        last_error: Optional[Exception] = None
+
+        for attempt in range(1, self.MAX_RETRIES + 1):
             try:
                 response = requests.post(
-                    f"{self.endpoint}?key={self.api_key}", json=payload, timeout=30
+                    f"{self.endpoint}?key={self.api_key}",
+                    json=payload,
+                    timeout=30,
                 )
-
-                # Handle rate limiting
-                if response.status_code == 429:
-                    if attempt < self.MAX_RETRIES - 1:
-                        print(
-                            f"⏳ Rate limit reached. Retrying in {self.RETRY_DELAY}s..."
-                        )
-                        time.sleep(self.RETRY_DELAY)
-                        continue
-                    else:
-                        raise Exception("Rate limit exceeded. Please try again later.")
-
-                # Handle authentication errors
                 if response.status_code == 401:
-                    raise Exception(
-                        "Invalid API key. Please check your GITSTORY_API_KEY environment variable."
+                    raise ConfigurationError(
+                        "Invalid API key. Check the GITSTORY_API_KEY environment variable."
+                    )
+                if response.status_code == 429:
+                    if attempt == self.MAX_RETRIES:
+                        raise SummarizationError(
+                            "Rate limit exceeded after multiple retries."
+                        )
+                    time.sleep(self.RETRY_DELAY_SECONDS)
+                    continue
+                if response.status_code >= 400:
+                    message = self._extract_error(response)
+                    raise SummarizationError(
+                        f"Gemini API error (HTTP {response.status_code}): {message}"
                     )
 
-                # Handle other errors
-                if response.status_code >= 400:
-                    error_msg = self._extract_error(response)
-                    if attempt < self.MAX_RETRIES - 1:
-                        print(
-                            f"⏳ API error: {error_msg}. Retrying (attempt {attempt + 2}/{self.MAX_RETRIES})..."
-                        )
-                        time.sleep(self.TIMEOUT_RETRY_DELAY)
-                        continue
-                    else:
-                        raise Exception(f"API request failed: {error_msg}")
-
-                # Success
                 response.raise_for_status()
                 return response.json()
+            except requests.exceptions.Timeout as timeout_error:
+                last_error = timeout_error
+                if attempt == self.MAX_RETRIES:
+                    break
+                time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
+            except requests.exceptions.RequestException as request_error:
+                last_error = request_error
+                if attempt == self.MAX_RETRIES:
+                    break
+                time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
 
-            except requests.exceptions.Timeout:
-                if attempt < self.MAX_RETRIES - 1:
-                    print(
-                        f"⏳ Request timeout. Retrying (attempt {attempt + 2}/{self.MAX_RETRIES})..."
-                    )
-                    time.sleep(self.TIMEOUT_RETRY_DELAY)
-                    continue
-                else:
-                    raise Exception("API request timed out after multiple retries")
-
-            except requests.exceptions.RequestException as e:
-                if attempt < self.MAX_RETRIES - 1:
-                    print(
-                        f"⏳ Request failed: {str(e)}. Retrying (attempt {attempt + 2}/{self.MAX_RETRIES})..."
-                    )
-                    time.sleep(self.TIMEOUT_RETRY_DELAY)
-                    continue
-                else:
-                    raise Exception(f"API request failed: {str(e)}")
-
-        raise Exception("Maximum retries exceeded")
-
-    def _extract_error(self, response) -> str:
-        """Extract error message from failed response."""
-        try:
-            error_data = response.json()
-            if "error" in error_data:
-                if isinstance(error_data["error"], dict):
-                    return error_data["error"].get("message", str(error_data["error"]))
-                return str(error_data["error"])
-        except Exception:
-            pass
-        return f"HTTP {response.status_code}"
+        raise SummarizationError(f"Gemini request failed: {last_error}")
 
     def validate_api_key(self) -> bool:
-        """
-        Validate API key by making a test request.
-
-        Returns:
-            True if key is valid, False otherwise
-        """
+        """Verify the API key by issuing a trivial request."""
+        payload = {
+            "contents": [{"parts": [{"text": "ping"}]}],
+            "generationConfig": {"maxOutputTokens": 4},
+        }
         try:
-            test_payload = {
-                "contents": [{"parts": [{"text": "test"}]}],
-                "generationConfig": {"maxOutputTokens": 5},
-            }
             response = requests.post(
-                f"{self.endpoint}?key={self.api_key}", json=test_payload, timeout=10
+                f"{self.endpoint}?key={self.api_key}", json=payload, timeout=10
             )
             return response.status_code == 200
-        except Exception:
+        except requests.RequestException:
             return False
+
+    @staticmethod
+    def _extract_error(response: requests.Response) -> str:
+        try:
+            payload = response.json()
+            if isinstance(payload, dict) and "error" in payload:
+                error = payload["error"]
+                if isinstance(error, dict):
+                    return error.get("message", "Unknown error")
+                return str(error)
+        except ValueError:
+            return response.text or "Unknown error"
+        return response.text or "Unknown error"
