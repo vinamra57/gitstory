@@ -7,7 +7,7 @@
 
 import click
 import sys
-import visual_dashboard
+from visual_dashboard.dashboard_generator import generate_dashboard
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -54,7 +54,8 @@ def run(ctx):
         click.echo("🤖 Generating AI summary...")
         from gemini_ai import AISummarizer
 
-        summarizer = AISummarizer.AISummarizer(api_key=api_key, parsed_info=parsed_data)
+        # summarizer = AISummarizer(api_key=api_key, parsed_info=parsed_data)
+        summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
         # Check for errors
         if not result:
@@ -109,7 +110,8 @@ def dashboard(ctx):
 
         from gemini_ai import AISummarizer
 
-        summarizer = AISummarizer.AISummarizer(api_key=api_key, parsed_info=parsed_data)
+        # summarizer = AISummarizer(api_key=api_key, parsed_info=parsed_data)
+        summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
         # Check for errors
         if not result:
@@ -119,7 +121,39 @@ def dashboard(ctx):
         # Step 4: Display results on Visualization Dashboard
         # TODO: what is repo_data? & Fix the generate_dashboard import @Ian
         generate_dashboard(
-            repo_data={}, ai_summary=result, output_file="dashboard.html"
+            # IAN: Here is just a placeholder/mock data I'm using (based off the structure specified in the docs)
+            repo_data={
+                "commits": [
+                    {
+                        "hash": "abc123",
+                        "author": "Jane",
+                        "timestamp": "2024-10-15T10:30:00",
+                        "message": "First Commit",
+                        "type": "feature",
+                        "files_changed": 5,
+                        "changes": 247,
+                    },
+                    {
+                        "hash": "abc456",
+                        "author": "Noah",
+                        "timestamp": "2024-10-15T12:30:00",
+                        "message": "Fixed Bugs",
+                        "type": "feature",
+                        "files_changed": 1,
+                        "changes": 50,
+                    },
+                ],
+                "stats": {
+                    "total_commits": 297,
+                    "by_type": {"feature": 120, "bugfix": 80},
+                    "by_author": {
+                        "Jane": {"count": 247, "types": {}},
+                        "Noah": {"count": 50, "types": {}},
+                    },
+                },
+            },
+            ai_summary=result,
+            output_file="dashboard.html",
         )
         return "Dashboard saved!"
 

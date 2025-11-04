@@ -1,8 +1,9 @@
 """
 Tests for prompt engine.
 """
+
 import pytest
-from gitstory.ai.prompt_engine import PromptEngine
+from gemini_ai.prompt_engine import PromptEngine
 
 
 @pytest.fixture
@@ -15,39 +16,39 @@ def prompt_engine():
 def sample_parsed_data():
     """Sample parsed data from RepoParser."""
     return {
-        'commits': [
+        "commits": [
             {
-                'hash': 'abc123',
-                'author': 'Alice',
-                'timestamp': '2024-01-01T10:00:00',
-                'message': 'Add user authentication',
-                'type': 'feature',
-                'files_changed': 5,
-                'changes': 150
+                "hash": "abc123",
+                "author": "Alice",
+                "timestamp": "2024-01-01T10:00:00",
+                "message": "Add user authentication",
+                "type": "feature",
+                "files_changed": 5,
+                "changes": 150,
             },
             {
-                'hash': 'def456',
-                'author': 'Bob',
-                'timestamp': '2024-01-02T14:30:00',
-                'message': 'Fix login bug',
-                'type': 'bugfix',
-                'files_changed': 2,
-                'changes': 15
-            }
+                "hash": "def456",
+                "author": "Bob",
+                "timestamp": "2024-01-02T14:30:00",
+                "message": "Fix login bug",
+                "type": "bugfix",
+                "files_changed": 2,
+                "changes": 15,
+            },
         ],
-        'summary_text': '## FEATURE COMMITS\n- [abc123] Alice: Add user authentication\n\n## BUGFIX COMMITS\n- [def456] Bob: Fix login bug',
-        'stats': {
-            'total_commits': 2,
-            'by_type': {'feature': 1, 'bugfix': 1},
-            'by_author': {
-                'Alice': {'count': 1, 'types': {'feature': 1}},
-                'Bob': {'count': 1, 'types': {'bugfix': 1}}
-            }
+        "summary_text": "## FEATURE COMMITS\n- [abc123] Alice: Add user authentication\n\n## BUGFIX COMMITS\n- [def456] Bob: Fix login bug",
+        "stats": {
+            "total_commits": 2,
+            "by_type": {"feature": 1, "bugfix": 1},
+            "by_author": {
+                "Alice": {"count": 1, "types": {"feature": 1}},
+                "Bob": {"count": 1, "types": {"bugfix": 1}},
+            },
         },
-        'metadata': {
-            'total_commits_analyzed': 2,
-            'commit_types_present': ['feature', 'bugfix']
-        }
+        "metadata": {
+            "total_commits_analyzed": 2,
+            "commit_types_present": ["feature", "bugfix"],
+        },
     }
 
 
@@ -103,14 +104,10 @@ def test_format_data(prompt_engine, sample_parsed_data):
 def test_format_data_with_empty_commits(prompt_engine):
     """Test formatting with no commits."""
     empty_data = {
-        'commits': [],
-        'summary_text': '',
-        'stats': {
-            'total_commits': 0,
-            'by_type': {},
-            'by_author': {}
-        },
-        'metadata': {}
+        "commits": [],
+        "summary_text": "",
+        "stats": {"total_commits": 0, "by_type": {}, "by_author": {}},
+        "metadata": {},
     }
 
     formatted = prompt_engine._format_data(empty_data)
@@ -123,26 +120,24 @@ def test_build_comparison_prompt(prompt_engine, sample_parsed_data):
     """Test branch comparison prompt building."""
     branch1_data = sample_parsed_data
     branch2_data = {
-        'commits': [
+        "commits": [
             {
-                'hash': 'xyz789',
-                'author': 'Charlie',
-                'timestamp': '2024-01-03T09:00:00',
-                'message': 'Add new feature',
-                'type': 'feature',
-                'files_changed': 8,
-                'changes': 200
+                "hash": "xyz789",
+                "author": "Charlie",
+                "timestamp": "2024-01-03T09:00:00",
+                "message": "Add new feature",
+                "type": "feature",
+                "files_changed": 8,
+                "changes": 200,
             }
         ],
-        'summary_text': '## FEATURE COMMITS\n- [xyz789] Charlie: Add new feature',
-        'stats': {
-            'total_commits': 1,
-            'by_type': {'feature': 1},
-            'by_author': {
-                'Charlie': {'count': 1, 'types': {'feature': 1}}
-            }
+        "summary_text": "## FEATURE COMMITS\n- [xyz789] Charlie: Add new feature",
+        "stats": {
+            "total_commits": 1,
+            "by_type": {"feature": 1},
+            "by_author": {"Charlie": {"count": 1, "types": {"feature": 1}}},
         },
-        'metadata': {}
+        "metadata": {},
     }
 
     prompt = prompt_engine.build_comparison_prompt(branch1_data, branch2_data)
