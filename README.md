@@ -62,7 +62,10 @@ This repository will include:
 ```
 
 /src/          →  Core CLI implementation (Git parser, summarizer, etc.)
-/docs/         →  Milestone write-ups and final report PDFs
+/reports/      →  Milestone write-ups and final report PDFs
+/docs/         
+-  /docs/dev/  →  Developer documentation
+-  /docs/user/ →  User documentation
 /tests/        →  Unit and integration tests
 README.md      →  Project overview and setup instructions
 
