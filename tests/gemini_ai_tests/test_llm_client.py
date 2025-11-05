@@ -4,7 +4,7 @@ Tests for LLM client (Gemini API integration).
 
 import pytest
 from unittest.mock import Mock, patch
-from gemini_ai.llm_client import LLMClient
+from gitstory.gemini_ai.llm_client import LLMClient
 
 
 @pytest.fixture

@@ -3,7 +3,7 @@ Tests for prompt engine.
 """
 
 import pytest
-from gemini_ai.prompt_engine import PromptEngine
+from gitstory.gemini_ai.prompt_engine import PromptEngine
 
 
 @pytest.fixture
