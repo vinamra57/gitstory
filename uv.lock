@@ -100,7 +100,7 @@ wheels = [
 [[package]]
 name = "gitstory"
 version = "0.0.1"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "gitpython" },
