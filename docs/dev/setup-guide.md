@@ -25,7 +25,7 @@ Windows:<br>
 Next, install Python locally to the directory:<br>
 `uv python install` or `uv python install 3.13` should both work.<br>
 
-Next, setup the virtual enviorment:<br>
+Next, setup the virtual enviroment:<br>
 `uv venv` <br>
 
 When you want to run a Python file from this point forward, you would do:<br>

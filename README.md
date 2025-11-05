@@ -73,6 +73,18 @@ README.md      →  Project overview and setup instructions
 
 ---
 
+## Buildings, Testing, and Running
+
+More detailed instructions are inside the `/docs/dev/` folder, but below should give a basic guide on how to install, build, and test the program.
+
+You must first install `uv`, linked [here](https://docs.astral.sh/uv/getting-started/installation/). You must then navigate into the GitStory folder, and call `uv venv` to set up the virtual enviroment,
+
+To build, call `uv build`
+
+To test, first install the testing suite by running `uv tool install tox --with tox-uv`, after which you can call `tox run` to run the entire test suite and linter.
+
+To run, you must call `gitstory` with the arguments required. `gitstory --help` should state what subcommands the user is able to call, and what parameters are needed. Most likely, `gitstory run` should be sufficent for what you want to call.
+
 ## 📄 License
 
 This project is developed as part of the **University of Washington CSE 403 (Software Engineering)** course.  
