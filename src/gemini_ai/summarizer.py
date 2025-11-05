@@ -31,10 +31,10 @@ class AISummarizer:
             raw_response = self.client.generate(prompt, temperature=temperature)
             summary_text = self.response_handler.process(raw_response, output_format)
             tokens_used = self.response_handler.get_token_usage(raw_response)
-        except SummarizationError:
-            raise
-        except Exception as error:  # pragma: no cover - defensive path
-            raise SummarizationError(f"Failed to generate summary: {error}") from error
+        except SummarizationError as error:
+            return self._build_error_result(str(error))
+        except Exception as error:
+            return self._build_error_result(str(error))
 
         return {
             "summary": summary_text,
@@ -47,3 +47,9 @@ class AISummarizer:
             },
             "error": None,
         }
+
+    @staticmethod
+    def _build_error_result(message: str) -> Dict[str, Any]:
+        """Create a standardized error payload for downstream consumers."""
+        cleaned_message = (message or "").strip() or "Unknown summarization error."
+        return {"summary": None, "metadata": {}, "error": cleaned_message}

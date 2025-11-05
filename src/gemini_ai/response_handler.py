@@ -14,7 +14,7 @@ class ResponseHandler:
         try:
             content = api_response["candidates"][0]["content"]["parts"][0]["text"]
         except (KeyError, IndexError) as error:
-            raise ValueError(f"Invalid Gemini response structure: {error}") from error
+            raise ValueError(f"Invalid API response format: {error}") from error
 
         content = self._clean_content(content)
         return (
@@ -33,6 +33,8 @@ class ResponseHandler:
 
     def get_token_usage(self, api_response: Dict[str, Any]) -> int:
         usage = api_response.get("usageMetadata", {})
+        if not isinstance(usage, dict):
+            return 0
         return int(usage.get("totalTokenCount", 0))
 
     @staticmethod
