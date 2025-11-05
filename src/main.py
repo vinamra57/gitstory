@@ -63,7 +63,7 @@ def run(repo_path, branch, since, until):
 def dashboard():
     try:
         # Step 1: Load configuration & validate API key
-        api_key = '<key>'
+        api_key = os.environ.get('GITSTORY_API_KEY', 'XXXXXXXXXXX') # Replace with actual API
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
