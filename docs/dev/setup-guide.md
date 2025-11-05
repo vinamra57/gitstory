@@ -29,7 +29,7 @@ Next, setup the virtual enviorment:<br>
 `uv venv` <br>
 
 When you want to run a Python file from this point forward, you would do:<br>
-`uv run <file_location>`
+`uv run python <file_location>`
 
 UV has a *lot* of features, way too many to cover here. Read [the documentation](https://docs.astral.sh/uv/getting-started/) to see the *many* features it has.
 
