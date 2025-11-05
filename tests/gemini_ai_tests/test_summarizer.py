@@ -4,7 +4,7 @@ Integration tests for AISummarizer.
 
 import pytest
 from unittest.mock import patch
-from gemini_ai import AISummarizer
+from gitstory.gemini_ai import AISummarizer
 
 
 @pytest.fixture

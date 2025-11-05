@@ -1,6 +1,6 @@
-
 from click.testing import CliRunner
-from main import cli
+from gitstory.__main__ import cli
+
 
 class TestMain:
     def test_main(self):
@@ -13,7 +13,10 @@ class TestMain:
         monkeypatch.setenv("GITSTORY_API_KEY", "test-key")
         result = runner.invoke(cli, ["run", "./", "--branch", "main"])
         assert result.exit_code in (0, 1, 2)
-        assert "Summary generation complete!" in result.output or "Error generating summary" in result.output
+        assert (
+            "Summary generation complete!" in result.output
+            or "Error generating summary" in result.output
+        )
 
     def test_main_dashboard(self, monkeypatch):
         runner = CliRunner()

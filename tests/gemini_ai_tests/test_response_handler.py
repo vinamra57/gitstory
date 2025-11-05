@@ -3,7 +3,7 @@ Tests for response handler.
 """
 
 import pytest
-from gemini_ai.response_handler import ResponseHandler
+from gitstory.gemini_ai.response_handler import ResponseHandler
 
 
 @pytest.fixture
