@@ -29,7 +29,7 @@ def cli():
 def run(repo_path, branch, since, until):
     try:
         # Step 1: Load Gemini API key
-        api_key = os.environ.get('GITSTORY_API_KEY', 'AIzaSyCOQjy85GSN5uNmdTmZMTlwPDVSboNP28s')
+        api_key = os.environ.get('GITSTORY_API_KEY', 'XXXXXXXXXXX') # Replace with actual API
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
