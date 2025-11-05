@@ -12,8 +12,21 @@ class ResponseHandler:
     def process(self, api_response: Dict[str, Any], output_format: str) -> str:
         """Extract the LLM text and format it for the target output."""
         try:
-            content = api_response["candidates"][0]["content"]["parts"][0]["text"]
-        except (KeyError, IndexError) as error:
+            candidates = api_response.get("candidates", [])
+            if not candidates:
+                raise ValueError("No candidates in response")
+            content_obj = candidates[0].get("content", {})
+            # Try 'parts' first
+            if "parts" in content_obj and content_obj["parts"]:
+                content = content_obj["parts"][0].get("text", "")
+            # Fallback to 'text' directly
+            elif "text" in content_obj:
+                content = content_obj["text"]
+            # Fallback to string representation
+            else:
+                content = str(content_obj)
+        except Exception as error:
+            print("[DEBUG] Raw API response in process():", api_response)
             raise ValueError(f"Invalid API response format: {error}") from error
 
         content = self._clean_content(content)

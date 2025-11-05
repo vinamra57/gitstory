@@ -7,10 +7,9 @@
 
 import click
 import sys
-import json
+import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
-from zai import ZaiClient
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -30,7 +29,7 @@ def cli():
 def run(repo_path, branch, since, until):
     try:
         # Step 1: Load Gemini API key
-        api_key = '<key>'
+        api_key = os.environ.get('GITSTORY_API_KEY', 'AIzaSyCOQjy85GSN5uNmdTmZMTlwPDVSboNP28s')
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
@@ -42,23 +41,19 @@ def run(repo_path, branch, since, until):
             click.echo("\nGet your API key from: <INSERT_LINK>", err=True)
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
-        
+
         # Step 2: Parse repository
         click.echo("🔍 Analyzing repository...")
-        from parser import RepoParser
         parser = RepoParser(repo_path)
         parsed_data = parser.parse(since=since, until=until, branch=branch)
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary...")
         from gemini_ai import AISummarizer
-
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
         # Reads the JSON format + returns only the result
-        json_result = json.dumps(result)
-        data = json.loads(json_result)
-        
+
         # Check for errors
         if not result:
             click.echo("❌ Error generating summary", err=True)
@@ -67,7 +62,7 @@ def run(repo_path, branch, since, until):
         # Step 4: Display summary in terminal
         click.echo("✅ Summary generation complete!")
         click.echo("\n" + "=" * 60)
-        click.echo(data['summary'])
+        click.echo(result['summary'])
         click.echo("=" * 60 + "\n")
 
         return "Summary generation complete!"
@@ -82,10 +77,7 @@ def run(repo_path, branch, since, until):
 def dashboard(ctx):
     try:
         # Step 1: Load configuration & validate API key
-        from gemini_ai import Config
-
         api_key = '<key>'
-        
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
@@ -102,20 +94,15 @@ def dashboard(ctx):
         # Step 2: Parse repository
         click.echo("🔍 Analyzing repository...")
         from gitstory.parser import RepoParser
-
         parser = RepoParser(branch="temporary branch information")
         parsed_data = parser.parse()
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary...")
-
         from gemini_ai import AISummarizer
-
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
-        # Reads the JSON format + returns only the result
-        json_result = json.dumps(result)
-        data = json.loads(json_result)
+    # Reads the JSON format + returns only the result
 
         # Check for errors
         if not result:
