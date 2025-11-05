@@ -29,7 +29,22 @@ class AISummarizer:
 
         try:
             raw_response = self.client.generate(prompt, temperature=temperature)
-            summary_text = self.response_handler.process(raw_response, output_format)
+            # Try to extract summary from common Gemini response formats
+            candidates = raw_response.get("candidates", [])
+            if candidates:
+                content = candidates[0].get("content")
+                # Try 'parts' first, fallback to direct text
+                if content:
+                    if "parts" in content and content["parts"]:
+                        summary_text = content["parts"][0].get("text", "")
+                    elif "text" in content:
+                        summary_text = content["text"]
+                    else:
+                        summary_text = str(content)
+                else:
+                    summary_text = str(candidates[0])
+            else:
+                summary_text = str(raw_response)
             tokens_used = self.response_handler.get_token_usage(raw_response)
         except SummarizationError as error:
             return self._build_error_result(str(error))

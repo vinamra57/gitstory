@@ -8,10 +8,12 @@
 import click
 import sys
 import os
+import requests
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from visual_dashboard.dashboard_generator import generate_dashboard
 from gitstory.parser import RepoParser
+from zai import ZaiClient
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -25,15 +27,18 @@ def cli():
 
 
 @cli.command("run", short_help="Generates a summary based on current code repo")
-@click.pass_context
-def run(ctx):
+@click.argument("repo_path", type=click.Path(exists=True))
+@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
+@click.option("--until", default=None, help="End time (ISO or relative)")
+def run(repo_path, branch, since, until):
     try:
-        # TODO: replace mock API key with "real" information
-        # Step 1: Load configuration & validate API key
         from gemini_ai import Config
+        from gemini_ai import AISummarizer
 
-        api_key = Config.Config(api_key="<MOCK_API_KEY>", model="<MOCK_MODEL>")
-
+        # Use environment variable for API key
+        api_key = os.getenv("GITSTORY_API_KEY")
+        model = "gemini-2.5-pro"
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
@@ -49,17 +54,12 @@ def run(ctx):
 
         # Step 2: Parse repository
         click.echo("🔍 Analyzing repository...")
-        from parser import RepoParser
-
-        parser = RepoParser.RepoParser(branch="temporary branch information")
-        parsed_data = parser.parse()
+        parser = RepoParser(repo_path)
+        parsed_data = parser.parse(since=since, until=until, branch=branch)
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary...")
-        from gemini_ai import AISummarizer
-
-        # summarizer = AISummarizer(api_key=api_key, parsed_info=parsed_data)
-        summarizer = AISummarizer(api_key=api_key)
+        summarizer = AISummarizer(api_key=api_key, model=model)
         result = summarizer.summarize(parsed_data)
         # Check for errors
         if not result:
@@ -69,11 +69,15 @@ def run(ctx):
         # Step 4: Display summary in terminal
         click.echo("✅ Summary generation complete!")
         click.echo("\n" + "=" * 60)
-        click.echo(result)
+        if isinstance(result, dict):
+            summary = result.get("summary", "No summary generated.")
+            click.echo("\n[AI Summary]\n")
+            click.echo(summary)
+        else:
+            click.echo(str(result))
         click.echo("=" * 60 + "\n")
 
         return "Summary generation complete!"
-
     except Exception as e:
         click.echo(f"❌ ERROR - Unexpected error: {e}\n", err=True)
         sys.exit(1)
@@ -114,9 +118,9 @@ def dashboard(ctx):
 
         from gemini_ai import AISummarizer
 
-        # summarizer = AISummarizer(api_key=api_key, parsed_info=parsed_data)
-        summarizer = AISummarizer(api_key=api_key)
-        result = summarizer.summarize(parsed_data)
+        model = "gemini-2.5-pro"
+        summarizer = AISummarizer(api_key=api_key, parsed_info=str(parsed_data), model=model)
+        result = summarizer.summarize()
         # Check for errors
         if not result:
             click.echo("❌ Error generating summary", err=True)

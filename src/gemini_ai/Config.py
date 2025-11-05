@@ -8,8 +8,9 @@ Holds all necessary configuration settings for the GitStory CLI.
 
 class Config:
     # Static variable for the API key environment variable name
-    API_KEY_ENV_VAR = "GITSTORY_LLM_API_KEY"
-    DEFAULT_MODEL = "Z.ai GLM-4.5"
+    API_KEY_ENV_VAR = "GITSTORY_API_KEY"
+    #DEFAULT_MODEL = "Z.ai GLM-4.5"
+    DEFAULT_MODEL = "gemini-2.5-pro"
 
     # defines the structure of a Config object
     def __init__(self, api_key: str, model: str):
