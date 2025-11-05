@@ -105,9 +105,9 @@ def dashboard(ctx):
 
         # Step 2: Parse repository
         click.echo("🔍 Analyzing repository...")
-        from parser import RepoParser
+        from gitstory.parser import RepoParser
 
-        parser = RepoParser.RepoParser(branch="temporary branch information")
+        parser = RepoParser(branch="temporary branch information")
         parsed_data = parser.parse()
 
         # Step 3: Generate AI summary
