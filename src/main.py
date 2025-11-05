@@ -8,12 +8,10 @@
 import click
 import sys
 import os
-import requests
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from visual_dashboard.dashboard_generator import generate_dashboard
 from gitstory.parser import RepoParser
-from zai import ZaiClient
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -33,7 +31,6 @@ def cli():
 @click.option("--until", default=None, help="End time (ISO or relative)")
 def run(repo_path, branch, since, until):
     try:
-        from gemini_ai import Config
         from gemini_ai import AISummarizer
 
         # Use environment variable for API key
