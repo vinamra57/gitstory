@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 import requests
 
@@ -46,8 +46,6 @@ class LLMClient:
             },
         }
 
-        last_error: Optional[Exception] = None
-
         for attempt in range(1, self.MAX_RETRIES + 1):
             try:
                 response = requests.post(
@@ -74,18 +72,20 @@ class LLMClient:
 
                 response.raise_for_status()
                 return response.json()
-            except requests.exceptions.Timeout as timeout_error:
-                last_error = timeout_error
+            except requests.exceptions.Timeout:
                 if attempt == self.MAX_RETRIES:
-                    break
+                    raise SummarizationError(
+                        f"Request timed out after {self.MAX_RETRIES} retries"
+                    )
                 time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
             except requests.exceptions.RequestException as request_error:
-                last_error = request_error
                 if attempt == self.MAX_RETRIES:
-                    break
+                    raise SummarizationError(
+                        f"Gemini request failed: {str(request_error)}"
+                    )
                 time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
 
-        raise SummarizationError(f"Gemini request failed: {last_error}")
+        raise SummarizationError("Gemini request failed after maximum retries")
 
     def validate_api_key(self) -> bool:
         """Verify the API key by issuing a trivial request."""
@@ -103,13 +103,35 @@ class LLMClient:
 
     @staticmethod
     def _extract_error(response: requests.Response) -> str:
+        """Attempt to extract a meaningful error message from a Gemini response."""
         try:
             payload = response.json()
-            if isinstance(payload, dict) and "error" in payload:
-                error = payload["error"]
-                if isinstance(error, dict):
-                    return error.get("message", "Unknown error")
+        except Exception:
+            return LLMClient._fallback_error_message(response)
+
+        if isinstance(payload, dict):
+            error = payload.get("error")
+            if isinstance(error, dict):
+                message = error.get("message")
+                if isinstance(message, str) and message.strip():
+                    return message.strip()
                 return str(error)
-        except ValueError:
-            return response.text or "Unknown error"
-        return response.text or "Unknown error"
+            if error:
+                error_str = str(error)
+                if error_str.strip():
+                    return error_str.strip()
+        elif isinstance(payload, str) and payload.strip():
+            return payload.strip()
+
+        return LLMClient._fallback_error_message(response)
+
+    @staticmethod
+    def _fallback_error_message(response: requests.Response) -> str:
+        """Provide a deterministic fallback error string for logging and UX."""
+        text = getattr(response, "text", "")
+        if isinstance(text, str):
+            stripped = text.strip()
+            if stripped:
+                return stripped
+        status_code = getattr(response, "status_code", "unknown")
+        return f"HTTP {status_code}"
