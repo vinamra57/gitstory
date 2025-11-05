@@ -1,4 +1,5 @@
 *.pyc
 gitstory.egg-info/*
 src/gitstory.egg-info/*
-.vscode/*
+.env
+src/gitstory/visual_dashboard/output/dashboard.html
