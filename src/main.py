@@ -33,31 +33,17 @@ def run(repo_path, branch, since, until):
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
-            click.echo(
-                "1. Set environment variable: export GITSTORY_API_KEY='your-key'",
-                err=True,
-            )
-            click.echo("2. Create .env file with: GITSTORY_API_KEY=your-key", err=True)
-            click.echo("\nGet your API key from: <INSERT_LINK>", err=True)
+            click.echo("1. Set environment variable: export GITSTORY_API_KEY='your-key'", err=True)
             sys.exit(1)
-        click.echo("🔑 API key configured & loaded...")
 
-        # Step 2: Parse repository
-        click.echo("🔍 Analyzing repository...")
+        # Step 2: Parse repo
         parser = RepoParser(repo_path)
-        parsed_data = parser.parse(since=since, until=until, branch=branch)
+        parsed_data = parser.parse()
 
-        # Step 3: Generate AI summary
-        click.echo("🤖 Generating AI summary...")
+        # Step 3: Summarize
         from gemini_ai import AISummarizer
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
-        # Reads the JSON format + returns only the result
-
-        # Check for errors
-        if not result:
-            click.echo("❌ Error generating summary", err=True)
-            sys.exit(1)
 
         # Step 4: Display summary in terminal
         click.echo("✅ Summary generation complete!")
@@ -67,24 +53,21 @@ def run(repo_path, branch, since, until):
 
         return "Summary generation complete!"
 
-    except Exception as e:
-        click.echo(f"❌ ERROR - Unexpected error: {e}\n", err=True)
-        sys.exit(1)
+    except (Exception, SystemExit) as e:
+        click.echo("❌ Error generating summary", err=True)
+        click.echo(f"Error: {e}")
+        sys.exit(getattr(e, 'code', 1))
 
 
 @cli.command("dashboard", short_help="Generates downloadable report about repo")
-@click.pass_context
-def dashboard(ctx):
+def dashboard():
     try:
         # Step 1: Load configuration & validate API key
         api_key = '<key>'
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
-            click.echo(
-                "1. Set environment variable: export GITSTORY_API_KEY='your-key'",
-                err=True,
-            )
+            click.echo("1. Set environment variable: export GITSTORY_API_KEY='your-key'", err=True)
             click.echo("2. Create .env file with: GITSTORY_API_KEY=your-key", err=True)
             click.echo("\nGet your API key from: <INSERT_LINK>", err=True)
             sys.exit(1)
@@ -94,6 +77,33 @@ def dashboard(ctx):
         # Step 2: Parse repository
         click.echo("🔍 Analyzing repository...")
         from gitstory.parser import RepoParser
+        parser = RepoParser('.')
+        parsed_data = parser.parse()
+
+        # Step 3: Generate AI summary
+        click.echo("🤖 Generating AI summary...")
+        from gemini_ai import AISummarizer
+        summarizer = AISummarizer(api_key=api_key)
+        result = summarizer.summarize(parsed_data)
+
+        # Check for errors
+        if not result:
+            click.echo("❌ Error generating summary", err=True)
+            sys.exit(1)
+
+        # Step 4: Display results on Visualization Dashboard
+        from visual_dashboard.dashboard_generator import generate_dashboard
+        generate_dashboard(
+            repo_data=parsed_data,
+            ai_summary=result,
+            output_file="dashboard.html",
+        )
+        click.echo("Dashboard saved!")
+
+    except Exception as e:
+        click.echo("❌ Error generating summary", err=True)
+        click.echo(f"Error: {e}")
+        sys.exit(1)
         parser = RepoParser(branch="temporary branch information")
         parsed_data = parser.parse()
 
@@ -118,9 +128,6 @@ def dashboard(ctx):
         )
         return "Dashboard saved!"
 
-    except Exception as e:
-        click.echo(f"❌ ERROR - Unexpected error: {e}\n", err=True)
-        sys.exit(1)
 
 
 @cli.command("since", short_help="Generate a summary starting from a date MM-DD-YYYY")
