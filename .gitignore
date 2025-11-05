@@ -2,3 +2,4 @@
 gitstory.egg-info/*
 src/gitstory.egg-info/*
 .env
+*.html
