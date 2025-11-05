@@ -2,4 +2,4 @@
 gitstory.egg-info/*
 src/gitstory.egg-info/*
 .env
-src/visual_dashboard/output/*
+src/gitstory/visual_dashboard/output/dashboard.html
