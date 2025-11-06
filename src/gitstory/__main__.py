@@ -5,12 +5,16 @@
 # ]
 # ///
 
+from dotenv import load_dotenv
+import os
 import click
 import sys
-import os
+from gitstory.parser import RepoParser
+
+# Load environment variables from .env.local
+load_dotenv(dotenv_path=".env.local")
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from gitstory.parser import RepoParser
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -48,7 +52,7 @@ def run(repo_path, branch, since, until):
         parsed_data = parser.parse()
 
         # Step 3: Summarize
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai.summarizer import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
@@ -96,7 +100,7 @@ def dashboard():
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary...")
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai.summarizer import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
@@ -107,13 +111,14 @@ def dashboard():
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
-        from visual_dashboard.dashboard_generator import generate_dashboard
+        from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
 
         generate_dashboard(
             repo_data=parsed_data,
             ai_summary=result,
             output_file="dashboard.html",
         )
+
         click.echo("Dashboard saved!")
 
     except Exception as e:
@@ -125,7 +130,7 @@ def dashboard():
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary...")
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai.summarizer import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
@@ -137,7 +142,7 @@ def dashboard():
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
-        from visual_dashboard.dashboard_generator import generate_dashboard
+        from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
 
         generate_dashboard(
             repo_data=parsed_data,

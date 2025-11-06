@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitStory Dashboard</title>
+    <link rel="stylesheet" href="../src/gitstory/visual_dashboard/static/styles.css">
+</head>
+<body>
+    <h1>GitStory Dashboard</h1>
+
+    <section>
+        <h2>AI Summary</h2>
+        <div class="ai-summary">
+            <h1>Repository Summary</h1>
+<h2>Overview</h2>
+<p>This summary covers the initial development and structuring of the project. The team focused on implementing the core functionality, which involves using the Gemini LLM to analyze code repositories, while also establishing a proper build system, testing infrastructure, and comprehensive documentation.</p>
+<h2>Key Changes</h2>
+<ul>
+<li><strong>Implemented Core LLM and Interface:</strong> Developers introduced the primary feature, an LLM module integrated with the Gemini API for code analysis. They also built out a minimal user interface and supporting developer tools to interact with this service.</li>
+<li><strong>Overhauled the Build System:</strong> The team refactored the codebase specifically to support a new build system, which they subsequently implemented. This was a significant architectural change affecting how the project is built and managed.</li>
+<li><strong>Integrated and Debugged Major Components:</strong> Key modules, including the repository parser, LLM, and a dashboard, were merged from a testing branch into the main line. This integration phase involved considerable troubleshooting, particularly around repository parsing and API key handling.</li>
+<li><strong>Strengthened Testing and CI/CD:</strong> The team improved project stability by resolving all CI/CD test failures. They also expanded test coverage by adding a macOS testing environment and refactored existing tests for clarity.</li>
+<li><strong>Focused on Developer Experience:</strong> A significant effort was made to improve project documentation, including updates to the README, adding developer guides, and commenting code. Fixes were also implemented for handling environment variables and establishing a baseline code format.</li>
+</ul>
+<h2>Activity Breakdown</h2>
+<p>The history includes 135 commits from 10 contributors. The work was distributed across features, bug fixes, and significant refactoring. A large number of commits fell into an "other" category, often related to integration and troubleshooting.</p>
+        </div>          
+        <small>Model: gemini-2.5-pro, Tokens used: 3139</small>
+    </section>
+
+    <section>
+        <h2>Repository Stats</h2>
+        <p>Total commits: 135</p>
+        <h3>Commits by type:</h3>
+        <ul>
+        
+            <li>feature: 4</li>
+        
+            <li>bugfix: 2</li>
+        
+            <li>refactor: 2</li>
+        
+            <li>docs: 13</li>
+        
+            <li>style: 1</li>
+        
+            <li>test: 1</li>
+        
+            <li>chore: 5</li>
+        
+            <li>other: 107</li>
+        
+        </ul>
+
+        <h3>Commits by author:</h3>
+        <ul>
+        
+            <li>Adwita Garg: 31 commits</li>
+        
+            <li>dchiem: 11 commits</li>
+        
+            <li>vishksatham: 11 commits</li>
+        
+            <li>Derick Chiem: 45 commits</li>
+        
+            <li>TheHorseProgrammer: 20 commits</li>
+        
+            <li>vinamra57: 4 commits</li>
+        
+            <li>Vinamra Agarwal: 7 commits</li>
+        
+            <li>Ian Limasi: 1 commits</li>
+        
+            <li>syliu04: 1 commits</li>
+        
+            <li>ShengYao Liu: 4 commits</li>
+        
+        </ul>
+    </section>
+
+    <section>
+        <h2>Commits</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Author</th>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Files Changed</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+                <tr>
+                    <td>e30505aa</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T15:54:02</td>
+                    <td>feat: implement complete LLM module with Gemini API integration</td>
+                    <td>feature</td>
+                    <td>6</td>
+                    <td>506</td>
+                </tr>
+            
+                <tr>
+                    <td>2a894d1e</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-24T14:54:43</td>
+                    <td>implementation of absolute minimum interface</td>
+                    <td>feature</td>
+                    <td>2</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>643d70b7</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T18:53:23</td>
+                    <td>Implementation of tools
+
+Dev tool implementation and documentation</td>
+                    <td>feature</td>
+                    <td>12</td>
+                    <td>340</td>
+                </tr>
+            
+                <tr>
+                    <td>75236311</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-13T20:04:47</td>
+                    <td>Addition of 10/13/2025 Status Report File</td>
+                    <td>feature</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td>a701359c</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T16:55:42</td>
+                    <td>fix: resolve all CI/CD test failures</td>
+                    <td>bugfix</td>
+                    <td>7</td>
+                    <td>143</td>
+                </tr>
+            
+                <tr>
+                    <td>cc3e7bbe</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T15:55:57</td>
+                    <td>fix: properly ignore .env files</td>
+                    <td>bugfix</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>72dc9bf6</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:40:38</td>
+                    <td>test refactoring and final setup</td>
+                    <td>refactor</td>
+                    <td>7</td>
+                    <td>353</td>
+                </tr>
+            
+                <tr>
+                    <td>5c6fbe11</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:30:34</td>
+                    <td>refactoring in preparation for build system change</td>
+                    <td>refactor</td>
+                    <td>17</td>
+                    <td>2457</td>
+                </tr>
+            
+                <tr>
+                    <td>1e453141</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-04T23:29:35</td>
+                    <td>Merge pull request #20 from vinamra57/dchiem-dev-doc
+
+readme additions and typo fix</td>
+                    <td>docs</td>
+                    <td>2</td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td>d7caefe2</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-04T23:28:52</td>
+                    <td>readme additions and typo fix</td>
+                    <td>docs</td>
+                    <td>2</td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td>b66cad28</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-03T21:20:23</td>
+                    <td>Merge pull request #16 from vinamra57/dchiem-dev-doc
+
+Documentation correction</td>
+                    <td>docs</td>
+                    <td>5</td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td>568709f3</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-03T17:54:52</td>
+                    <td>Documentation fixes (and pyproject build tool addition)</td>
+                    <td>docs</td>
+                    <td>5</td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td>59738d0f</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:27:25</td>
+                    <td>Update test_main.py (with new tests + comments)</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td>b5767fbf</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-28T19:44:41</td>
+                    <td>Merge pull request #9 from vinamra57/dchiem-dev-doc
+
+Developer Documentation Additions</td>
+                    <td>docs</td>
+                    <td>4</td>
+                    <td>121</td>
+                </tr>
+            
+                <tr>
+                    <td>9d00c9be</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-24T15:00:29</td>
+                    <td>slight comment change</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td>7bb7d8cd</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T19:01:12</td>
+                    <td>It's just one documentation line
+
+This is not that serious</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td>41635557</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T14:42:58</td>
+                    <td>FInalization of documentation</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td>4d4dfd7a</td>
+                    <td>ShengYao Liu</td>
+                    <td>2025-10-11T10:14:52</td>
+                    <td>Update README.md
+
+upldated role</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>745b2ead</td>
+                    <td>ShengYao Liu</td>
+                    <td>2025-10-10T14:29:50</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>344fbb68</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-10-06T20:31:04</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>75</td>
+                </tr>
+            
+                <tr>
+                    <td>eea2e6b3</td>
+                    <td>vinamra57</td>
+                    <td>2025-10-06T20:19:43</td>
+                    <td>README</td>
+                    <td>docs</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>bb773e73</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-13T20:28:26</td>
+                    <td>baseline formatting made</td>
+                    <td>style</td>
+                    <td>1</td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td>c27508ee</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-22T00:45:55</td>
+                    <td>Tidying and adding macos testing</td>
+                    <td>test</td>
+                    <td>1</td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td>eb72c777</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:43:10</td>
+                    <td>build system implementation</td>
+                    <td>chore</td>
+                    <td>3</td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td>6b94ac72</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-28T20:00:01</td>
+                    <td>Merge pull request #12 from vinamra57/dchiem-dev-doc
+
+Essential package guide</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>b26cfa87</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:56:59</td>
+                    <td>Essential package guiode</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>95f74fb9</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:06:56</td>
+                    <td>build system to be done soon!</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>89a666dd</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:06:17</td>
+                    <td>build guide</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>0d5ed378</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-05T12:32:34</td>
+                    <td>TESTING BRANCH: merging Repo Parser, LLM, & Dashboard components
+
+-Integrated the RepoParser, LLM, and Visualization Dashboard components, making sure it works with the architecture
+-Tested with the d...</td>
+                    <td>other</td>
+                    <td>33</td>
+                    <td>2238</td>
+                </tr>
+            
+                <tr>
+                    <td>21a7affe</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:21:58</td>
+                    <td>gitignore changes</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>d125e41c</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:21:12</td>
+                    <td>purging the outside</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>127</td>
+                </tr>
+            
+                <tr>
+                    <td>0c8f2356</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:17:28</td>
+                    <td>git ignore changes + actually reading the enviroment</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>22a79011</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-05T01:56:27</td>
+                    <td>API key fix</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>428053da</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-05T01:54:55</td>
+                    <td>repo parser fix</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>835</td>
+                </tr>
+            
+                <tr>
+                    <td>9155a44e</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T23:46:05</td>
+                    <td>repo parser troubleshooting</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>42</td>
+                </tr>
+            
+                <tr>
+                    <td>7ac45228</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T23:10:26</td>
+                    <td>Merge branch 'testing-branch' of https://github.com/vinamra57/gitstory into testing-branch</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>199</td>
+                </tr>
+            
+                <tr>
+                    <td>0495dec5</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T23:09:56</td>
+                    <td>repo parser/summarization troubleshooting</td>
+                    <td>other</td>
+                    <td>4</td>
+                    <td>127</td>
+                </tr>
+            
+                <tr>
+                    <td>2b3884f0</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-04T22:43:17</td>
+                    <td>Update main.py, with repo path stuff from Vishal</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td>3bb206fd</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-04T22:41:52</td>
+                    <td>Delete src/repo_parser.py, moved it already to parser</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td>5a936c4a</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-04T22:41:34</td>
+                    <td>Delete src/parser/RepoParser.py, don't need it anymore</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>51</td>
+                </tr>
+            
+                <tr>
+                    <td>7ae33b64</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-04T22:41:22</td>
+                    <td>Moving repo_parser.py to parser</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>31</td>
+                </tr>
+            
+                <tr>
+                    <td>ad288b39</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-04T22:37:48</td>
+                    <td>Update main.py with all changes up to now on Adwita's side
+
+Integrates all the code work/clean up for beta release</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>106</td>
+                </tr>
+            
+                <tr>
+                    <td>a46a1f19</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T22:25:43</td>
+                    <td>tox suite fix</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>33e55397</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T21:52:47</td>
+                    <td>Repo parser integration</td>
+                    <td>other</td>
+                    <td>4</td>
+                    <td>78</td>
+                </tr>
+            
+                <tr>
+                    <td>ed55bafd</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-04T18:46:41</td>
+                    <td>Merge pull request #19 from vinamra57/dchiem-dev-doc
+
+moving a file and adding a word</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>53</td>
+                </tr>
+            
+                <tr>
+                    <td>f47f49da</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-04T18:45:50</td>
+                    <td>moving a file and adding a word</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>53</td>
+                </tr>
+            
+                <tr>
+                    <td>fe4eeb62</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T17:57:22</td>
+                    <td>Merge branch 'vishal-repo-parser-integration' into testing-branch</td>
+                    <td>other</td>
+                    <td>8</td>
+                    <td>342</td>
+                </tr>
+            
+                <tr>
+                    <td>c99b07f9</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T17:54:06</td>
+                    <td>Integrate Repo Parser and CLI improvements</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>21</td>
+                </tr>
+            
+                <tr>
+                    <td>11d41a54</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T17:28:52</td>
+                    <td>Merge branch 'vishksat-parser' into vishal-repo-parser-integration</td>
+                    <td>other</td>
+                    <td>8</td>
+                    <td>343</td>
+                </tr>
+            
+                <tr>
+                    <td>73cf0b62</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-03T23:40:28</td>
+                    <td>Update 20251027.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>13a5cd1d</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-03T23:39:32</td>
+                    <td>Update 20251103.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>b75fa56b</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-03T23:39:06</td>
+                    <td>Update 20251103.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td>86dd87b0</td>
+                    <td>Ian Limasi</td>
+                    <td>2025-11-03T22:07:11</td>
+                    <td>Fixed Visual Dashboard and Its Test</td>
+                    <td>other</td>
+                    <td>11</td>
+                    <td>697</td>
+                </tr>
+            
+                <tr>
+                    <td>8eea9d50</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-03T21:39:17</td>
+                    <td>Merge pull request #17 from vinamra57/dchiem-dev-doc
+
+team status report contributions</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>109</td>
+                </tr>
+            
+                <tr>
+                    <td>9a9ecb6a</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-03T21:38:23</td>
+                    <td>team contributions</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>109</td>
+                </tr>
+            
+                <tr>
+                    <td>48a4e370</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-03T17:57:13</td>
+                    <td>pyproejct additions undoing</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>7</td>
+                </tr>
+            
+                <tr>
+                    <td>aa9b5b0a</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-01T22:25:24</td>
+                    <td>Repo parser pipeline version1</td>
+                    <td>other</td>
+                    <td>8</td>
+                    <td>340</td>
+                </tr>
+            
+                <tr>
+                    <td>fb252096</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:44:13</td>
+                    <td>Create dashboard_template.html (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>67</td>
+                </tr>
+            
+                <tr>
+                    <td>7adff160</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:43:30</td>
+                    <td>Create styles.css (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td>c5e689ec</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:43:10</td>
+                    <td>Create script.js (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>a82cef46</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:42:33</td>
+                    <td>Create dashboard.html (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>81</td>
+                </tr>
+            
+                <tr>
+                    <td>9d6a0d36</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:41:51</td>
+                    <td>Rename dashboard_generator to dashboard_generator.py</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>88</td>
+                </tr>
+            
+                <tr>
+                    <td>c1a4fc35</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:41:32</td>
+                    <td>Create dashboard_generator (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>44</td>
+                </tr>
+            
+                <tr>
+                    <td>dc501761</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:40:57</td>
+                    <td>Create __init__.py (Ian's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>4fac6148</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:40:05</td>
+                    <td>Create RepoParser.py (Adwita's code, Vishal enter code here)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td>0ba5a0ea</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:39:13</td>
+                    <td>Create response_handler.py (Vinarma's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>91</td>
+                </tr>
+            
+                <tr>
+                    <td>21e157de</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:38:43</td>
+                    <td>Create prompt_engine.py (Vinarma's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>138</td>
+                </tr>
+            
+                <tr>
+                    <td>70c54d93</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:38:14</td>
+                    <td>Create llm_client.py (Vinarma's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>140</td>
+                </tr>
+            
+                <tr>
+                    <td>0f916817</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:37:41</td>
+                    <td>Create Config.py (Adwita's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>33</td>
+                </tr>
+            
+                <tr>
+                    <td>9a6f99ac</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:37:21</td>
+                    <td>Create AISummarizer.py (Adwita's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td>e688bccb</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:36:50</td>
+                    <td>Create __init__.py for AI component (Vinarma's code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>76</td>
+                </tr>
+            
+                <tr>
+                    <td>a59b1335</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:34:47</td>
+                    <td>Updated main.py architecture w/ new components organization</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>123</td>
+                </tr>
+            
+                <tr>
+                    <td>2663b0f3</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:33:24</td>
+                    <td>Update tox.toml to match Ian's (for Visualization Dashboard)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>ee549d17</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:32:19</td>
+                    <td>Create test_summarizer.py (Vinarma's PR code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>207</td>
+                </tr>
+            
+                <tr>
+                    <td>7d827155</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:31:49</td>
+                    <td>Create test_response_handler.py (Vinarma's PR code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>202</td>
+                </tr>
+            
+                <tr>
+                    <td>2571fd99</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:31:18</td>
+                    <td>Create test_prompt_engine.py (Vinarma's PR)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>189</td>
+                </tr>
+            
+                <tr>
+                    <td>b11bff82</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:30:37</td>
+                    <td>Create test_llm_client.py (Vinarma's PR)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>197</td>
+                </tr>
+            
+                <tr>
+                    <td>523aefed</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:29:49</td>
+                    <td>Create __init__.py (Vinarma's PR code)</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </section>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>

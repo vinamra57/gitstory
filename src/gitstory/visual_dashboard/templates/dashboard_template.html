@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>GitStory Dashboard</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="../src/gitstory/visual_dashboard/static/styles.css">
 </head>
 <body>
     <h1>GitStory Dashboard</h1>
 
     <section>
         <h2>AI Summary</h2>
-        <p>{{ ai_summary.summary }}</p>
+        <div class="ai-summary">
+            {{ ai_summary.summary | safe }}
+        </div>          
         <small>Model: {{ ai_summary.metadata.model }}, Tokens used: {{ ai_summary.metadata.tokens_used }}</small>
     </section>
 
