@@ -8,6 +8,7 @@
 import click
 import sys
 import os
+from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
@@ -31,9 +32,8 @@ def cli():
 def run(repo_path, branch, since, until):
     try:
         # Step 1: Load Gemini API key
-        api_key = os.environ.get(
-            "GITSTORY_API_KEY", "API_KEY"
-        )  # Replace with actual API
+        load_dotenv()
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
@@ -75,9 +75,8 @@ def run(repo_path, branch, since, until):
 def dashboard(repo_path):
     try:
         # Step 1: Load configuration & validate API key
-        api_key = os.environ.get(
-            "GITSTORY_API_KEY", "API_KEY"
-        )  # Replace with actual API
+        load_dotenv()
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
@@ -99,7 +98,7 @@ def dashboard(repo_path):
         parsed_data = parser.parse()
 
         # Step 3: Generate AI summary
-        click.echo("🤖 Generating AI summary...")
+        click.echo("🤖 Generating AI summary in Visualization Dashboard...")
         from gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
