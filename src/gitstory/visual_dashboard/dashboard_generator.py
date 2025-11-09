@@ -1,32 +1,37 @@
 import os
+import markdown
 
 # Jinja allows dyanmic variable reassignment for static HTML files
 from jinja2 import Environment, FileSystemLoader
 
 # These take the current path to this folder, and appends "templates"
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
-# These take the current path to this folder, and appends "output"
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
-
-# This goes to the OUTPUT_DIR path and adds an output folder if it doesnt exist yet
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # This creates a Jinja2 object which stores & manages templates
 # We tell it to look for templates inside the folder specific in the TEMPLATE_DIR path
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-
-def generate_dashboard(repo_data: dict, ai_summary: dict, output_file="dashboard.html"):
+def generate_dashboard(repo_data: dict, ai_summary: dict, repo_path: str, output_file="dashboard.html"):
     # Here dict is basically to specify that it should be a JSON
+    # These take the current path to this folder, and appends "output"
+    
+    OUTPUT_DIR = os.path.join(repo_path, "output")
+    # This goes to the OUTPUT_DIR path and adds an output folder if it doesnt exist yet
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     # We fetch the specified template first through the Jinja2 object
     template = env.get_template("dashboard_template.html")
+
+    html_summary = markdown.markdown(ai_summary.get("summary", ""))
 
     # We render the specified template with these paramaters
     html_content = template.render(
         commits=repo_data.get("commits", []),
         stats=repo_data.get("stats", {}),
-        ai_summary=ai_summary,
+        ai_summary={
+            "summary": html_summary,
+            "metadata": ai_summary.get("metadata", {}),
+        },
     )
 
     # We append the output file to the OUTPUT_DIR path
@@ -42,3 +47,4 @@ def generate_dashboard(repo_data: dict, ai_summary: dict, output_file="dashboard
     # Didn't return output_path, since it would be hard to write tests for this
     # Might change this later, @Ian
     # return output_path
+
