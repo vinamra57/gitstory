@@ -74,6 +74,8 @@ This will install all necessary dependencies for development and testing.
 When development is complete, GitStory will run as a command-line tool from the terminal.  
 Users will navigate to a Git repository and use the following commands to generate summaries or reports.
 
+**UPDATES: to run GitStory, head over to [run-commands-guide.md](run-commands-guide.md) and run GitStory on your chosen Git Repo. The following instructions will work when the GitStory team is able get GitStory builds to work and run on their end.**
+
 ### 3.1 `gitstory run`
 Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
 
