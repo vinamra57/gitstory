@@ -10,8 +10,8 @@ Open up a CLI tab (ex: Terminal window for macOS users), and navigate to the Git
 ## Step 3: Run specific commands
 Run GitStory's commands as listed below:
 
-`uv run python3.13 src/gitstory/__main__.py run "<repo_path>"`: equivalent to `gitstory run`, this runs GitStory and generates a code-summary in the CLI itself (i.e. its printed on the CLI to user)
+`uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`: equivalent to `gitstory run`, this runs GitStory and generates a code-summary in the CLI itself (i.e. its printed on the CLI to user)
 
-`uv run python3.13 src/gitstory/__main__.py dashboard "<repo_path>"`: equivalent to `gitstory dashboard`, this generates a HTML file called `dashboard.html` in an `output` folder, located in at the root of your chosen Git repository (the output directory will be created by GitStory).
+`uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"`: equivalent to `gitstory dashboard`, this generates a HTML file called `dashboard.html` in an `output` folder, located in at the root of your chosen Git repository (the output directory will be created by GitStory).
 
 **since & compare commands: CURRENTLY WORKING ON (updated Nov 8)**
