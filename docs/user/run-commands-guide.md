@@ -1,5 +1,5 @@
 # How to Run
-As of 11.08.2025, the way that you run a file in GitStory (`uv run python <file_location>`) is the CURRENT way to run GitStory on any given repo (see `dev` directory for further details on how to set up `uv run`). We are working on restoring a build version that DOES NOT require users to also have to git clone, which is aiming to be released by **Nov 12**. In the meanwhile, here are the steps you take to run GitStory on your chosen git repository. 
+As of 11.08.2025, the way that you run a file in GitStory (`uv run python <file_location>`) is the CURRENT way to run GitStory on any given repo (see `docs/dev` directory for further details on how to set up `uv run`). We are working on restoring a build version that DOES NOT require users to also have to git clone, which is aiming to be released by **Nov 12**. In the meanwhile, here are the steps you take to run GitStory on your chosen git repository. 
 
 ## Step 1: Clone the GitStory repo
 Clone this GitStory repo in a chosen PC location (i.e. Desktop, specific folders, etc).
