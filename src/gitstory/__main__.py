@@ -32,7 +32,7 @@ def run(repo_path, branch, since, until):
     try:
         # Step 1: Load Gemini API key
         api_key = os.environ.get(
-            "GITSTORY_API_KEY", "XXXXXXXXXXX"
+            "GITSTORY_API_KEY", "API_KEY"
         )  # Replace with actual API
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
@@ -42,12 +42,15 @@ def run(repo_path, branch, since, until):
                 err=True,
             )
             sys.exit(1)
+        click.echo("🔑 API key configured & loaded...")
 
         # Step 2: Parse repo
+        click.echo("🔍 Analyzing repository...")
         parser = RepoParser(repo_path)
         parsed_data = parser.parse()
 
         # Step 3: Summarize
+        click.echo("🤖 Generating AI summary...")
         from gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
@@ -68,11 +71,12 @@ def run(repo_path, branch, since, until):
 
 
 @cli.command("dashboard", short_help="Generates downloadable report about repo")
-def dashboard():
+@click.argument("repo_path", type=click.Path(exists=True))
+def dashboard(repo_path):
     try:
         # Step 1: Load configuration & validate API key
         api_key = os.environ.get(
-            "GITSTORY_API_KEY", "XXXXXXXXXXX"
+            "GITSTORY_API_KEY", "API_KEY"
         )  # Replace with actual API
         if not api_key:
             click.echo("❌ Error: API key not configured\n", err=True)
@@ -91,7 +95,7 @@ def dashboard():
         click.echo("🔍 Analyzing repository...")
         from gitstory.parser import RepoParser
 
-        parser = RepoParser(".")
+        parser = RepoParser(repo_path)
         parsed_data = parser.parse()
 
         # Step 3: Generate AI summary
@@ -113,6 +117,7 @@ def dashboard():
             repo_data=parsed_data,
             ai_summary=result,
             output_file="dashboard.html",
+            repo_path=repo_path
         )
         click.echo("Dashboard saved!")
 
