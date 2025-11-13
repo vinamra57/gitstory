@@ -1,0 +1,60 @@
+{
+  "success_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "# Repository Activity Summary\n\nThis repository has seen active development with 15 commits across multiple areas:\n\n## Key Highlights\n\n- **New Features**: Implementation of user authentication system and role-based access control\n- **Bug Fixes**: Resolved critical null pointer exceptions and improved error handling\n- **Code Quality**: Refactored validation logic and improved test coverage\n\n## Contributors\n\nAlice Developer led the development with 8 commits, followed by Bob Developer with 5 commits and Charlie Developer with 2 commits.\n\n## Areas of Focus\n\n1. Authentication & Security (5 commits)\n2. Bug Fixes & Stability (4 commits)\n3. Code Refactoring (3 commits)\n4. Documentation (2 commits)\n5. Testing (1 commit)"
+            }
+          ]
+        }
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 1250,
+      "candidatesTokenCount": 425,
+      "totalTokenCount": 1675
+    }
+  },
+  "error_response_400": {
+    "error": {
+      "code": 400,
+      "message": "Invalid request: missing required field 'contents'",
+      "status": "INVALID_ARGUMENT"
+    }
+  },
+  "error_response_401": {
+    "error": {
+      "code": 401,
+      "message": "Invalid API key provided",
+      "status": "UNAUTHENTICATED"
+    }
+  },
+  "error_response_429": {
+    "error": {
+      "code": 429,
+      "message": "Resource exhausted: quota exceeded",
+      "status": "RESOURCE_EXHAUSTED"
+    }
+  },
+  "error_response_500": {
+    "error": {
+      "code": 500,
+      "message": "Internal server error",
+      "status": "INTERNAL"
+    }
+  },
+  "malformed_response": {
+    "candidates": [
+      {
+        "content": {
+          "text": "Missing 'parts' structure"
+        }
+      }
+    ]
+  },
+  "empty_response": {
+    "candidates": []
+  }
+}
