@@ -31,6 +31,8 @@ FORMAT:
 
 ## Activity Breakdown
 [Brief stats about commit types and contributors]
+
+IMPORTANT: End your summary with [END-SUMMARY] on a new line to indicate completion.
 """
 
     DASHBOARD_SYSTEM_PROMPT = """You are a senior software engineer creating a detailed code history report.
@@ -64,6 +66,8 @@ FORMAT:
 
 ## Recent Activity
 [What's been happening lately]
+
+IMPORTANT: End your summary with [END-SUMMARY] on a new line to indicate completion.
 """
 
     def build_prompt(self, parsed_data: Dict, output_format: str) -> str:
