@@ -310,6 +310,95 @@ def mock_gemini_error_response():
 
 
 @pytest.fixture
+def mock_gemini_empty_json_response():
+    """
+    Returns an empty JSON response from Gemini API.
+
+    Simulates the case where the API returns an empty dictionary.
+    """
+    return {}
+
+
+@pytest.fixture
+def mock_gemini_empty_candidates_response():
+    """
+    Returns a Gemini API response with empty candidates array.
+
+    Simulates the case where the API returns valid JSON structure but no candidates.
+    """
+    return {"candidates": []}
+
+
+@pytest.fixture
+def mock_gemini_empty_text_response():
+    """
+    Returns a Gemini API response with empty text content.
+
+    Simulates the case where the API returns valid structure but empty text.
+    """
+    return {
+        "candidates": [{"content": {"parts": [{"text": ""}]}}],
+        "usageMetadata": {
+            "totalTokenCount": 10,
+        },
+    }
+
+
+@pytest.fixture
+def mock_gemini_incomplete_response():
+    """
+    Returns a Gemini API response with incomplete text (no end marker).
+
+    Simulates the case where the response is cut off before completion.
+    """
+    return {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "text": "This is an incomplete summary that was cut off mid-sentence and doesn't have..."
+                        }
+                    ]
+                }
+            }
+        ],
+        "usageMetadata": {
+            "totalTokenCount": 100,
+        },
+    }
+
+
+@pytest.fixture
+def mock_gemini_complete_response_with_marker():
+    """
+    Returns a Gemini API response with complete text including end marker.
+
+    Simulates a successful response with the [END-SUMMARY] marker.
+    """
+    return {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "text": "This is a complete summary of the repository changes. "
+                            "The team has made significant progress with new features, "
+                            "bug fixes, and improvements to code quality.\n\n[END-SUMMARY]"
+                        }
+                    ]
+                }
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 500,
+            "candidatesTokenCount": 150,
+            "totalTokenCount": 650,
+        },
+    }
+
+
+@pytest.fixture
 def temp_output_dir(tmp_path):
     """
     Creates a temporary output directory for testing file operations.

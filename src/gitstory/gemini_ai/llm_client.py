@@ -42,7 +42,7 @@ class LLMClient:
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "temperature": temperature,
-                "maxOutputTokens": 2000,
+                "maxOutputTokens": 4000,  # Increased for dashboard format (800-1200 words)
             },
         }
 
@@ -51,7 +51,7 @@ class LLMClient:
                 response = requests.post(
                     f"{self.endpoint}?key={self.api_key}",
                     json=payload,
-                    timeout=30,
+                    timeout=60,  # Increased for longer responses
                 )
                 if response.status_code == 401:
                     raise ConfigurationError(
@@ -71,7 +71,37 @@ class LLMClient:
                     )
 
                 response.raise_for_status()
-                return response.json()
+                json_data = response.json()
+
+                # Validate response is not empty
+                if not json_data:
+                    if attempt < self.MAX_RETRIES:
+                        time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
+                        continue
+                    raise SummarizationError(
+                        "Received empty JSON response from Gemini API after retries"
+                    )
+
+                # Validate required fields exist
+                candidates = json_data.get("candidates", [])
+                if not candidates or len(candidates) == 0:
+                    if attempt < self.MAX_RETRIES:
+                        time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
+                        continue
+                    raise SummarizationError(
+                        "Received response with no candidates from Gemini API after retries"
+                    )
+
+                # Validate basic structure of first candidate
+                if not isinstance(candidates[0], dict):
+                    if attempt < self.MAX_RETRIES:
+                        time.sleep(self.TIMEOUT_RETRY_DELAY_SECONDS)
+                        continue
+                    raise SummarizationError(
+                        "Received malformed candidate structure from Gemini API after retries"
+                    )
+
+                return json_data
             except requests.exceptions.Timeout:
                 if attempt == self.MAX_RETRIES:
                     raise SummarizationError(

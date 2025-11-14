@@ -21,7 +21,7 @@ def mock_gemini_response():
                 "content": {
                     "parts": [
                         {
-                            "text": "# Repository Summary\n\nThis is a test summary with proper formatting."
+                            "text": "# Repository Summary\n\nThis is a test summary with proper formatting.\n\n[END-SUMMARY]"
                         }
                     ]
                 }
@@ -171,7 +171,11 @@ def test_process_preserves_content(response_handler):
         "candidates": [
             {
                 "content": {
-                    "parts": [{"text": "Important content that should be preserved"}]
+                    "parts": [
+                        {
+                            "text": "Important content that should be preserved\n\n[END-SUMMARY]"
+                        }
+                    ]
                 }
             }
         ]
@@ -179,3 +183,85 @@ def test_process_preserves_content(response_handler):
 
     result = response_handler.process(response, "cli")
     assert "Important content that should be preserved" in result
+    assert "[END-SUMMARY]" not in result  # Marker should be stripped
+
+
+def test_process_validates_empty_content(
+    response_handler, mock_gemini_empty_text_response
+):
+    """Test that empty text content raises ValueError."""
+    with pytest.raises(ValueError) as exc_info:
+        response_handler.process(mock_gemini_empty_text_response, "cli")
+
+    assert "empty or very short content" in str(exc_info.value).lower()
+
+
+def test_process_validates_missing_end_marker(
+    response_handler, mock_gemini_incomplete_response
+):
+    """Test that missing end marker raises ValueError."""
+    with pytest.raises(ValueError) as exc_info:
+        response_handler.process(mock_gemini_incomplete_response, "cli")
+
+    assert "incomplete response" in str(exc_info.value).lower()
+    assert "[end-summary]" in str(exc_info.value).lower()
+
+
+def test_process_strips_end_marker(
+    response_handler, mock_gemini_complete_response_with_marker
+):
+    """Test that end marker is removed from processed output."""
+    result = response_handler.process(mock_gemini_complete_response_with_marker, "cli")
+
+    # End marker should be stripped from output
+    assert "[END-SUMMARY]" not in result
+    # But content should be preserved
+    assert "complete summary" in result.lower()
+    assert "repository changes" in result.lower()
+
+
+def test_process_accepts_short_content_with_marker(response_handler):
+    """Test that short but valid content (with marker) is accepted."""
+    short_valid_response = {
+        "candidates": [
+            {"content": {"parts": [{"text": "Brief summary.\n\n[END-SUMMARY]"}]}}
+        ]
+    }
+
+    result = response_handler.process(short_valid_response, "cli")
+
+    # Should succeed and strip marker
+    assert "[END-SUMMARY]" not in result
+    assert "Brief summary" in result
+
+
+def test_process_validates_very_short_content_even_with_marker(response_handler):
+    """Test that content shorter than minimum (even with marker) raises error."""
+    too_short_response = {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {"text": "Hi\n[END-SUMMARY]"}
+                    ]  # Only 2 chars before marker
+                }
+            }
+        ]
+    }
+
+    with pytest.raises(ValueError) as exc_info:
+        response_handler.process(too_short_response, "cli")
+
+    # Should fail due to content being too short (< 20 chars)
+    assert "empty or very short content" in str(exc_info.value).lower()
+
+
+def test_process_dashboard_format_validates_end_marker(
+    response_handler, mock_gemini_incomplete_response
+):
+    """Test that dashboard format also validates end marker."""
+    with pytest.raises(ValueError) as exc_info:
+        response_handler.process(mock_gemini_incomplete_response, "dashboard")
+
+    assert "incomplete response" in str(exc_info.value).lower()
+    assert "[end-summary]" in str(exc_info.value).lower()
