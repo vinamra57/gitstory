@@ -56,6 +56,38 @@ def run(repo_path, branch, since, until):
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
 
+        # Check for errors before displaying
+        if result.get("error"):
+            error_msg = result["error"]
+            click.echo("❌ Error generating summary", err=True)
+
+            # Provide specific, actionable error messages
+            if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
+                click.echo(
+                    "💡 The AI returned an empty response after 3 attempts.", err=True
+                )
+                click.echo(
+                    "   This might be temporary. Please try again in a few moments.",
+                    err=True,
+                )
+            elif "incomplete" in error_msg.lower() or "end marker" in error_msg.lower():
+                click.echo(
+                    "💡 The AI response was incomplete after 3 attempts.", err=True
+                )
+                click.echo("   This might be due to:", err=True)
+                click.echo("   - Network interruption", err=True)
+                click.echo("   - API timeout", err=True)
+                click.echo("   Please try again.", err=True)
+            elif "rate limit" in error_msg.lower():
+                click.echo(
+                    "💡 API rate limit exceeded. Please wait a few minutes and try again.",
+                    err=True,
+                )
+            else:
+                click.echo(f"   Details: {error_msg}", err=True)
+
+            sys.exit(1)
+
         # Step 4: Display summary in terminal
         click.echo("✅ Summary generation complete!")
         click.echo("\n" + "=" * 60)
@@ -102,11 +134,38 @@ def dashboard(repo_path):
         from gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
-        result = summarizer.summarize(parsed_data)
+        result = summarizer.summarize(parsed_data, output_format="dashboard")
 
-        # Check for errors
-        if not result:
+        # Check for errors before generating dashboard
+        if result.get("error"):
+            error_msg = result["error"]
             click.echo("❌ Error generating summary", err=True)
+
+            # Provide specific, actionable error messages
+            if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
+                click.echo(
+                    "💡 The AI returned an empty response after 3 attempts.", err=True
+                )
+                click.echo(
+                    "   This might be temporary. Please try again in a few moments.",
+                    err=True,
+                )
+            elif "incomplete" in error_msg.lower() or "end marker" in error_msg.lower():
+                click.echo(
+                    "💡 The AI response was incomplete after 3 attempts.", err=True
+                )
+                click.echo("   This might be due to:", err=True)
+                click.echo("   - Network interruption", err=True)
+                click.echo("   - API timeout", err=True)
+                click.echo("   Please try again.", err=True)
+            elif "rate limit" in error_msg.lower():
+                click.echo(
+                    "💡 API rate limit exceeded. Please wait a few minutes and try again.",
+                    err=True,
+                )
+            else:
+                click.echo(f"   Details: {error_msg}", err=True)
+
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
@@ -116,39 +175,16 @@ def dashboard(repo_path):
             repo_data=parsed_data,
             ai_summary=result,
             output_file="dashboard.html",
-            repo_path=repo_path
+            repo_path=repo_path,
         )
-        click.echo("Dashboard saved!")
+        click.echo("✅ Dashboard saved!")
+
+        return "Dashboard saved!"
 
     except Exception as e:
-        click.echo("❌ Error generating summary", err=True)
+        click.echo("❌ Error generating dashboard", err=True)
         click.echo(f"Error: {e}")
         sys.exit(1)
-        parser = RepoParser(branch="temporary branch information")
-        parsed_data = parser.parse()
-
-        # Step 3: Generate AI summary
-        click.echo("🤖 Generating AI summary...")
-        from gemini_ai import AISummarizer
-
-        summarizer = AISummarizer(api_key=api_key)
-        result = summarizer.summarize(parsed_data)
-        # Reads the JSON format + returns only the result
-
-        # Check for errors
-        if not result:
-            click.echo("❌ Error generating summary", err=True)
-            sys.exit(1)
-
-        # Step 4: Display results on Visualization Dashboard
-        from visual_dashboard.dashboard_generator import generate_dashboard
-
-        generate_dashboard(
-            repo_data=parsed_data,
-            ai_summary=result,
-            output_file="dashboard.html",
-        )
-        return "Dashboard saved!"
 
 
 @cli.command("since", short_help="Generate a summary starting from a date MM-DD-YYYY")
