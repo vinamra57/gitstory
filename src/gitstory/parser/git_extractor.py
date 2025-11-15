@@ -17,11 +17,11 @@ class GitExtractor:
                 f"Not a valid Git repository: {repo_path}\n"
                 f"Please run this command in a Git repository or use 'git init'"
             )
-    def get_commits(self, since: Optional[str] = None, until: Optional[str] = None, branch: Optional[str] = None) -> List[Dict]:
+    def get_commits(self, since: Optional[datetime] = None, until: Optional[datetime] = datetime.now(), branch: Optional[str] = None) -> List[Dict]:
         if branch is None:
             branch = self.repo.active_branch.name
-        since_dt = self._parse_time(since) if since else None
-        until_dt = self._parse_time(until) if until else datetime.now()
+        since_dt = since
+        until_dt = until
         commits = []
         for commit in self.repo.iter_commits(branch):
             commit_time = datetime.fromtimestamp(commit.committed_date)
