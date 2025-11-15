@@ -26,7 +26,7 @@ def cli():
 @cli.command("run", short_help="Generates a summary based on current code repo")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
-@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
+@click.option("--since", default=None, help="Start time (ISO or relative like '2w') CURRENTLY MM-DD-YYYY")
 @click.option("--until", default=None, help="End time (ISO or relative)")
 def run(repo_path, branch, since, until):
     try:
@@ -45,7 +45,7 @@ def run(repo_path, branch, since, until):
 
         # Step 2: Parse repo
         parser = RepoParser(repo_path)
-        parsed_data = parser.parse()
+        parsed_data = parser.parse(since=since)
 
         # Step 3: Summarize
         from gemini_ai import AISummarizer
