@@ -39,14 +39,14 @@ Stretch Goals
 
 ## Team
 
-| Name | Role |
-|------|------|
-| Vinamra Agarwal | AI Developer |
-| Adwita Garg | Backend Developer |
-| Vishal Sathambakkam | AI Developer |
-| Ian Limasi | Backend Developer |
-| ShengYao Liu | Product Manager, UI Designer |
-| Derick Chiem | Backend Developer |
+| Name | Role | Email |
+|------|------|-------|
+| Vinamra Agarwal | AI Developer | vinamra1@cs.washington.edu
+| Adwita Garg | Backend Developer | adgarg12@cs.washington.edu
+| Vishal Sathambakkam | AI Developer | vishksat@cs.washington.edu
+| Ian Limasi | Backend Developer | imlimasi@cs.washington.edu
+| ShengYao Liu | Product Manager, UI Designer | sliu1229@cs.washington.edu
+| Derick Chiem | Backend Developer | dchiem@cs.washington.edu
 
 ---
 
