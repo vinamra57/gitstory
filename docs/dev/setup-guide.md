@@ -1,10 +1,10 @@
 #  Setting Up GitStory
 This guide covers the process of how to setup GitStory for Mac, Linux, and Windows for developers looking to contribute or view the GitStory code.
 
-## Step 0: Make sure your PC has Git!
+## Step 0: Make sure your PC has Git
 Make sure that the PC you will be working on has Git installed, if not, please install Git on your PC (as mentioned [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)).
 
-## Step 0.5: Clone the Gitstory Repository
+## Step 0.5: Clone the Gitstory Repository (if you have not done so already)
 Use the `git clone` command to clone the repository using the link provided at the GitHub, which itself is linked [here](https://github.com/vinamra57/gitstory).
 
 ```
