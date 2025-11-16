@@ -7,4 +7,4 @@ Here is a layout of how GitStory’s files are structured:
 - `src/gitstory`: Stores the main codebase - contains of gemini_ai, parser, and visual_dashboard directories which store each respective component's code; main.py calls each of the components (and puts the whole program together)
 - `tests`: Where all the tests are stored for each function/class in `src` 
 
-Other files present in the main directory relate to the Python installation, project setup (i.e. imports) and testing for the codebase
+Other files present in the main directory relate to the Python installation, project setup (i.e. imports) and testing for the codebase.
