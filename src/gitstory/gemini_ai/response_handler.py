@@ -30,6 +30,22 @@ class ResponseHandler:
             raise ValueError(f"Invalid API response format: {error}") from error
 
         content = self._clean_content(content)
+
+        # Validate content is not empty or too short
+        if not content or len(content.strip()) < 20:
+            raise ValueError(
+                "Received empty or very short content from API (possible incomplete response)"
+            )
+
+        # Validate end marker exists
+        if "[END-SUMMARY]" not in content:
+            raise ValueError(
+                "Incomplete response: missing [END-SUMMARY] marker. The response may have been cut off."
+            )
+
+        # Remove the end marker before returning
+        content = content.replace("[END-SUMMARY]", "").strip()
+
         return (
             self._format_for_cli(content)
             if output_format == "cli"
