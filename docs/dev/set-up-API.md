@@ -2,6 +2,11 @@
 To run GitStory, a Gemini API key will be needed, as GitStory communicates with Gemini to generate narrative summaries for users. Here is how to obtain one of your own, in case
 you were not able to reach one of the GitStory members (or if you just would like to have one of your own!).
 
+You will need to have cloned this repository, as you will be adding the API key you generate into your local .env copy:
+```
+git clone https://github.com/vinamra57/gitstory.git
+```
+
 ## Step 1: Create a Google Cloud Console account
 Head over to Google Cloud Console (https://console.cloud.google.com/), and create your account (should be linked to your Gmail account, if not, create your account).
 
