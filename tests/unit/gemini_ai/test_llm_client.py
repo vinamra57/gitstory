@@ -183,3 +183,99 @@ def test_extract_error_fallback():
 
     error_msg = client._extract_error(mock_response)
     assert "HTTP 500" in error_msg
+
+
+def test_generate_retries_on_empty_json(
+    llm_client, mock_gemini_empty_json_response, mock_success_response
+):
+    """Test retry logic for empty JSON response."""
+    with patch("requests.post") as mock_post, patch("time.sleep"):
+        # First call returns empty JSON, second call succeeds
+        mock_response_empty = Mock()
+        mock_response_empty.status_code = 200
+        mock_response_empty.json.return_value = mock_gemini_empty_json_response
+
+        mock_response_success = Mock()
+        mock_response_success.status_code = 200
+        mock_response_success.json.return_value = mock_success_response
+
+        mock_post.side_effect = [mock_response_empty, mock_response_success]
+
+        result = llm_client.generate("test prompt")
+
+        assert result == mock_success_response
+        assert mock_post.call_count == 2
+
+
+def test_generate_retries_on_empty_candidates(
+    llm_client, mock_gemini_empty_candidates_response, mock_success_response
+):
+    """Test retry logic for empty candidates array."""
+    with patch("requests.post") as mock_post, patch("time.sleep"):
+        # First call returns empty candidates, second call succeeds
+        mock_response_empty = Mock()
+        mock_response_empty.status_code = 200
+        mock_response_empty.json.return_value = mock_gemini_empty_candidates_response
+
+        mock_response_success = Mock()
+        mock_response_success.status_code = 200
+        mock_response_success.json.return_value = mock_success_response
+
+        mock_post.side_effect = [mock_response_empty, mock_response_success]
+
+        result = llm_client.generate("test prompt")
+
+        assert result == mock_success_response
+        assert mock_post.call_count == 2
+
+
+def test_generate_fails_after_max_retries_empty(
+    llm_client, mock_gemini_empty_json_response
+):
+    """Test that empty JSON response raises error after max retries."""
+    with patch("requests.post") as mock_post, patch("time.sleep"):
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = mock_gemini_empty_json_response
+        mock_post.return_value = mock_response
+
+        with pytest.raises(Exception) as exc_info:
+            llm_client.generate("test prompt")
+
+        assert "empty JSON response" in str(exc_info.value)
+        assert mock_post.call_count == 3
+
+
+def test_generate_fails_after_max_retries_empty_candidates(
+    llm_client, mock_gemini_empty_candidates_response
+):
+    """Test that empty candidates raises error after max retries."""
+    with patch("requests.post") as mock_post, patch("time.sleep"):
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = mock_gemini_empty_candidates_response
+        mock_post.return_value = mock_response
+
+        with pytest.raises(Exception) as exc_info:
+            llm_client.generate("test prompt")
+
+        assert "no candidates" in str(exc_info.value)
+        assert mock_post.call_count == 3
+
+
+def test_generate_validates_candidate_structure(llm_client):
+    """Test that malformed candidate structure is caught."""
+    with patch("requests.post") as mock_post, patch("time.sleep"):
+        # Response with candidates but malformed structure
+        malformed_response = {"candidates": ["not a dict"]}
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = malformed_response
+        mock_post.return_value = mock_response
+
+        with pytest.raises(Exception) as exc_info:
+            llm_client.generate("test prompt")
+
+        assert "malformed candidate structure" in str(exc_info.value)
+        assert mock_post.call_count == 3

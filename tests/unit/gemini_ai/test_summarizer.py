@@ -47,7 +47,7 @@ def mock_api_response():
                 "content": {
                     "parts": [
                         {
-                            "text": "# Repository Summary\n\nThis repository added user authentication."
+                            "text": "# Repository Summary\n\nThis repository added user authentication.\n\n[END-SUMMARY]"
                         }
                     ]
                 }
@@ -169,7 +169,17 @@ def test_summarize_with_zero_commits(summarizer):
     }
 
     mock_response = {
-        "candidates": [{"content": {"parts": [{"text": "No commits found."}]}}],
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "text": "No commits found in this repository.\n\n[END-SUMMARY]"
+                        }
+                    ]
+                }
+            }
+        ],
         "usageMetadata": {"totalTokenCount": 10},
     }
 
@@ -205,3 +215,146 @@ def test_multiple_summarize_calls(summarizer, sample_parsed_data, mock_api_respo
         assert result2["error"] is None
         assert result1["summary"] is not None
         assert result2["summary"] is not None
+
+
+def test_summarize_retries_on_incomplete_response(
+    summarizer,
+    sample_parsed_data,
+    mock_gemini_incomplete_response,
+    mock_gemini_complete_response_with_marker,
+):
+    """Test retry logic for incomplete response (missing end marker)."""
+    with (
+        patch.object(
+            summarizer.client,
+            "generate",
+            side_effect=[
+                mock_gemini_incomplete_response,
+                mock_gemini_complete_response_with_marker,
+            ],
+        ),
+        patch("time.sleep"),
+    ):  # Mock sleep to speed up test
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should succeed on second attempt
+        assert result["error"] is None
+        assert result["summary"] is not None
+        assert "[END-SUMMARY]" not in result["summary"]  # Marker should be stripped
+
+
+def test_summarize_returns_error_after_max_retries(
+    summarizer, sample_parsed_data, mock_gemini_incomplete_response
+):
+    """Test that max retries returns error dict."""
+    with (
+        patch.object(
+            summarizer.client,
+            "generate",
+            return_value=mock_gemini_incomplete_response,  # Always returns incomplete
+        ),
+        patch("time.sleep"),
+    ):
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should return error after 3 attempts
+        assert result["error"] is not None
+        assert (
+            "incomplete" in result["error"].lower()
+            or "end marker" in result["error"].lower()
+        )
+        assert result["summary"] is None
+        assert result["metadata"] == {}
+
+
+def test_summarize_succeeds_on_retry(
+    summarizer,
+    sample_parsed_data,
+    mock_gemini_empty_text_response,
+    mock_gemini_complete_response_with_marker,
+):
+    """Test success on second attempt after empty response."""
+    with (
+        patch.object(
+            summarizer.client,
+            "generate",
+            side_effect=[
+                mock_gemini_empty_text_response,
+                mock_gemini_complete_response_with_marker,
+            ],
+        ),
+        patch("time.sleep"),
+    ):
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should succeed on retry
+        assert result["error"] is None
+        assert result["summary"] is not None
+        assert "complete summary" in result["summary"].lower()
+
+
+def test_summarize_retries_three_times_max(
+    summarizer, sample_parsed_data, mock_gemini_incomplete_response
+):
+    """Test that summarizer retries exactly 3 times before giving up."""
+    call_count = 0
+
+    def mock_generate(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return mock_gemini_incomplete_response
+
+    with (
+        patch.object(summarizer.client, "generate", side_effect=mock_generate),
+        patch("time.sleep"),
+    ):
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should have tried exactly 3 times
+        assert call_count == 3
+        assert result["error"] is not None
+
+
+def test_summarize_does_not_retry_api_errors(summarizer, sample_parsed_data):
+    """Test that API-level errors (SummarizationError) don't trigger retries."""
+    from gitstory.gemini_ai.llm_client import SummarizationError
+
+    call_count = 0
+
+    def mock_generate(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        raise SummarizationError("API rate limit exceeded")
+
+    with patch.object(summarizer.client, "generate", side_effect=mock_generate):
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should NOT retry API errors (they're already retried in llm_client)
+        assert call_count == 1
+        assert result["error"] is not None
+        assert "rate limit" in result["error"].lower()
+
+
+def test_summarize_retry_delay(
+    summarizer,
+    sample_parsed_data,
+    mock_gemini_incomplete_response,
+    mock_gemini_complete_response_with_marker,
+):
+    """Test that retry includes proper delay."""
+    with (
+        patch.object(
+            summarizer.client,
+            "generate",
+            side_effect=[
+                mock_gemini_incomplete_response,
+                mock_gemini_complete_response_with_marker,
+            ],
+        ),
+        patch("time.sleep") as mock_sleep,
+    ):
+        result = summarizer.summarize(sample_parsed_data, output_format="cli")
+
+        # Should have called sleep with retry delay
+        mock_sleep.assert_called_once_with(summarizer.RETRY_DELAY_SECONDS)
+        assert result["error"] is None
