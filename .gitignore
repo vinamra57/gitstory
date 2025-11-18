@@ -3,3 +3,5 @@ gitstory.egg-info/*
 src/gitstory.egg-info/*
 .env
 src/gitstory/visual_dashboard/output/dashboard.html
+gitkey.txt
+src/gitstory/data
