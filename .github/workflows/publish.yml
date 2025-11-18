@@ -23,7 +23,7 @@ jobs:
       # Step 1: Install the UV Tool
       # This action installs the uv binary, which is needed for the uv_build backend.
       - name: Install UV Tool
-        uses: uv-tool/uv-action@v1 
+        uses:  astral-sh/actions-setup-uv@v1  
 
       # Step 2: Install Project Dependencies
       # This uses uv to synchronize the virtual environment based on pyproject.toml.
