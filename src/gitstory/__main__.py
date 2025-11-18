@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
+from gitstory.common_fun import read_key
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -220,12 +221,12 @@ def parse_repo(repo_path, since, until, branch):
 @click.option("--key", help="Gemini key")
 def key(key):
     cur_folder = os.path.dirname(os.path.abspath(__file__))
-    env_path = cur_folder + "/.env"
-    with open(env_path, "w") as env:
-        env.write("# This is where the Gemini API key is located in order for GitStory to function\n")
-        env.write("# To obtain the API key, either reach out to a member of this team OR follow set-up-API.md to create your own API key\n")
-        env.write(f"GEMINI_API_KEY={key}")
-    click.echo(f"Key written to {env_path}!")
+    if not os.path.isdir(cur_folder + "/data"):
+        os.mkdir(cur_folder + "/data")
+    key_path = cur_folder + "/data/key.txt"
+    with open(key_path, "w") as key_f:
+        key_f.write(key)
+    click.echo(f"Key written to {key_path}!")
 
 
 if __name__ == "__main__":
