@@ -4,12 +4,13 @@ This guide covers the process of how to setup GitStory for Mac, Linux, and Windo
 ## Step 0: Make sure your PC has Git
 Make sure that the PC you will be working on has Git installed, if not, please install Git on your PC (as mentioned [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)).
 
-## Step 0.5: Clone the Gitstory Repository (if you have not done so already)
+## Step 0.5: Clone the Gitstory Repository (if you have not done so already) + Obtain Gemini API Key
 Use the `git clone` command to clone the repository using the link provided at the GitHub, which itself is linked [here](https://github.com/vinamra57/gitstory).
 
 ```
 git clone https://github.com/vinamra57/gitstory.git
 ```
+Once cloned, use the [set-up-API.md](set-up-API.md) to grab the Gemini API key that is needed to run + work with GitStory. 
 
 ## Step 1: Downloading Python 3.13 (or newer)
 The minimum version GitStory requires is Python 3.13. Grab it [here](https://www.python.org/downloads/). If you have a newer version of Python, that will also work (i.e. you don't need to download the specific 3.13 version).
