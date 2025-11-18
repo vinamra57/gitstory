@@ -36,12 +36,12 @@ class LLMClient:
         self.model = model
         self.endpoint = f"{self.BASE_URL}/{model}:generateContent"
 
-    def generate(self, prompt: str, *, temperature: float = 0.7) -> Dict[str, Any]:
+    def generate(self, prompt: str, *, temperature: float = 0.5) -> Dict[str, Any]:
         """Generate content from Gemini, retrying on recoverable failures."""
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
-                "temperature": temperature,
+                "temperature": temperature,  # Lower temperature for more factual, consistent output
                 "maxOutputTokens": 4000,  # Increased for dashboard format (800-1200 words)
             },
         }
