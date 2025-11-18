@@ -214,6 +214,19 @@ def parse_repo(repo_path, since, until, branch):
     click.echo("Metadata:")
     click.echo(result["metadata"])
 
+@cli.command(
+    "key", short_help="sets key to value"
+)
+@click.option("--key", help="Gemini key")
+def key(key):
+    cur_folder = os.path.dirname(os.path.abspath(__file__))
+    env_path = cur_folder + "/.env"
+    with open(env_path, "w") as env:
+        env.write("# This is where the Gemini API key is located in order for GitStory to function\n")
+        env.write("# To obtain the API key, either reach out to a member of this team OR follow set-up-API.md to create your own API key\n")
+        env.write(f"GEMINI_API_KEY={key}")
+    click.echo(f"Key written to {env_path}!")
+
 
 if __name__ == "__main__":
     cli()
