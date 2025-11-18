@@ -1,4 +1,4 @@
-name: GitStory
+name: gitstory
 
 on:
   release:
@@ -6,11 +6,11 @@ on:
 
 jobs:
   pypi-publish:
-    name: GitStory
+    name: gitstory
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/<GitStory>
+      url: https://pypi.org/p/<gitstory>
     permissions:
       id-token: write
     steps:
