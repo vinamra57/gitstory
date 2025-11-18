@@ -26,3 +26,5 @@ requires = ["uv_build>=0.9.6,<0.10.0"]
 build-backend = "uv_build"
 [project.scripts]
 gitstory = "gitstory.main:cli"
+[tool.setuptools.package-data]
+"gitstory" = [".env"]
