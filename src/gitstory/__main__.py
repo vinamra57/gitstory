@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
-from gitstory.common_fun import read_key
+from gitstory.common_fun.read_key import read_key
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -32,14 +32,14 @@ def cli():
 @click.option("--until", default=None, help="End time (ISO or relative)")
 def run(repo_path, branch, since, until):
     try:
-        # Step 1: Load Gemini API key
-        load_dotenv()
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            click.echo("❌ Error: API key not configured\n", err=True)
+        try:
+            api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
+        except Exception as ex:
+            click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo(f"This is most likely to your key being set wrong!", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
-                "1. Set environment variable: export GITSTORY_API_KEY='your-key'",
+                "1. Call 'gitstory key --key=\"key\" '",
                 err=True,
             )
             sys.exit(1)
@@ -108,19 +108,17 @@ def run(repo_path, branch, since, until):
 def dashboard(repo_path):
     try:
         # Step 1: Load configuration & validate API key
-        load_dotenv()
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            click.echo("❌ Error: API key not configured\n", err=True)
+        try:
+            api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
+        except Exception as ex:
+            click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo(f"This is most likely to your key being set wrong!", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
-                "1. Set environment variable: export GITSTORY_API_KEY='your-key'",
+                "1. Call 'gitstory key --key=\"key\" '",
                 err=True,
             )
-            click.echo("2. Create .env file with: GITSTORY_API_KEY=your-key", err=True)
-            click.echo("\nGet your API key from: <INSERT_LINK>", err=True)
             sys.exit(1)
-
         click.echo("🔑 API key configured & loaded...")
 
         # Step 2: Parse repository
