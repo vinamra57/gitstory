@@ -1,7 +1,7 @@
 [project]
 name = "gitstory"
 version = "0.0.1"
-description = "GitStory (IDK the Capitalization) is amazing, I think"
+description = "GitStory: Turning git repos into readable stories"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -24,3 +24,5 @@ required-version = ">=0.9.0"
 [build-system]
 requires = ["uv_build>=0.9.6,<0.10.0"]
 build-backend = "uv_build"
+[project.scripts]
+gitstory = "gitstory.main:cli"
