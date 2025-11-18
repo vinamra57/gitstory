@@ -1,0 +1,44 @@
+name: gitstory
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  pypi-publish:
+    name: gitstory
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/gitstory
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      
+      # Step 1: Install the UV Tool
+      # This action installs the uv binary, which is needed for the uv_build backend.
+      - name: Install UV Tool
+        uses: uv-tool/uv-action@v1 
+
+      # Step 2: Install Project Dependencies
+      # This uses uv to synchronize the virtual environment based on pyproject.toml.
+      - name: Install dependencies
+        run: |
+          uv sync 
+
+      # Step 3: Build package distributions
+      # uv build uses the uv_build backend and correctly bundles all files 
+      # (including default.env specified in package-data).
+      - name: Build package
+        run: |
+          uv build
+
+      # Step 4: Publish to PyPI
+      # This uses the pypa action to upload the files generated in the 'dist' directory.
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
