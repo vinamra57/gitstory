@@ -57,11 +57,11 @@ def test_build_prompt_cli_format(prompt_engine, sample_parsed_data):
     prompt = prompt_engine.build_prompt(sample_parsed_data, "cli")
 
     # Check that system prompt is included
-    assert "senior software engineer" in prompt.lower()
-    assert "concise, readable summary" in prompt.lower()
+    assert "technical code historian" in prompt.lower()
+    assert "fact-dense, actionable summary" in prompt.lower()
 
     # Check that data is included
-    assert "Total commits: 2" in prompt
+    assert "Total commits analyzed: 2" in prompt
     assert "Alice" in prompt
     assert "Bob" in prompt
     assert "Add user authentication" in prompt
@@ -72,12 +72,12 @@ def test_build_prompt_dashboard_format(prompt_engine, sample_parsed_data):
     prompt = prompt_engine.build_prompt(sample_parsed_data, "dashboard")
 
     # Check that dashboard system prompt is included
-    assert "senior software engineer" in prompt.lower()
-    assert "html dashboard" in prompt.lower()
-    assert "800-1200 words" in prompt
+    assert "technical project analyst" in prompt.lower()
+    assert "comprehensive repository report" in prompt.lower()
+    assert "multiple stakeholders" in prompt.lower()
 
     # Check that data is included
-    assert "Total commits: 2" in prompt
+    assert "Total commits analyzed: 2" in prompt
     assert "Alice" in prompt
     assert "Bob" in prompt
 
@@ -88,13 +88,16 @@ def test_format_data(prompt_engine, sample_parsed_data):
 
     # Check sections are present
     assert "# REPOSITORY DATA" in formatted
-    assert "## Statistics" in formatted
-    assert "## Commit History" in formatted
+    assert "## Overview Statistics" in formatted
+    assert "## Commit Type Distribution" in formatted
+    assert "## Top Contributors" in formatted
+    assert "## Detailed Commit History" in formatted
 
     # Check statistics are formatted correctly
-    assert "Total commits: 2" in formatted
-    assert "Contributors: 2" in formatted
-    assert "feature, bugfix" in formatted
+    assert "Total commits analyzed: 2" in formatted
+    assert "Active contributors: 2" in formatted
+    assert "feature: 1 commits (50.0%)" in formatted
+    assert "bugfix: 1 commits (50.0%)" in formatted
 
     # Check summary text is included
     assert "FEATURE COMMITS" in formatted
@@ -112,8 +115,8 @@ def test_format_data_with_empty_commits(prompt_engine):
 
     formatted = prompt_engine._format_data(empty_data)
 
-    assert "Total commits: 0" in formatted
-    assert "Contributors: 0" in formatted
+    assert "Total commits analyzed: 0" in formatted
+    assert "Active contributors: 0" in formatted
 
 
 def test_build_comparison_prompt(prompt_engine, sample_parsed_data):
@@ -159,14 +162,23 @@ def test_cli_system_prompt_content(prompt_engine):
     prompt = prompt_engine.CLI_SYSTEM_PROMPT
 
     # Check key instructions
-    assert "WHY changes were made" in prompt
-    assert "500 words" in prompt
+    assert "what changed and why" in prompt
+    assert "STRICT REQUIREMENTS" in prompt
     assert "bullet points" in prompt
+    assert "file paths" in prompt
+    assert "commit counts" in prompt
 
-    # Check format guidance
-    assert "# Repository Summary" in prompt
-    assert "## Overview" in prompt
-    assert "## Key Changes" in prompt
+    # Check anti-fluff rules
+    assert "FORBIDDEN" in prompt
+    assert "significant progress" in prompt
+    assert "various improvements" in prompt
+
+    # Check format guidance with examples
+    assert "EXAMPLES OF GOOD BULLETS" in prompt
+    assert "EXAMPLES OF BAD BULLETS" in prompt
+    assert "[FEATURE]" in prompt
+    assert "[BUGFIX]" in prompt
+    assert "[REFACTOR]" in prompt
 
 
 def test_dashboard_system_prompt_content(prompt_engine):
@@ -174,11 +186,20 @@ def test_dashboard_system_prompt_content(prompt_engine):
     prompt = prompt_engine.DASHBOARD_SYSTEM_PROMPT
 
     # Check key instructions
-    assert "HTML dashboard" in prompt
-    assert "800-1200 words" in prompt
-    assert "engaging and story-like" in prompt
+    assert "comprehensive repository report" in prompt
+    assert "multiple stakeholders" in prompt
+    assert "ANALYSIS FRAMEWORK" in prompt
+    assert "QUALITY REQUIREMENTS" in prompt
 
-    # Check format guidance
-    assert "# Project Evolution Story" in prompt
+    # Check anti-fluff rules
+    assert "FORBIDDEN PHRASES" in prompt
+    assert "significant progress" in prompt
+    assert "various improvements" in prompt
+
+    # Check format guidance sections
     assert "## Executive Summary" in prompt
-    assert "## Feature Development" in prompt
+    assert "## Development Focus" in prompt
+    assert "## Major Technical Changes" in prompt
+    assert "## Code Health Signals" in prompt
+    assert "## Team Dynamics" in prompt
+    assert "## Forward-Looking Assessment" in prompt
