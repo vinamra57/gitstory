@@ -1,5 +1,6 @@
 import os
 
+
 # catches the key
 def read_key(cur_folder) -> str:
     try:

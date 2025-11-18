@@ -8,7 +8,6 @@
 import click
 import sys
 import os
-from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
@@ -36,7 +35,7 @@ def run(repo_path, branch, since, until):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo(f"This is most likely to your key being set wrong!", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
                 "1. Call 'gitstory key --key=\"key\" '",
@@ -112,7 +111,7 @@ def dashboard(repo_path):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo(f"This is most likely to your key being set wrong!", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
                 "1. Call 'gitstory key --key=\"key\" '",
@@ -213,9 +212,8 @@ def parse_repo(repo_path, since, until, branch):
     click.echo("Metadata:")
     click.echo(result["metadata"])
 
-@cli.command(
-    "key", short_help="sets key to value"
-)
+
+@cli.command("key", short_help="sets key to value")
 @click.option("--key", help="Gemini key")
 def key(key):
     cur_folder = os.path.dirname(os.path.abspath(__file__))
