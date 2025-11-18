@@ -1,5 +1,6 @@
 from click.testing import CliRunner
 from gitstory.__main__ import cli
+import os
 
 
 class TestMain:
@@ -37,3 +38,10 @@ class TestMain:
         result = runner.invoke(cli, ["compare"])
         assert result.exit_code == 0
         assert "COMPARE TO BE COMPLETED" in result.output
+    
+    def test_main_key(self):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["key", "--key=\"test\""])
+        assert result.exit_code == 0
+        api_key = os.getenv("GEMINI_API_KEY")
+        assert api_key == "test"
