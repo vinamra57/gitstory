@@ -1,4 +1,4 @@
-from gitstory.common_fun.read_key import read_key
+from gitstory.read_key.read_key import read_key
 import os
 import pytest
 import shutil

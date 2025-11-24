@@ -11,7 +11,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
-from gitstory.common_fun.read_key import read_key
+from gitstory.read_key.read_key import read_key
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
@@ -35,7 +35,7 @@ def run(repo_path, branch, since, until):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo("This is most likely to your key being set wrong!", err=True)
+            click.echo("This is most likely due to your key being set wrong!", err=True)
             click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
                 "1. Call 'gitstory key --key=\"key\" '",
