@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitStory Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>GitStory Dashboard</h1>
+
+    <section>
+        <h2>AI Summary</h2>
+        <p><h1>Repository Analysis</h1>
+<h2>Executive Summary</h2>
+<p>This analysis covers 192 commits and reveals a project in its foundational phase, with development concentrated on establishing core functionality and developer infrastructure. The primary technical achievement is the implementation of an LLM module using the Gemini API, alongside significant effort in creating a build system and comprehensive documentation (14.1% of categorized commits). However, project health is critically obscured by a lack of disciplined commit messaging, with 78.1% of all commits falling into an uncategorized "other" type, masking the true rate of features, fixes, and refactoring.</p>
+<h2>Development Focus</h2>
+<p>The team's explicit priorities were split between project setup and initial feature development. Based on categorized commits, the focus was:
+- <strong>Documentation:</strong> 9.9% of commits (19 total) were dedicated to creating and refining <code>README.md</code>, <code>build-guide.md</code>, and <code>set-up-API.md</code>, indicating a priority on developer onboarding and project clarity.
+- <strong>Build System &amp; Chores:</strong> 4.2% of commits (8 total) were focused on implementing and configuring the project's build system, a foundational investment.
+- <strong>New Features:</strong> 4.2% of commits (8 total) introduced the project's core capabilities, most notably the LLM integration.
+- <strong>Low-Priority Areas:</strong> Bug fixes (1.0%), refactoring (1.0%), and testing (1.0%) received minimal explicit focus, which is a potential risk indicator for a project of this size.</p>
+<p>The overwhelming majority of work (78.1%) remains uncategorized, preventing a more detailed analysis of development focus.</p>
+<h2>Major Technical Changes</h2>
+<ol>
+<li><strong>LLM Module Implementation:</strong> The core functionality was introduced via <code>[e30505aa]</code> by contributor <code>vinamra57</code>, integrating the Gemini API. This was followed by improvements to error handling for empty LLM responses (<code>[4e8f424e]</code>) and enhancing response quality (<code>[7b4b8c7b]</code>). This module represents the central value proposition of the application.</li>
+<li><strong>Establishment of a Build System:</strong> A multi-commit effort, primarily driven by <code>dchiem</code> and <code>TheHorseProgrammer</code>, established the project's build system (<code>[eb72c777]</code>, <code>[5c6fbe11]</code>). This foundational work aims to standardize the development and deployment process.</li>
+<li><strong>Introduction of a Testing Suite:</strong> A comprehensive testing suite was added in <code>[ebcf8f21]</code> and merged in <code>[1ff18920]</code> by <code>vinamra57</code> and <code>Vinamra Agarwal</code>. Contributor <code>Derick Chiem</code> later expanded this with macOS-specific testing (<code>[c27508ee]</code>), showing an early commitment to code validation and cross-platform compatibility.</li>
+</ol>
+<h2>Code Health Signals</h2>
+<ul>
+<li><strong>Bug Fix Rate:</strong> The explicit bug fix rate is extremely low at 1.0% (2 commits). For 192 commits, this number suggests that either bug fixes are not being categorized correctly (hiding them within the 150 "other" commits) or that testing is insufficient to identify bugs. This lack of visibility is a primary risk.</li>
+<li><strong>Refactoring Activity:</strong> With only 2 commits (1.0%) tagged as <code>refactor</code>, there is minimal observable investment in improving existing code structure or paying down technical debt.</li>
+<li><strong>Test Coverage Signals:</strong> The creation of a testing suite is a positive signal. However, with only 2 commits (1.0%) tagged <code>test</code>, it indicates that the practice of writing tests alongside new code is not yet consistently adopted across the team.</li>
+<li><strong>Technical Debt Indicators:</strong> The most significant indicator of technical debt is the inconsistent and often non-descriptive commit messaging. 78.1% of changes lack a conventional type, and messages like <code>yipee</code> (<code>[d2a377b5]</code>) provide zero historical context for future developers, making debugging and maintenance more difficult.</li>
+<li><strong>Hot Spots:</strong> Without file-level data, specific file hot spots cannot be identified. However, the documentation (e.g., <code>README.md</code>, various guides) and the build system configuration are conceptual hot spots, showing repeated modifications by multiple contributors.</li>
+</ul>
+<h2>Team Dynamics</h2>
+<ul>
+<li><strong>Primary Contributors:</strong> Adwita Garg (75 commits) and Derick Chiem (47 commits) are the most active contributors, accounting for a combined 63.6% of the total commit volume. Their work appears to focus heavily on documentation, project structure, and merging pull requests.</li>
+<li><strong>Knowledge Distribution:</strong> There are clear signs of knowledge concentration.<ul>
+<li><code>vinamra57</code> / <code>Vinamra Agarwal</code> owns the core LLM functionality and is the primary contributor adhering to conventional commit standards for features and fixes.</li>
+<li><code>dchiem</code> / <code>Derick Chiem</code> appears to own the build system and testing infrastructure.</li>
+<li><code>Adwita Garg</code> appears to serve an integration or lead role, with a high volume of documentation and merge commits.
+This siloing presents a risk if a key contributor becomes unavailable.</li>
+</ul>
+</li>
+<li><strong>Collaboration Indicators:</strong> The presence of numerous merge pull request commits (e.g., <code>[92e6f94a]</code>, <code>[1ff18920]</code>) confirms the team is using a pull-request-based workflow, which is a positive signal for code review and collaboration.</li>
+</ul>
+<h2>Forward-Looking Assessment</h2>
+<ul>
+<li><strong>Areas Needing Attention:</strong> The immediate priority must be the adoption of a mandatory conventional commit message standard for all contributors. Without this, tracking project health, identifying risk areas, and understanding the true nature of development is impossible. The low, explicit bug-fix rate needs investigation to determine if it reflects high quality or poor tracking.</li>
+<li><strong>Architectural Direction:</strong> The project is establishing a solid foundation with a dedicated build system and an integrated testing suite. The trajectory is towards a robust, LLM-powered application, with an early focus on developer experience through extensive documentation.</li>
+<li><strong>Potential Bottlenecks or Risk Areas:</strong> The primary risk is the high degree of knowledge concentration. The project's core logic (LLM module) and build infrastructure are each heavily dependent on a single contributor. The lack of commit message discipline is a systemic risk that impedes all forms of project analysis and future maintenance.</li>
+<li><strong>Recommendations for New Contributors:</strong> The project is well-documented for setup. A new contributor's best entry point would be to expand the new testing suite (<code>[ebcf8f21]</code>) by adding test cases for existing, uncategorized changes. This would provide high value by improving code coverage while allowing the contributor to learn the codebase.</li>
+</ul></p>
+        <small>Model: gemini-2.5-pro, Tokens used: 6227</small>
+    </section>
+
+    <section>
+        <h2>Repository Stats</h2>
+        <p>Total commits: 192</p>
+        <h3>Commits by type:</h3>
+        <ul>
+        
+            <li>feature: 8</li>
+        
+            <li>bugfix: 2</li>
+        
+            <li>refactor: 2</li>
+        
+            <li>docs: 19</li>
+        
+            <li>style: 1</li>
+        
+            <li>test: 2</li>
+        
+            <li>chore: 8</li>
+        
+            <li>other: 150</li>
+        
+        </ul>
+
+        <h3>Commits by author:</h3>
+        <ul>
+        
+            <li>Derick Chiem: 47 commits</li>
+        
+            <li>TheHorseProgrammer: 22 commits</li>
+        
+            <li>Adwita Garg: 75 commits</li>
+        
+            <li>Vinamra Agarwal: 11 commits</li>
+        
+            <li>vinamra57: 8 commits</li>
+        
+            <li>vishksatham: 12 commits</li>
+        
+            <li>dchiem: 11 commits</li>
+        
+            <li>Ian Limasi: 1 commits</li>
+        
+            <li>syliu04: 1 commits</li>
+        
+            <li>ShengYao Liu: 4 commits</li>
+        
+        </ul>
+    </section>
+
+    <section>
+        <h2>Commits</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Author</th>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Files Changed</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+                <tr>
+                    <td>4e8f424e</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-14T15:55:12</td>
+                    <td>implement error handling for empty/incomplete llm responses</td>
+                    <td>feature</td>
+                    <td>9</td>
+                    <td>692</td>
+                </tr>
+            
+                <tr>
+                    <td>ebcf8f21</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-11T18:45:31</td>
+                    <td>add testing suite</td>
+                    <td>feature</td>
+                    <td>18</td>
+                    <td>3449</td>
+                </tr>
+            
+                <tr>
+                    <td>9e60d62d</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:51:52</td>
+                    <td>Addressed discrepancies in build/how to run GitStory</td>
+                    <td>feature</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>fc06f2a9</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T17:35:16</td>
+                    <td>Added markdown stuff from Ian's PR on Thursday
+
+Still need to add the css so styling is right, @ian will work on this</td>
+                    <td>feature</td>
+                    <td>1</td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td>e30505aa</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T15:54:02</td>
+                    <td>feat: implement complete LLM module with Gemini API integration</td>
+                    <td>feature</td>
+                    <td>6</td>
+                    <td>506</td>
+                </tr>
+            
+                <tr>
+                    <td>2a894d1e</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-24T14:54:43</td>
+                    <td>implementation of absolute minimum interface</td>
+                    <td>feature</td>
+                    <td>2</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>643d70b7</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T18:53:23</td>
+                    <td>Implementation of tools
+
+Dev tool implementation and documentation</td>
+                    <td>feature</td>
+                    <td>12</td>
+                    <td>340</td>
+                </tr>
+            
+                <tr>
+                    <td>75236311</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-13T20:04:47</td>
+                    <td>Addition of 10/13/2025 Status Report File</td>
+                    <td>feature</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td>a701359c</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T16:55:42</td>
+                    <td>fix: resolve all CI/CD test failures</td>
+                    <td>bugfix</td>
+                    <td>7</td>
+                    <td>143</td>
+                </tr>
+            
+                <tr>
+                    <td>cc3e7bbe</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-04T15:55:57</td>
+                    <td>fix: properly ignore .env files</td>
+                    <td>bugfix</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>72dc9bf6</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:40:38</td>
+                    <td>test refactoring and final setup</td>
+                    <td>refactor</td>
+                    <td>7</td>
+                    <td>353</td>
+                </tr>
+            
+                <tr>
+                    <td>5c6fbe11</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:30:34</td>
+                    <td>refactoring in preparation for build system change</td>
+                    <td>refactor</td>
+                    <td>17</td>
+                    <td>2457</td>
+                </tr>
+            
+                <tr>
+                    <td>c72096c7</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T21:22:26</td>
+                    <td>Merge pull request #29 from vinamra57/adgarg-docTLC
+
+Updated documentation to be more clear and clean for users and dev using GitStory</td>
+                    <td>docs</td>
+                    <td>8</td>
+                    <td>236</td>
+                </tr>
+            
+                <tr>
+                    <td>629c28dc</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:53:11</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>381e409a</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:43:04</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>36</td>
+                </tr>
+            
+                <tr>
+                    <td>b040014c</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-15T15:59:07</td>
+                    <td>Organized structure of dev documents readme</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td>4f3624bc</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T19:00:05</td>
+                    <td>Same update on dev folder readme as well</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td>dc537194</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:22:21</td>
+                    <td>Update README.md to include setup API.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>1e453141</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-04T23:29:35</td>
+                    <td>Merge pull request #20 from vinamra57/dchiem-dev-doc
+
+readme additions and typo fix</td>
+                    <td>docs</td>
+                    <td>2</td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td>d7caefe2</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-04T23:28:52</td>
+                    <td>readme additions and typo fix</td>
+                    <td>docs</td>
+                    <td>2</td>
+                    <td>14</td>
+                </tr>
+            
+                <tr>
+                    <td>b66cad28</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-03T21:20:23</td>
+                    <td>Merge pull request #16 from vinamra57/dchiem-dev-doc
+
+Documentation correction</td>
+                    <td>docs</td>
+                    <td>5</td>
+                    <td>26</td>
+                </tr>
+            
+                <tr>
+                    <td>568709f3</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-03T17:54:52</td>
+                    <td>Documentation fixes (and pyproject build tool addition)</td>
+                    <td>docs</td>
+                    <td>5</td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td>59738d0f</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-01T17:27:25</td>
+                    <td>Update test_main.py (with new tests + comments)</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td>b5767fbf</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-28T19:44:41</td>
+                    <td>Merge pull request #9 from vinamra57/dchiem-dev-doc
+
+Developer Documentation Additions</td>
+                    <td>docs</td>
+                    <td>4</td>
+                    <td>121</td>
+                </tr>
+            
+                <tr>
+                    <td>9d00c9be</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-24T15:00:29</td>
+                    <td>slight comment change</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td>7bb7d8cd</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T19:01:12</td>
+                    <td>It's just one documentation line
+
+This is not that serious</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td>41635557</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-23T14:42:58</td>
+                    <td>FInalization of documentation</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>25</td>
+                </tr>
+            
+                <tr>
+                    <td>4d4dfd7a</td>
+                    <td>ShengYao Liu</td>
+                    <td>2025-10-11T10:14:52</td>
+                    <td>Update README.md
+
+upldated role</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>745b2ead</td>
+                    <td>ShengYao Liu</td>
+                    <td>2025-10-10T14:29:50</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>344fbb68</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-10-06T20:31:04</td>
+                    <td>Update README.md</td>
+                    <td>docs</td>
+                    <td>1</td>
+                    <td>75</td>
+                </tr>
+            
+                <tr>
+                    <td>eea2e6b3</td>
+                    <td>vinamra57</td>
+                    <td>2025-10-06T20:19:43</td>
+                    <td>README</td>
+                    <td>docs</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>bb773e73</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-13T20:28:26</td>
+                    <td>baseline formatting made</td>
+                    <td>style</td>
+                    <td>1</td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td>1ff18920</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-13T09:26:59</td>
+                    <td>Merge pull request #24 from vinamra57/vinamra/add-testing-suite
+
+Add comprehensive testing suite</td>
+                    <td>test</td>
+                    <td>23</td>
+                    <td>4969</td>
+                </tr>
+            
+                <tr>
+                    <td>c27508ee</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-22T00:45:55</td>
+                    <td>Tidying and adding macos testing</td>
+                    <td>test</td>
+                    <td>1</td>
+                    <td>22</td>
+                </tr>
+            
+                <tr>
+                    <td>e2b42f3c</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:52:07</td>
+                    <td>Update package-guide.md</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>20</td>
+                </tr>
+            
+                <tr>
+                    <td>9e6fc4d8</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:48:55</td>
+                    <td>Update build-guide.md</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>c5534ce7</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:34:37</td>
+                    <td>Updating build info for GitStory</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>eb72c777</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:43:10</td>
+                    <td>build system implementation</td>
+                    <td>chore</td>
+                    <td>3</td>
+                    <td>6</td>
+                </tr>
+            
+                <tr>
+                    <td>6b94ac72</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-10-28T20:00:01</td>
+                    <td>Merge pull request #12 from vinamra57/dchiem-dev-doc
+
+Essential package guide</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>b26cfa87</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:56:59</td>
+                    <td>Essential package guiode</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>95f74fb9</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:06:56</td>
+                    <td>build system to be done soon!</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>89a666dd</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-10-28T19:06:17</td>
+                    <td>build guide</td>
+                    <td>chore</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>92e6f94a</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-18T00:31:59</td>
+                    <td>Merge pull request #30 from vinamra57/dchiem-status-report-11-17-2025
+
+status report</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>118</td>
+                </tr>
+            
+                <tr>
+                    <td>d2a377b5</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-17T21:40:32</td>
+                    <td>yipee</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>118</td>
+                </tr>
+            
+                <tr>
+                    <td>7a1ad557</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:59:49</td>
+                    <td>Update set-up-API.md to match the one in dev folder</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>17</td>
+                </tr>
+            
+                <tr>
+                    <td>f209e027</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:59:06</td>
+                    <td>Update setup-guide.md to include API key</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>f35f7181</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:54:52</td>
+                    <td>Update run-commands-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>24</td>
+                </tr>
+            
+                <tr>
+                    <td>cd905747</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:53:42</td>
+                    <td>Update set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>28</td>
+                </tr>
+            
+                <tr>
+                    <td>259729cf</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-17T20:52:41</td>
+                    <td>Update setup-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>92</td>
+                </tr>
+            
+                <tr>
+                    <td>1370841e</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-17T20:46:33</td>
+                    <td>Merge pull request #27 from vinamra57/vinamra/improve-llm-responses
+
+Rewrite LLM prompts for fact-dense, actionable analysis</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>286</td>
+                </tr>
+            
+                <tr>
+                    <td>7b4b8c7b</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-16T16:33:27</td>
+                    <td>improve quality of llm responses</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>286</td>
+                </tr>
+            
+                <tr>
+                    <td>bc0eba40</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-16T12:28:21</td>
+                    <td>Merge pull request #25 from vinamra57/vinamra/llm-error-handling
+
+Add error handling for empty and incomplete LLM responses</td>
+                    <td>other</td>
+                    <td>9</td>
+                    <td>692</td>
+                </tr>
+            
+                <tr>
+                    <td>03458ab2</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-15T16:10:16</td>
+                    <td>Update test-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>5</td>
+                </tr>
+            
+                <tr>
+                    <td>e810e31b</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-15T16:07:50</td>
+                    <td>Update set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>23</td>
+                </tr>
+            
+                <tr>
+                    <td>ad1bd9a9</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-15T16:00:21</td>
+                    <td>Update directory-structure.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>d81caccc</td>
+                    <td>vinamra57</td>
+                    <td>2025-11-12T23:11:24</td>
+                    <td>fix file structure to be consistent</td>
+                    <td>other</td>
+                    <td>7</td>
+                    <td>2604</td>
+                </tr>
+            
+                <tr>
+                    <td>b4e3cc32</td>
+                    <td>Vinamra Agarwal</td>
+                    <td>2025-11-10T22:46:21</td>
+                    <td>Update weekly report with progress and goals</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td>4bd2fcd5</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-10T22:25:24</td>
+                    <td>Vishal - progress and issues in weekly report
+
+Updated progress and issues section with new tasks and removed outdated content.</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>9</td>
+                </tr>
+            
+                <tr>
+                    <td>0599f0ba</td>
+                    <td>Derick Chiem</td>
+                    <td>2025-11-10T22:13:45</td>
+                    <td>Merge pull request #23 from vinamra57/dchiem-status-reports
+
+status report 11/10/2025</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>98</td>
+                </tr>
+            
+                <tr>
+                    <td>818bf29f</td>
+                    <td>TheHorseProgrammer</td>
+                    <td>2025-11-10T22:13:02</td>
+                    <td>status report 11/10/2025</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>98</td>
+                </tr>
+            
+                <tr>
+                    <td>3d8aef2a</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T20:45:16</td>
+                    <td>Merge pull request #22 from vinamra57/adgarg-updateCode
+
+Summary of Changes:
+-Added a .env file that users can use and put their API key into
+-Added a set-up-API.md that documents how to create your o...</td>
+                    <td>other</td>
+                    <td>15</td>
+                    <td>177</td>
+                </tr>
+            
+                <tr>
+                    <td>146304e6</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:59:21</td>
+                    <td>Small text edit to run.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>4</td>
+                </tr>
+            
+                <tr>
+                    <td>29e9687a</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:58:21</td>
+                    <td>Small typo</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>019b2c6e</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:57:40</td>
+                    <td>Update run-commands-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>16</td>
+                </tr>
+            
+                <tr>
+                    <td>cfce502c</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:56:15</td>
+                    <td>Create run-commands-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>a0c0f1ef</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:55:52</td>
+                    <td>Update user-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>8ff8f464</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:55:23</td>
+                    <td>Update user-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>caceb3ff</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:54:54</td>
+                    <td>Update user-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>4c495661</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:52:20</td>
+                    <td>Update set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>12</td>
+                </tr>
+            
+                <tr>
+                    <td>3852f41f</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:38:55</td>
+                    <td>Rename run-GitStory-guide.md to run-commands-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>c7e5469e</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:38:27</td>
+                    <td>Create run-GitStory-guide.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>542118ea</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:36:33</td>
+                    <td>Update directory-structure.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>19276131</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:29:52</td>
+                    <td>Update test_main.py to match changes made in main.py</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>29d69d59</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:24:19</td>
+                    <td>Delete docs/set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td>fdc93b32</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:24:04</td>
+                    <td>Create set-up-API.md in /user folder</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td>5fc9384b</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:23:22</td>
+                    <td>Update set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>29</td>
+                </tr>
+            
+                <tr>
+                    <td>6103579c</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:23:08</td>
+                    <td>Create set-up-API.md</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>51a6ef91</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:20:03</td>
+                    <td>Update tox.toml</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td>74b16414</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:18:56</td>
+                    <td>Update pyproject.toml</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>2744cc45</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:18:39</td>
+                    <td>Update __main__.py to use .env variables</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td>36b5db24</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T18:07:57</td>
+                    <td>Create set-up-API.md for API key</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>30</td>
+                </tr>
+            
+                <tr>
+                    <td>4d016a4a</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T17:45:31</td>
+                    <td>Update pyproject.toml</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            
+                <tr>
+                    <td>59319595</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T17:45:13</td>
+                    <td>Update uv.lock</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>11</td>
+                </tr>
+            
+                <tr>
+                    <td>fe081ba0</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T17:42:15</td>
+                    <td>Create .env for Gemini API key</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>1a18ee7c</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-08T17:36:58</td>
+                    <td>Update __main__.py to include some nice print statements in CLI & work with repo_path when passed in dashboard</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>13</td>
+                </tr>
+            
+                <tr>
+                    <td>0d5ed378</td>
+                    <td>Adwita Garg</td>
+                    <td>2025-11-05T12:32:34</td>
+                    <td>TESTING BRANCH: merging Repo Parser, LLM, & Dashboard components
+
+-Integrated the RepoParser, LLM, and Visualization Dashboard components, making sure it works with the architecture
+-Tested with the d...</td>
+                    <td>other</td>
+                    <td>33</td>
+                    <td>2238</td>
+                </tr>
+            
+                <tr>
+                    <td>21a7affe</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:21:58</td>
+                    <td>gitignore changes</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>d125e41c</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:21:12</td>
+                    <td>purging the outside</td>
+                    <td>other</td>
+                    <td>3</td>
+                    <td>127</td>
+                </tr>
+            
+                <tr>
+                    <td>0c8f2356</td>
+                    <td>dchiem</td>
+                    <td>2025-11-05T08:17:28</td>
+                    <td>git ignore changes + actually reading the enviroment</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+            
+                <tr>
+                    <td>22a79011</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-05T01:56:27</td>
+                    <td>API key fix</td>
+                    <td>other</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            
+                <tr>
+                    <td>428053da</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-05T01:54:55</td>
+                    <td>repo parser fix</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>835</td>
+                </tr>
+            
+                <tr>
+                    <td>9155a44e</td>
+                    <td>vishksatham</td>
+                    <td>2025-11-04T23:46:05</td>
+                    <td>repo parser troubleshooting</td>
+                    <td>other</td>
+                    <td>2</td>
+                    <td>42</td>
+                </tr>
+            
+            </tbody>
+        </table>
+    </section>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
