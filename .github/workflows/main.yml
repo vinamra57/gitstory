@@ -19,6 +19,7 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
+          - windows-latest
     steps:
     # Checkouts the git repo, which I somehow didn't do for the last 20000000 pushes before I realized what was going on
     - uses: actions/checkout@v5

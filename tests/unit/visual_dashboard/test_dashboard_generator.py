@@ -12,6 +12,7 @@ Test Count: 20+ tests
 Coverage Target: 95%+ for this module
 """
 
+import os
 import pytest
 from unittest.mock import Mock, patch, mock_open
 from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
@@ -74,7 +75,7 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
 
         # Assert
-        mock_makedirs.assert_called_once_with("/test/repo/output", exist_ok=True)
+        mock_makedirs.assert_called_once_with(os.path.join("/test", "repo", "output"), exist_ok=True)
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
@@ -171,12 +172,14 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_writes_file(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -194,7 +197,7 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
 
         # Assert
-        mock_file.assert_called_once_with("/test/repo/output/dashboard.html", "w")
+        mock_file.assert_called_once_with(os.path.join("/test", "repo", "output", "dashboard.html"), "w")
         mock_file().write.assert_called_once_with("<html>Dashboard Content</html>")
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
@@ -225,17 +228,19 @@ class TestDashboardGenerationSuccess:
         # Assert
         mock_print.assert_called_once()
         assert "Dashboard generated" in str(mock_print.call_args)
-        assert "/test/repo/output/dashboard.html" in str(mock_print.call_args)
+        assert os.path.join("/test", "repo", "output", "dashboard.html") in str(mock_print.call_args)
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_custom_output_filename(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -259,7 +264,7 @@ class TestDashboardGenerationSuccess:
 
         # Assert
         mock_file.assert_called_once_with(
-            "/test/repo/output/custom_dashboard.html", "w"
+            os.path.join("/test", "repo", "output", "custom_dashboard.html"), "w"
         )
 
 
@@ -451,7 +456,7 @@ class TestFileSystemOperations:
         generate_dashboard(repo_data, ai_summary, "/test/repo")
 
         # Assert
-        mock_makedirs.assert_called_once_with("/test/repo/output", exist_ok=True)
+        mock_makedirs.assert_called_once_with(os.path.join("/test", "repo", "output"), exist_ok=True)
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
@@ -476,7 +481,7 @@ class TestFileSystemOperations:
 
         # Assert
         # Verify file opened with 'w' mode
-        mock_file.assert_called_with("/test/repo/output/dashboard.html", "w")
+        mock_file.assert_called_with(os.path.join("/test", "repo", "output", "dashboard.html"), "w")
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
