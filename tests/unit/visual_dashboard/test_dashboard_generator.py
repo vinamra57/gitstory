@@ -172,7 +172,7 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
-    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_writes_file(
@@ -233,7 +233,7 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
-    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_custom_output_filename(
