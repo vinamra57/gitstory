@@ -28,6 +28,12 @@ For Windows:
 ```
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
+If it doesn't work right after, then try running these lines:
+```
+$env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
+
+[System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
+```
 
 Next, install Python locally to the directory (either command will work) + set up the virtual enviornment:
 ```
