@@ -49,4 +49,5 @@ jobs:
       # Step 4: Publish to PyPI
       # This uses the uv build system to upload the package as well :)
       - name: Publish package to PyPI
-        uses: uv publish dist/*.tar.gz
+        run: |
+          uv publish dist/*.tar.gz
