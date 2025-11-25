@@ -58,6 +58,12 @@ source ~/.zshrc
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
+If it doesn't work right after, then try running these lines:
+```
+$env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
+
+[System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
+```
 
 Then, install Python and create a virtual environment:
 ```bash
@@ -72,7 +78,7 @@ This will install all necessary dependencies for development and testing.
 
 ## 3. Running GitStory commands
 
-When development is complete, GitStory will run as a command-line tool from the terminal. Users will navigate to a Git repository and use the following commands to generate summaries or reports. Here are the GitStory commands users can run currently:
+When development is complete, GitStory will run as a command-line tool from the terminal. Users will navigate to a Git repository and use the following commands to generate summaries or reports. Until then, here are the commands to use to run GitStory:
 
 ### 3.1 `uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`
 Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
@@ -85,7 +91,10 @@ Creates a static HTML dashboard report containing:
 
 This report will be saved locally for offline viewing or sharing.
 
-### SINCE & COMPARE COMMANDS WILL BE POSTED SOON (updated November 24)
+### 3.3 `uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>`
+Compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
+
+### SINCE COMMANDS WILL BE POSTED SOON (updated November 24)
 
 ---
 
