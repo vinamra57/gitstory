@@ -58,6 +58,13 @@ source ~/.zshrc
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
+If it doesn't work right after, then try running these lines:
+```
+$env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
+
+[System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
+```
+
 Then, install Python and create a virtual environment:
 ```bash
 uv python install 3.13
