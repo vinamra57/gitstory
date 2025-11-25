@@ -1,16 +1,14 @@
 name: gitstory
 
 on:
-  release:
-    types: [created]
+  - push
+  # release:
+  #   types: [created]
 
 jobs:
-  pypi-publish:
+  github-publish:
     name: gitstory
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/gitstory
     permissions:
       id-token: write
     steps:
@@ -45,8 +43,14 @@ jobs:
       - name: Build package
         run: |
           uv build
-
-      # Step 4: Publish to PyPI
-      # This uses the pypa action to upload the files generated in the 'dist' directory.
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: I'm lazy run the list for me plz
+        run: |
+          ls
+      # - name: Create Release
+      #   id: create_release
+      #   uses: softprops/action-gh-release@v2
+      #   if: github.ref_type == 'tag'
+      #   with:
+      #     files: |
+      #       Release.txt
+      #       LICENSE
