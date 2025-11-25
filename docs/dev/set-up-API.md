@@ -30,14 +30,15 @@ Once you are done, you will (or might) now see a warning to "Configure your OAut
 IMPORTANT: MAKE SURE TO SET YOUR AUDIENCE AS EXTERNAL (when setting your consent screen).
 
 ## Step 7: Add API Key to GitStory
-Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's key command, which loads your generated API key into the GitStory project:
-
-```
-gitstory key <INSERT_KEY>
-```
-
+Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's `key` command, which loads your generated API key into the GitStory project.
+\
+\
 **IMPORTANT: YOU MUST RUN THIS COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
+
+```
+uv run python3.13 src/gitstory/__main__.py key "<YOUR_API_KEY>"
+```
 
 # ALL DONE!
 You can access the API key anytime again by logging back into Google Cloud Console! Please contact the GitStory team for any further clarifications or troubleshooting regarding
-obtaining the Gemini API key.
+obtaining the Gemini API key (or errors occurring when adding your key into GitStory).
