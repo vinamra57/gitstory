@@ -10,7 +10,7 @@ Use the `git clone` command to clone the repository using the link provided at t
 ```
 git clone https://github.com/vinamra57/gitstory.git
 ```
-Once cloned, use the [set-up-API.md](set-up-API.md) to grab the Gemini API key that is needed to run + work with GitStory. 
+Once cloned, use the [set-up-API.md](set-up-API.md) to grab the Gemini API key that is needed to run + work with GitStory. **You will need to come back and complete the steps listed here (such as getting Python or UV), but once you have done that, make sure to run the `key` command first in the CLI** (listed in the [run-commands-guide.md](run-commands-guide.md)) to load your Gemini API key into GitStory. 
 
 ## Step 1: Downloading Python 3.13 (or newer)
 The minimum version GitStory requires is Python 3.13. Grab it [here](https://www.python.org/downloads/). If you have a newer version of Python, that will also work (i.e. you don't need to download the specific 3.13 version).
