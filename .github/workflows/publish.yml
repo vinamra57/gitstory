@@ -20,11 +20,20 @@ jobs:
         with:
           python-version: "3.x"
       
-      # Step 1: Install the UV Tool
-      # This action installs the uv binary, which is needed for the uv_build backend.
-      - name: Install UV Tool
-        uses:  astral-sh/actions-setup-uv@v1  
-
+      # Step 1: Install the UV Tool (Manual Installation for maximum reliability)
+      - name: Install UV Tool Binary
+        run: |
+          # Download the latest uv binary for Linux (ubuntu-latest)
+          # We use the recommended direct source to guarantee the location works.
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          
+          # Add the installation directory (~/.cargo/bin) to the runner's PATH 
+          # so subsequent steps can find the 'uv' executable.
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          
+          # Verify installation
+          uv --version
+          
       # Step 2: Install Project Dependencies
       # This uses uv to synchronize the virtual environment based on pyproject.toml.
       - name: Install dependencies
@@ -32,8 +41,7 @@ jobs:
           uv sync 
 
       # Step 3: Build package distributions
-      # uv build uses the uv_build backend and correctly bundles all files 
-      # (including default.env specified in package-data).
+      # uv build uses the uv_build backend and correctly bundles all files.
       - name: Build package
         run: |
           uv build
