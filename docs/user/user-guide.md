@@ -110,7 +110,7 @@ uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
 Compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
 
 ```
-uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>
+uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>
 ```
 
 ### SINCE COMMANDS WILL BE POSTED SOON (updated November 24)
