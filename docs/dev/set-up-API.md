@@ -36,7 +36,7 @@ Copy the generated API key from Google Cloud Console, and paste it in while runn
 **IMPORTANT: YOU MUST RUN THIS COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
 
 ```
-uv run python3.13 src/gitstory/__main__.py key "<YOUR_API_KEY>"
+uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
 ```
 
 # ALL DONE!
