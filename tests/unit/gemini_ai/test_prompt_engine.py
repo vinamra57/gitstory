@@ -121,40 +121,23 @@ def test_format_data_with_empty_commits(prompt_engine):
 
 def test_build_comparison_prompt(prompt_engine, sample_parsed_data):
     """Test branch comparison prompt building."""
-    branch1_data = sample_parsed_data
-    branch2_data = {
-        "commits": [
-            {
-                "hash": "xyz789",
-                "author": "Charlie",
-                "timestamp": "2024-01-03T09:00:00",
-                "message": "Add new feature",
-                "type": "feature",
-                "files_changed": 8,
-                "changes": 200,
-            }
-        ],
-        "summary_text": "## FEATURE COMMITS\n- [xyz789] Charlie: Add new feature",
-        "stats": {
-            "total_commits": 1,
-            "by_type": {"feature": 1},
-            "by_author": {"Charlie": {"count": 1, "types": {"feature": 1}}},
-        },
-        "metadata": {},
+    comparison_data = {
+        "base_branch": "main",
+        "compare_branch": "feature",
+        "merge_base": {"hash": "abc123", "timestamp": "2024-01-01T10:00:00"},
+        "summary_text": "# BRANCH COMPARISON: main vs feature\n\nBranches diverged at abc123",
     }
 
-    prompt = prompt_engine.build_comparison_prompt(branch1_data, branch2_data)
+    prompt = prompt_engine.build_comparison_prompt(comparison_data)
 
     # Check comparison instructions
-    assert "Compare these two branches" in prompt
-    assert "Unique commits" in prompt
-    assert "merge strategy" in prompt
+    assert "technical code analyst" in prompt.lower()
+    assert "differences" in prompt.lower()
+    assert "merge" in prompt.lower()
 
-    # Check both branches' data is included
-    assert "BRANCH 1 DATA" in prompt
-    assert "BRANCH 2 DATA" in prompt
-    assert "Alice" in prompt
-    assert "Charlie" in prompt
+    # Check data is included
+    assert "BRANCH COMPARISON" in prompt
+    assert "main vs feature" in prompt
 
 
 def test_cli_system_prompt_content(prompt_engine):
