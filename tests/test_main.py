@@ -1,7 +1,6 @@
 from click.testing import CliRunner
 from gitstory.__main__ import cli
 
-
 class TestMain:
     def test_main(self):
         runner = CliRunner()
@@ -10,7 +9,6 @@ class TestMain:
 
     def test_main_run(self, monkeypatch):
         runner = CliRunner()
-        monkeypatch.setenv("GITSTORY_API_KEY", "test-key")
         result = runner.invoke(cli, ["run", "./", "--branch", "main"])
         assert result.exit_code in (0, 1, 2)
         assert (
@@ -20,7 +18,6 @@ class TestMain:
 
     def test_main_dashboard(self, monkeypatch):
         runner = CliRunner()
-        monkeypatch.setenv("GITSTORY_API_KEY", "test-key")
         result = runner.invoke(cli, ["dashboard"])
         assert result.exit_code in (0, 1, 2)
         output_lower = result.output.lower()
@@ -37,3 +34,11 @@ class TestMain:
         result = runner.invoke(cli, ["compare"])
         assert result.exit_code == 0
         assert "COMPARE TO BE COMPLETED" in result.output
+
+
+'''
+NOTE:
+test_main_key doesn't exist because I (Derick) am currently
+unaware of a way to run such a test without destroying
+the key currently at the file location
+'''
