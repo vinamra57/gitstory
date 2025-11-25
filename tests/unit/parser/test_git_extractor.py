@@ -155,8 +155,27 @@ class TestParseTimeMethodMCDC:
         assert result == expected
 
     @patch("gitstory.parser.git_extractor.Repo")
+    def test_parse_time_invalid_iso_valid_relative_years(self, mock_repo_class):
+        """MC/DC Test 5: Invalid ISO, valid relative '2y' → success (relative path, years)."""
+        # Arrange
+        mock_repo = Mock()
+        mock_repo_class.return_value = mock_repo
+        extractor = GitExtractor("/fake/path")
+
+        # Act
+        with patch("gitstory.parser.git_extractor.datetime") as mock_datetime:
+            mock_datetime.fromisoformat.side_effect = ValueError("Invalid ISO")
+            mock_now = datetime(2025, 1, 10, 10, 0, 0)
+            mock_datetime.now.return_value = mock_now
+            result = extractor._parse_time("2y")
+
+        # Assert
+        expected = mock_now - timedelta(days=730)  # 2 * 365
+        assert result == expected
+
+    @patch("gitstory.parser.git_extractor.Repo")
     def test_parse_time_invalid_iso_invalid_relative(self, mock_repo_class):
-        """MC/DC Test 5: Invalid ISO, invalid relative → ValueError."""
+        """MC/DC Test 6: Invalid ISO, invalid relative → ValueError."""
         # Arrange
         mock_repo = Mock()
         mock_repo_class.return_value = mock_repo
@@ -170,7 +189,7 @@ class TestParseTimeMethodMCDC:
 
     @patch("gitstory.parser.git_extractor.Repo")
     def test_parse_time_invalid_unit(self, mock_repo_class):
-        """MC/DC Test 6: Invalid ISO, invalid unit '1x' → ValueError."""
+        """MC/DC Test 7: Invalid ISO, invalid unit '1x' → ValueError."""
         # Arrange
         mock_repo = Mock()
         mock_repo_class.return_value = mock_repo
