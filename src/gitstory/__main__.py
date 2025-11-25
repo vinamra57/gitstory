@@ -190,9 +190,83 @@ def since():
     click.echo("SINCE TO BE COMPLETED")
 
 
-@cli.command("compare", short_help="Compares two branches repos & generates summary")
-def compare():
-    click.echo("COMPARE TO BE COMPLETED")
+@cli.command("compare", short_help="Compare two branches and generate summary")
+@click.argument("repo_path", type=click.Path(exists=True))
+@click.argument("base_branch")
+@click.argument("compare_branch")
+@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
+@click.option("--until", default=None, help="End time (ISO or relative)")
+@click.option(
+    "--context", default=5, type=int, help="Number of context commits from merge base"
+)
+def compare(repo_path, base_branch, compare_branch, since, until, context):
+    """Compare two branches and generate AI-powered comparison summary."""
+    try:
+        # Step 1: Load API key
+        try:
+            api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
+        except Exception as ex:
+            click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo(
+                'Please set your API key: gitstory key --key="your_key"', err=True
+            )
+            sys.exit(1)
+        click.echo("🔑 API key configured & loaded...")
+
+        # Step 2: Compare branches
+        click.echo("🔍 Comparing branches...")
+        parser = RepoParser(repo_path)
+        comparison_data = parser.compare(
+            base_branch=base_branch,
+            compare_branch=compare_branch,
+            since=since,
+            until=until,
+            context_commits=context,
+        )
+
+        click.echo(
+            f"   Base: {comparison_data['base_branch']} ({comparison_data['divergence_metrics']['base_commit_count']} commits)"
+        )
+        click.echo(
+            f"   Compare: {comparison_data['compare_branch']} ({comparison_data['divergence_metrics']['compare_commit_count']} commits)"
+        )
+        click.echo(
+            f"   Diverged: {comparison_data['divergence_metrics']['time_since_divergence']}"
+        )
+
+        # Step 3: Generate AI comparison summary
+        click.echo("🤖 Generating AI comparison summary...")
+        from gemini_ai import AISummarizer
+
+        summarizer = AISummarizer(api_key=api_key)
+        result = summarizer.summarize_comparison(comparison_data)
+
+        # Step 4: Handle errors
+        if result.get("error"):
+            click.echo("❌ Error generating comparison summary", err=True)
+            click.echo(f"   Details: {result['error']}", err=True)
+            sys.exit(1)
+
+        # Step 5: Display results
+        click.echo("✅ Comparison summary complete!")
+        click.echo("\n" + "=" * 60)
+        click.echo(result["summary"])
+        click.echo("=" * 60 + "\n")
+
+        return "Comparison complete!"
+
+    except ValueError as e:
+        click.echo("❌ Error comparing branches", err=True)
+        click.echo(f"Error: {e}", err=True)
+        if "not found" in str(e).lower():
+            click.echo(
+                "💡 Tip: Run 'git branch -a' to see available branches", err=True
+            )
+        sys.exit(1)
+    except Exception as e:
+        click.echo("❌ Error comparing branches", err=True)
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
 
 
 @cli.command(
