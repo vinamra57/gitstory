@@ -32,7 +32,7 @@ Once you are done, you will (or might) now see a warning to "Configure your OAut
 **IMPORTANT: MAKE SURE TO SET YOUR AUDIENCE AS EXTERNAL (when setting your consent screen).**
 
 ## Step 7: Add API Key to GitStory
-Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's `key` command, which loads your generated API key into the GitStory project.
+Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's `key` command, which loads your generated API key into the GitStory project. You may not be able to run this until you head back [here](setup-guide.md) and complete uv installation + other requirements, but once you have completed all those steps, you should load your key in using the following command:
 \
 \
 **IMPORTANT: YOU MUST RUN THIS COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
