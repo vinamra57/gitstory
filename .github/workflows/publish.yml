@@ -1,14 +1,16 @@
 name: gitstory
 
 on:
-  - push
-  # release:
-  #   types: [created]
+  release:
+    types: [created]
 
 jobs:
-  github-publish:
+  pypi-publish:
     name: gitstory
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/gitstory
     permissions:
       id-token: write
     steps:
@@ -42,15 +44,9 @@ jobs:
       # uv build uses the uv_build backend and correctly bundles all files.
       - name: Build package
         run: |
-          uv build
-      - name: I'm lazy run the list for me plz
-        run: |
-          ls
-      # - name: Create Release
-      #   id: create_release
-      #   uses: softprops/action-gh-release@v2
-      #   if: github.ref_type == 'tag'
-      #   with:
-      #     files: |
-      #       Release.txt
-      #       LICENSE
+          uv build --no-sources --sdist
+
+      # Step 4: Publish to PyPI
+      # This uses the uv build system to upload the package as well :)
+      - name: Publish package
+        uses: uv publish dist/*.tar.gz
