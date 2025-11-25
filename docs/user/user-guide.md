@@ -80,8 +80,19 @@ This will install all necessary dependencies for development and testing.
 
 When development is complete, GitStory will run as a command-line tool from the terminal. Users will navigate to a Git repository and use the following commands to generate summaries or reports. Until then, here are the commands to use to run GitStory:
 
+### 3.0  `uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"`
+Takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
+
+```
+uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
+```
+
 ### 3.1 `uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`
 Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
+
+```
+uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"
+```
 
 ### 3.2 `uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"`
 Creates a static HTML dashboard report containing:
@@ -91,8 +102,16 @@ Creates a static HTML dashboard report containing:
 
 This report will be saved locally for offline viewing or sharing.
 
-### 3.3 `uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>`
+```
+uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
+```
+
+### 3.3 `uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>`
 Compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
+
+```
+uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>
+```
 
 ### SINCE COMMANDS WILL BE POSTED SOON (updated November 24)
 
