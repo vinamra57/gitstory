@@ -5,3 +5,4 @@ src/gitstory.egg-info/*
 src/gitstory/visual_dashboard/output/dashboard.html
 gitkey.txt
 src/gitstory/data
+key.txt
