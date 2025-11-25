@@ -1,11 +1,13 @@
 import os
 import markdown
+import shutil
 
 # Jinja allows dyanmic variable reassignment for static HTML files
 from jinja2 import Environment, FileSystemLoader
 
 # These take the current path to this folder, and appends "templates"
-TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
+CURR_DIR = os.path.dirname(__file__)
+TEMPLATE_DIR = os.path.join(CURR_DIR, "templates")
 
 # This creates a Jinja2 object which stores & manages templates
 # We tell it to look for templates inside the folder specific in the TEMPLATE_DIR path
@@ -34,6 +36,10 @@ def generate_dashboard(repo_data: dict, ai_summary: dict, repo_path: str, output
         },
     )
 
+    css_source = os.path.join(CURR_DIR, "static", "styles.css")  # adjust if needed
+    css_dest = os.path.join(OUTPUT_DIR, "styles.css")
+    shutil.copyfile(css_source, css_dest)
+
     # We append the output file to the OUTPUT_DIR path
     output_path = os.path.join(OUTPUT_DIR, output_file)
 
@@ -47,4 +53,3 @@ def generate_dashboard(repo_data: dict, ai_summary: dict, repo_path: str, output
     # Didn't return output_path, since it would be hard to write tests for this
     # Might change this later, @Ian
     # return output_path
-
