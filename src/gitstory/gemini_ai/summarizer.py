@@ -100,6 +100,91 @@ class AISummarizer:
 
         return {"summary": None, "metadata": {}, "error": final_error}
 
+    def summarize_comparison(
+        self,
+        comparison_data: Dict[str, Any],
+        *,
+        temperature: float = 0.7,
+    ) -> Dict[str, Any]:
+        """
+        Generate AI summary comparing two branches.
+
+        Reuses existing retry logic and error handling from summarize().
+        """
+        prompt = self.prompt_engine.build_comparison_prompt(comparison_data)
+
+        # Use same retry loop as summarize()
+        for attempt in range(1, self.MAX_RETRY_ATTEMPTS + 1):
+            raw_response = None
+            summary_text = None
+            tokens_used = 0
+            error_msg = None
+            api_error = None
+
+            try:
+                # Step 1: Call LLM API
+                raw_response = self.client.generate(prompt, temperature=temperature)
+
+                # Step 2: Process and validate response
+                summary_text = self.response_handler.process(
+                    raw_response, output_format="cli"
+                )
+                tokens_used = self.response_handler.get_token_usage(raw_response)
+
+                # Success! Return the result
+                return {
+                    "summary": summary_text,
+                    "metadata": {
+                        "base_branch": comparison_data["base_branch"],
+                        "compare_branch": comparison_data["compare_branch"],
+                        "merge_base": comparison_data["merge_base"]["hash"],
+                        "divergence_time": comparison_data["divergence_metrics"][
+                            "time_since_divergence"
+                        ],
+                        "model": self.client.model,
+                        "tokens_used": tokens_used,
+                    },
+                    "error": None,
+                }
+
+            except SummarizationError as error:
+                # API-level errors (already retried in llm_client)
+                api_error = str(error)
+                break
+
+            except ValueError as error:
+                # Content validation errors
+                error_msg = str(error)
+                error_lower = error_msg.lower()
+
+                # Check if retryable
+                is_retryable = (
+                    "incomplete" in error_lower
+                    or "empty" in error_lower
+                    or "end marker" in error_lower
+                    or "short content" in error_lower
+                )
+
+                if is_retryable and attempt < self.MAX_RETRY_ATTEMPTS:
+                    time.sleep(self.RETRY_DELAY_SECONDS)
+                    continue
+                else:
+                    break
+
+            except Exception as error:
+                # Unexpected errors
+                error_msg = self.response_handler.extract_error_message(
+                    raw_response or {}
+                ) or str(error)
+                break
+
+        # All retries failed
+        final_error = (
+            api_error or error_msg or "Unknown error during comparison summarization"
+        )
+
+        return {"summary": None, "metadata": None, "error": final_error}
+
     @staticmethod
     def _build_error_result(message: str) -> Dict[str, Any]:
         """Create a standardized error payload for downstream consumers."""

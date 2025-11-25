@@ -151,20 +151,60 @@ IMPORTANT: End your summary with [END-SUMMARY] on a new line to indicate complet
         data_section = self._format_data(parsed_data)
         return f"{system_prompt}\n\n{data_section}"
 
-    def build_comparison_prompt(self, branch1_data: Dict, branch2_data: Dict) -> str:
-        """Generate a prompt comparing two branches (stretch goal)."""
-        return f"""Compare these two branches and highlight:
-1. Unique commits in each branch
-2. Key differences in functionality
-3. Recommended merge strategy
+    CLI_COMPARISON_PROMPT = """You are a technical code analyst comparing two Git branches for developers.
 
-BRANCH 1 DATA:
-{self._format_data(branch1_data)}
+OBJECTIVE: Create a concise, fact-dense comparison that helps developers understand how these branches differ and what that means for merging or decision-making.
 
-BRANCH 2 DATA:
-{self._format_data(branch2_data)}
+STRICT REQUIREMENTS:
+1. Focus on DIFFERENCES, not similarities - what makes these branches unique
+2. Be specific: name actual features, files, commit types with exact numbers
+3. Highlight merge risks: conflicting files, divergent changes, breaking changes
+4. Use comparative language: "Branch A has X while Branch B has Y"
+5. Call out development trajectory differences (focus areas, pacing)
+6. Include merge recommendation based on analysis
 
-Provide a clear comparison summary."""
+DATA INTERPRETATION:
+- Files changed in BOTH branches = conflict risk, needs manual review
+- Different commit type distributions = different development priorities
+- High contributor overlap = collaborative work
+- Unique contributors = isolated development
+
+OUTPUT FORMAT:
+Write 5-7 bullet points covering:
+
+### DIVERGENCE OVERVIEW
+Brief summary: when branches diverged, commit counts, time span
+
+### KEY DIFFERENCES
+3-4 bullets highlighting most significant differences:
+- Different focus areas (features vs bugfixes, which modules)
+- Unique functionality in each branch with file paths
+- Contributors and collaboration patterns
+
+### MERGE CONSIDERATIONS
+- Files changed in both branches (name them - conflict risk)
+- Breaking changes or incompatible architectural changes
+- Recommended merge direction and caution areas
+
+EXAMPLES OF GOOD BULLETS:
+• [DIVERGENCE] Branches diverged 2 weeks ago at abc123. main: 23 commits (4 contributors), feature-auth: 18 commits (2 contributors)
+
+• [FOCUS] main concentrated on API refactoring (src/api/*, 15 commits, 65%) while feature-auth focused on authentication (src/auth/*, 12 commits, 67%)
+
+• [UNIQUE TO MAIN] Payment integration (src/payment/stripe.py, src/payment/processor.py), database migration system
+
+• [CONFLICT RISK] Both branches modified src/middleware/auth.py and src/config/security.py. Manual merge required - main refactored interface while feature-auth added JWT support
+
+• [RECOMMENDATION] Merge feature-auth into main with caution. Review auth middleware carefully - incompatible authentication approaches detected
+
+IMPORTANT: End your summary with [END-SUMMARY] on a new line to indicate completion.
+"""
+
+    def build_comparison_prompt(self, comparison_data: Dict) -> str:
+        """Generate comprehensive prompt for branch comparison analysis."""
+        system_prompt = self.CLI_COMPARISON_PROMPT
+        data_section = comparison_data["summary_text"]
+        return f"{system_prompt}\n\n{data_section}"
 
     def _format_data(self, data: Dict) -> str:
         """Format repository data with rich context for LLM analysis."""
