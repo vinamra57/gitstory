@@ -26,9 +26,17 @@ Head over to "Credentials page" - here, click "Create credentials" creating a ne
 the API key or not (restriction shouldn't matter, as long as you have access). Once you are done, hit "Create." 
 
 ## Step 6: Finish API key setup
-Copy the API key that is generated into your .env file (located in the project root). However, you will now see a warning to "Configure your OAuth Consent Screen" (as expected).
-To do this, click on "Configure consent screen" and follow the given prompts (this typically shouldn't take too long, they ask for an "App Name", a support email, etc). 
+Once you are done, you will (or might) now see a warning to "Configure your OAuth Consent Screen" (as expected). To do this, click on "Configure consent screen" and follow the given prompts (this typically shouldn't take too long, they ask for an "App Name", a support email, etc). 
 IMPORTANT: MAKE SURE TO SET YOUR AUDIENCE AS EXTERNAL (when setting your consent screen).
+
+## Step 7: Add API Key to GitStory
+Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's key command, which loads your generated API key into the GitStory project:
+
+```
+gitstory key <INSERT_KEY>
+```
+
+**IMPORTANT: YOU MUST RUN THIS COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
 
 # ALL DONE!
 You can access the API key anytime again by logging back into Google Cloud Console! Please contact the GitStory team for any further clarifications or troubleshooting regarding
