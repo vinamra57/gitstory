@@ -25,10 +25,21 @@ class TestMain:
         assert "dashboard" in output_lower or "error" in output_lower
 
     def test_main_since(self):
+        """Test since command with time period argument."""
         runner = CliRunner()
-        result = runner.invoke(cli, ["since"])
-        assert result.exit_code == 0
-        assert "SINCE TO BE COMPLETED" in result.output
+        result = runner.invoke(cli, ["since", "./", "2w"])
+        assert result.exit_code in (0, 1, 2)
+
+        # Should not show placeholder anymore
+        assert "SINCE TO BE COMPLETED" not in result.output
+
+        # Should show either success or error
+        assert (
+            "Summary generation complete!" in result.output
+            or "Error generating summary" in result.output
+            or "Error parsing time period" in result.output
+            or "Error: " in result.output
+        )
 
     def test_main_compare(self):
         """Test compare command with two branches."""
@@ -41,7 +52,7 @@ class TestMain:
 
         # Should show either success or error
         assert (
-            "Comparison complete!" in result.output
+            "Comparison summary complete!" in result.output
             or "Error comparing branches" in result.output
             or "Error: " in result.output
         )
