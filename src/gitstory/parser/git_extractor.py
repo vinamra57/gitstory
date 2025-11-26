@@ -62,7 +62,7 @@ class GitExtractor:
             return datetime.fromisoformat(time_str)
         except ValueError:
             pass
-        match = re.match(r"(\d+)([wmd])", time_str)
+        match = re.match(r"(\d+)([wmdy])", time_str)
         if match:
             value, unit = int(match.group(1)), match.group(2)
             if unit == "d":
@@ -71,6 +71,8 @@ class GitExtractor:
                 delta = timedelta(weeks=value)
             elif unit == "m":
                 delta = timedelta(days=value * 30)
+            elif unit == "y":
+                delta = timedelta(days=value * 365)
             return datetime.now() - delta
         raise ValueError(f"Invalid time format: {time_str}")
 
