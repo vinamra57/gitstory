@@ -51,7 +51,7 @@ def run(repo_path, branch, since, until):
 
         # Step 3: Summarize
         click.echo("🤖 Generating AI summary...")
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data)
@@ -129,7 +129,7 @@ def dashboard(repo_path):
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary in Visualization Dashboard...")
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize(parsed_data, output_format="dashboard")
@@ -185,9 +185,98 @@ def dashboard(repo_path):
         sys.exit(1)
 
 
-@cli.command("since", short_help="Generate a summary starting from a date MM-DD-YYYY")
-def since():
-    click.echo("SINCE TO BE COMPLETED")
+@cli.command("since", short_help="Generate summary from specified time period")
+@click.argument("repo_path", type=click.Path(exists=True))
+@click.argument("time_period")
+@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+def since(repo_path, time_period, branch):
+    """Generate repository summary starting from a relative time period.
+
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years)
+
+    Examples:
+        gitstory since ./ 2w           # Last 2 weeks on current branch
+        gitstory since ./ 3m --branch=main  # Last 3 months on main branch
+    """
+    try:
+        # Step 1: Load API key
+        try:
+            api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
+        except Exception as ex:
+            click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo("This is most likely due to your key being set wrong!", err=True)
+            click.echo("Please set your API key in one of these ways:", err=True)
+            click.echo(
+                "1. Call 'gitstory key --key=\"key\" '",
+                err=True,
+            )
+            sys.exit(1)
+        click.echo("🔑 API key configured & loaded...")
+
+        # Step 2: Parse repo with since parameter
+        click.echo(f"🔍 Analyzing repository from {time_period} ago...")
+        parser = RepoParser(repo_path)
+        parsed_data = parser.parse(since=time_period, branch=branch)
+
+        # Step 3: Summarize
+        click.echo("🤖 Generating AI summary...")
+        from gitstory.gemini_ai import AISummarizer
+
+        summarizer = AISummarizer(api_key=api_key)
+        result = summarizer.summarize(parsed_data)
+
+        # Check for errors before displaying
+        if result.get("error"):
+            error_msg = result["error"]
+            click.echo("❌ Error generating summary", err=True)
+
+            # Provide specific, actionable error messages
+            if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
+                click.echo(
+                    "💡 The AI returned an empty response after 3 attempts.", err=True
+                )
+                click.echo(
+                    "   This might be temporary. Please try again in a few moments.",
+                    err=True,
+                )
+            elif "incomplete" in error_msg.lower() or "end marker" in error_msg.lower():
+                click.echo(
+                    "💡 The AI response was incomplete after 3 attempts.", err=True
+                )
+                click.echo("   This might be due to:", err=True)
+                click.echo("   - Network interruption", err=True)
+                click.echo("   - API timeout", err=True)
+                click.echo("   Please try again.", err=True)
+            elif "rate limit" in error_msg.lower():
+                click.echo(
+                    "💡 API rate limit exceeded. Please wait a few minutes and try again.",
+                    err=True,
+                )
+            else:
+                click.echo(f"   Details: {error_msg}", err=True)
+
+            sys.exit(1)
+
+        # Step 4: Display summary in terminal
+        click.echo("✅ Summary generation complete!")
+        click.echo("\n" + "=" * 60)
+        click.echo(result["summary"])
+        click.echo("=" * 60 + "\n")
+
+        return "Summary generation complete!"
+
+    except ValueError as e:
+        click.echo("❌ Error parsing time period", err=True)
+        click.echo(f"Error: {e}", err=True)
+        click.echo(
+            "💡 Tip: Use formats like '2w' (weeks), '7d' (days), '3m' (months), '1y' (years)",
+            err=True,
+        )
+        sys.exit(1)
+    except (Exception, SystemExit) as e:
+        click.echo("❌ Error generating summary", err=True)
+        click.echo(f"Error: {e}")
+        sys.exit(getattr(e, "code", 1))
 
 
 @cli.command("compare", short_help="Compare two branches and generate summary")
@@ -236,7 +325,7 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 
         # Step 3: Generate AI comparison summary
         click.echo("🤖 Generating AI comparison summary...")
-        from gemini_ai import AISummarizer
+        from gitstory.gemini_ai import AISummarizer
 
         summarizer = AISummarizer(api_key=api_key)
         result = summarizer.summarize_comparison(comparison_data)

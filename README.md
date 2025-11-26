@@ -37,6 +37,56 @@ Stretch Goals
 
 ---
 
+## Quick Start
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/vinamra57/gitstory.git
+cd gitstory
+
+# Install dependencies (requires Python 3.13+)
+uv pip install -e .
+```
+
+### API Key Setup
+
+GitStory uses Google's Gemini AI for generating summaries. You need a Gemini API key:
+
+1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Set it using the `key` command:
+
+```bash
+python -m gitstory key --key="your_gemini_api_key_here"
+```
+
+### Basic Usage
+
+**Generate a summary of your repository:**
+```bash
+python -m gitstory run ./ --branch=main
+```
+
+**Summarize commits from the last 2 weeks:**
+```bash
+python -m gitstory since ./ 2w
+```
+
+**Compare two branches:**
+```bash
+python -m gitstory compare ./ main feature-branch
+```
+
+**Generate a visual dashboard:**
+```bash
+python -m gitstory dashboard ./
+```
+
+For detailed command documentation, see [Run Commands Guide](docs/user/run-commands-guide.md).
+
+---
+
 ## Team
 
 | Name | Role | Email |
