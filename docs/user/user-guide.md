@@ -10,12 +10,12 @@ Instead of sifting through long commit logs or complex branches, GitStory will s
 
 The goal is to help users—especially new team members or project managers—gain an understanding of a project’s development in minutes rather than hours.
 
-### Key Intended Features
+### Key Features
 - **Repository Parsing Engine:** Extract commit messages, authors, timestamps, and branch data.  
 - **Commit Grouping:** Cluster related commits (e.g., features, bug fixes, refactors).  
 - **AI Summarization:** Use commit metadata to produce human-readable summaries.  
 - **Command-Line Interface:** Run directly from the terminal with intuitive commands.  
-- **Visualization Dashboard (planned):** Generate a static HTML dashboard showing project evolution.  
+- **Visualization Dashboard:** Generate a static HTML dashboard showing project evolution.  
 - **Time-Bound Summarization:** Filter summaries by date or development period.  
 
 GitStory runs locally to maintain privacy and never sends source code outside the user’s environment.
@@ -28,9 +28,10 @@ GitStory runs locally to maintain privacy and never sends source code outside th
 
 | Requirement | Version | Purpose |
 |--------------|----------|----------|
-| **Python** | 3.13 or newer | Core runtime environment |
-| **Git** | Latest stable | Repository access |
-| **UV** | Latest | Virtual environment and package management |
+| **Python** | 3.13 or newer | Core runtime environment, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
+| **Git** | Latest stable | Repository access, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
+| **UV** | Latest | Virtual environment and package management, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
+| **Gemini API-Key** | N/A | Used in GitStory project, head over to [set-up-API.md](set-up-API.md) to obtain API-Key
 
 ### 2.2 Clone the Repository
 
@@ -57,7 +58,6 @@ source ~/.zshrc
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
-
 If it doesn't work right after, then try running these lines:
 ```
 $env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
@@ -76,32 +76,45 @@ This will install all necessary dependencies for development and testing.
 
 ---
 
-## 3. Current CLI Commands
+## 3. Running GitStory commands
 
-GitStory runs as a command-line tool from the terminal. Navigate to a Git repository and use the following commands to generate summaries or reports.
+When development is complete, GitStory will run as a command-line tool from the terminal. Users will navigate to a Git repository and use the following commands to generate summaries or reports. Until then, here are the commands to use to run GitStory:
 
-For detailed command examples and usage, see [run-commands-guide.md](run-commands-guide.md).
+### 3.0  `uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"`
+Takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
 
-### 3.1 `gitstory run`
-Generates a concise AI-powered summary of the repository's commit history, highlighting major development events such as feature additions, bug fixes, and refactors.
-
-**Usage:**
-```bash
-python -m gitstory run <repo_path> [--branch=<branch_name>] [--since=<time>] [--until=<time>]
+```
+uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
 ```
 
-**Options:**
-- `--branch` — Specify which branch to analyze (defaults to current branch)
-- `--since` — Start time for analysis (ISO format or relative like '2w')
-- `--until` — End time for analysis (ISO format or relative)
+### 3.1 `uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`
+Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
 
-### 3.2 `gitstory since`
-Generates a summary of commits starting from a specified time period in the past. Useful for reviewing recent development activity.
-
-**Usage:**
-```bash
-python -m gitstory since <repo_path> <time_period> [--branch=<branch_name>]
 ```
+uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"
+```
+
+### 3.2 `uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"`
+Creates a static HTML dashboard report containing:
+- A timeline of key commits  
+- Contributor statistics and activity charts  
+- Summaries grouped by time period or feature area  
+
+This report will be saved locally for offline viewing or sharing.
+
+```
+uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
+```
+
+### 3.3 `uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>`
+Compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
+
+```
+uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>
+```
+
+### 3.4 `uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx>`
+Generates a concise summary of the repository’s commit history based on a given time-period on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors. For example, a user could run "since 2m", where GitStory would generate a summary based on only the last 2 months worth of commits. Look below for additional time formats:
 
 **Time Period Formats:**
 - `Nd` — N days ago (e.g., `5d` = last 5 days)
@@ -109,72 +122,20 @@ python -m gitstory since <repo_path> <time_period> [--branch=<branch_name>]
 - `Nm` — N months ago (e.g., `3m` = last 3 months)
 - `Ny` — N years ago (e.g., `1y` = last year)
 
-**Example:**
-```bash
-python -m gitstory since ./ 2w --branch=main
 ```
-
-### 3.3 `gitstory dashboard`
-Creates a static HTML dashboard report saved to `dashboard.html`, containing:
-- Timeline of key commits
-- Contributor statistics and activity charts
-- AI-generated summary grouped by commit type
-
-**Usage:**
-```bash
-python -m gitstory dashboard <repo_path>
-```
-
-The dashboard is saved locally for offline viewing or sharing.
-
-### 3.4 `gitstory compare`
-Compares two branches and generates an AI-powered summary of their key differences. Shows unique commits on each branch since they diverged.
-
-**Usage:**
-```bash
-python -m gitstory compare <repo_path> <base_branch> <compare_branch> [options]
-```
-
-**Options:**
-- `--since` — Filter commits after this time
-- `--until` — Filter commits before this time
-- `--context` — Number of context commits from merge base (default: 5)
-
-**Example:**
-```bash
-python -m gitstory compare ./ main feature-branch --context=10
-```
-
-### 3.5 `gitstory key`
-Sets your Gemini API key for AI summarization. The key is stored locally in `src/gitstory/data/key.txt`.
-
-**Usage:**
-```bash
-python -m gitstory key --key="your_gemini_api_key"
-```
-
-Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-
-### 3.6 `gitstory parse-repo`
-Parses the repository and returns structured commit data without AI summarization. Useful for debugging or understanding raw commit data.
-
-**Usage:**
-```bash
-python -m gitstory parse-repo <repo_path> [--since=<time>] [--until=<time>] [--branch=<branch>]
+uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx>
 ```
 
 ---
 
-## 4. Using GitStory (Expected Workflow)
-
-Once implemented, GitStory will follow this general workflow:
+## 4. Using GitStory
 
 1. Navigate to a valid Git repository:
    ```bash
    cd path/to/repository
    ```
 
-2. Run one of the supported commands (e.g., `gitstory run`).
+2. Run one of the supported commands (see above).
 
 3. GitStory will:
    - Parse commit metadata from the repository.
@@ -191,7 +152,7 @@ Once implemented, GitStory will follow this general workflow:
 |----------|----------------|----------------------|
 | “Not a valid Git repository” | Running outside a folder containing `.git/` | Navigate to a valid Git repository. |
 | “No commits found” | Empty repository | Make at least one commit before running GitStory. |
-| “Missing API key” | AI summarization key not configured | Add your key to a `.env` file or environment variable. |
+| “Missing API key” | AI summarization key not configured | Add your key using the 'key' functionality above |
 | “Permission denied” | Insufficient permissions for output files | Run terminal with appropriate privileges or change directory. |
 
 If problems persist, reinstall your environment:
@@ -214,10 +175,7 @@ Users supply their own API keys via environment variables or a `.env` file.
 
 ## 7. Reporting Bugs and Issues
 
-As of this stage of development, GitStory’s core features are not yet implemented.  
-Once development progresses, the team will use **GitHub Issues** to track bugs and feature requests.
-
-For now, users and testers can report setup or documentation problems directly to the team (via Discord or class communication channels).
+As of this stage of development, GitStory’s core features have been implemented. The GitStory team uses **GitHub Issues** to track bugs and feature requests, and encourages users to open issues they see in GitStory. Users and testers may also report setup or documentation problems directly to the team (via Discord or class communication channels), though GitHub Issues is preferred.
 
 When GitStory’s issue tracker is active, a helpful bug report should include:
 
@@ -225,7 +183,8 @@ When GitStory’s issue tracker is active, a helpful bug report should include:
 - **Steps to reproduce:** numbered actions to replicate the issue  
 - **Expected result:** what should have happened  
 - **Actual result:** what actually happened  
-- **Environment:** OS, Python version, and GitStory commit hash  
+- **Environment:** OS, Python version, and GitStory commit hash
+- **Screenshots:** Any screenshots or recordings of how GitStory looks like on your end will be much appreciated, if applicable!
 
 Example:
 
@@ -243,19 +202,16 @@ Each issue should describe only one problem. More detailed reporting instruction
 
 ---
 
-## 8. Known Bugs and Limitations
+## 8. Known Bugs and Limitations (updated November 24)
 
-At this stage, no bugs exist because GitStory’s functionality has not yet been implemented.  
-However, several key features are planned and will be developed in upcoming iterations:
+At this stage, any bugs that exist are currently being dealt with, seen in GitStory's Github Issues tab. Some current issues include:
 
 | Area | Description | Status |
 |------|--------------|--------|
-| Build Packaging | GitStory currently runs from source; executable packaging planned. | Planned |
-| Visualization Dashboard | HTML report generation not yet implemented. | Planned |
-| AI Summarization | Model integration under design; outputs unavailable. | Planned |
-| API Rate Limits | Retry and backoff logic to be implemented. | Planned |
+| Build Packaging | GitStory currently runs from source; executable packaging planned. | Working on |
+| Windows Setup Issues | Users on Windows run into small issues when setting up GitStory. | Working on |
 
-This section will be updated as the project reaches testing and beta release stages.
+This section will be updated as the project reaches the final version of GitStory and does further testing.
 
 ---
 
