@@ -12,7 +12,6 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from gitstory.parser import RepoParser
 from gitstory.read_key.read_key import read_key
-import gitstory.visual_dashboard
 
 # make any changes to this file? it will certainly break
 # it's respective test file in tests/test_main.py
