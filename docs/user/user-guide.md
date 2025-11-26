@@ -76,35 +76,92 @@ This will install all necessary dependencies for development and testing.
 
 ---
 
-## 3. Intended Functionality (Planned CLI Commands)
+## 3. Current CLI Commands
 
-When development is complete, GitStory will run as a command-line tool from the terminal.  
-Users will navigate to a Git repository and use the following commands to generate summaries or reports.
+GitStory runs as a command-line tool from the terminal. Navigate to a Git repository and use the following commands to generate summaries or reports.
 
-**UPDATES (11.08.2025): to run GitStory, head over to [run-commands-guide.md](run-commands-guide.md) and run GitStory on your chosen Git Repo. The following instructions will work when the GitStory team is able get GitStory builds to work and run on their end (expected by Nov 12)**
+For detailed command examples and usage, see [run-commands-guide.md](run-commands-guide.md).
 
 ### 3.1 `gitstory run`
-Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
+Generates a concise AI-powered summary of the repository's commit history, highlighting major development events such as feature additions, bug fixes, and refactors.
 
-### 3.2 `gitstory run --2w` (and other time filters)
-Produces a summary limited to a specific time period. Planned flags include:
-- `--5d` — last five days  
-- `--2w` — last two weeks  
-- `--1m` — last month  
+**Usage:**
+```bash
+python -m gitstory run <repo_path> [--branch=<branch_name>] [--since=<time>] [--until=<time>]
+```
 
-Useful for reviewing progress during sprints or short development cycles.
+**Options:**
+- `--branch` — Specify which branch to analyze (defaults to current branch)
+- `--since` — Start time for analysis (ISO format or relative like '2w')
+- `--until` — End time for analysis (ISO format or relative)
 
-### 3.3 `gitstory run --dashboard`
-Creates a static HTML dashboard report containing:
-- A timeline of key commits  
-- Contributor statistics and activity charts  
-- Summaries grouped by time period or feature area  
+### 3.2 `gitstory since`
+Generates a summary of commits starting from a specified time period in the past. Useful for reviewing recent development activity.
 
-This report will be saved locally for offline viewing or sharing.
+**Usage:**
+```bash
+python -m gitstory since <repo_path> <time_period> [--branch=<branch_name>]
+```
 
-### 3.4 `gitstory compare <branch1> <branch2>`
-Compares two branches and summarizes their key differences.  
-Intended for understanding merge impacts before creating pull requests.
+**Time Period Formats:**
+- `Nd` — N days ago (e.g., `5d` = last 5 days)
+- `Nw` — N weeks ago (e.g., `2w` = last 2 weeks)
+- `Nm` — N months ago (e.g., `3m` = last 3 months)
+- `Ny` — N years ago (e.g., `1y` = last year)
+
+**Example:**
+```bash
+python -m gitstory since ./ 2w --branch=main
+```
+
+### 3.3 `gitstory dashboard`
+Creates a static HTML dashboard report saved to `dashboard.html`, containing:
+- Timeline of key commits
+- Contributor statistics and activity charts
+- AI-generated summary grouped by commit type
+
+**Usage:**
+```bash
+python -m gitstory dashboard <repo_path>
+```
+
+The dashboard is saved locally for offline viewing or sharing.
+
+### 3.4 `gitstory compare`
+Compares two branches and generates an AI-powered summary of their key differences. Shows unique commits on each branch since they diverged.
+
+**Usage:**
+```bash
+python -m gitstory compare <repo_path> <base_branch> <compare_branch> [options]
+```
+
+**Options:**
+- `--since` — Filter commits after this time
+- `--until` — Filter commits before this time
+- `--context` — Number of context commits from merge base (default: 5)
+
+**Example:**
+```bash
+python -m gitstory compare ./ main feature-branch --context=10
+```
+
+### 3.5 `gitstory key`
+Sets your Gemini API key for AI summarization. The key is stored locally in `src/gitstory/data/key.txt`.
+
+**Usage:**
+```bash
+python -m gitstory key --key="your_gemini_api_key"
+```
+
+Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+### 3.6 `gitstory parse-repo`
+Parses the repository and returns structured commit data without AI summarization. Useful for debugging or understanding raw commit data.
+
+**Usage:**
+```bash
+python -m gitstory parse-repo <repo_path> [--since=<time>] [--until=<time>] [--branch=<branch>]
+```
 
 ---
 
