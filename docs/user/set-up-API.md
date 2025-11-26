@@ -26,10 +26,21 @@ Head over to "Credentials page" - here, click "Create credentials" creating a ne
 the API key or not (restriction shouldn't matter, as long as you have access). Once you are done, hit "Create." 
 
 ## Step 6: Finish API key setup
-Copy the API key that is generated into your .env file (located in the project root). However, you will now see a warning to "Configure your OAuth Consent Screen" (as expected).
-To do this, click on "Configure consent screen" and follow the given prompts (this typically shouldn't take too long, they ask for an "App Name", a support email, etc). 
-IMPORTANT: MAKE SURE TO SET YOUR AUDIENCE AS EXTERNAL (when setting your consent screen).
+Once you are done, you will (or might) now see a warning to "Configure your OAuth Consent Screen" (as expected). To do this, click on "Configure consent screen" and follow the given prompts (this typically shouldn't take too long, they ask for an "App Name", a support email, etc). 
+\
+\
+**IMPORTANT: MAKE SURE TO SET YOUR AUDIENCE AS EXTERNAL (when setting your consent screen).**
+
+## Step 7: Add API Key to GitStory
+Copy the generated API key from Google Cloud Console, and paste it in while running GitStory's `key` command, which loads your generated API key into the GitStory project. You may not be able to run this until you head back [here](setup-guide.md) and complete uv installation + other requirements, but once you have completed all those steps, you should load your key in using the following command:
+\
+\
+**IMPORTANT: YOU MUST RUN THIS COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
+
+```
+uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
+```
 
 # ALL DONE!
 You can access the API key anytime again by logging back into Google Cloud Console! Please contact the GitStory team for any further clarifications or troubleshooting regarding
-obtaining the Gemini API key.
+obtaining the Gemini API key (or errors occurring when adding your key into GitStory).
