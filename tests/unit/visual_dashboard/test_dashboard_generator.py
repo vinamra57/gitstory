@@ -7,11 +7,13 @@ This test suite implements:
 - Markdown conversion testing
 - Error handling
 - Data flow validation
+- Cross-platform path handling
 
 Test Count: 20+ tests
 Coverage Target: 95%+ for this module
 """
 
+import os
 import pytest
 from unittest.mock import Mock, patch, mock_open
 from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
@@ -51,12 +53,14 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_creates_output_dir(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -74,17 +78,20 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
 
         # Assert
-        mock_makedirs.assert_called_once_with("/test/repo/output", exist_ok=True)
+        expected_path = os.path.join("/test", "repo", "output")
+        mock_makedirs.assert_called_once_with(expected_path, exist_ok=True)
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_loads_template(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -107,12 +114,14 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_converts_markdown(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -137,12 +146,14 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_renders_template_with_correct_data(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -171,12 +182,14 @@ class TestDashboardGenerationSuccess:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_writes_file(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -194,18 +207,21 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
 
         # Assert
-        mock_file.assert_called_once_with("/test/repo/output/dashboard.html", "w")
+        expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
+        mock_file.assert_called_once_with(expected_path, "w")
         mock_file().write.assert_called_once_with("<html>Dashboard Content</html>")
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_successful_generation_prints_success_message(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -224,18 +240,23 @@ class TestDashboardGenerationSuccess:
 
         # Assert
         mock_print.assert_called_once()
-        assert "Dashboard generated" in str(mock_print.call_args)
-        assert "/test/repo/output/dashboard.html" in str(mock_print.call_args)
+        print_message = str(mock_print.call_args)
+        assert "Dashboard generated" in print_message
+        # Check that the path contains the key components (cross-platform)
+        assert "output" in print_message
+        assert "dashboard.html" in print_message
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_custom_output_filename(
         self,
         mock_print,
         mock_file,
+        mock_copyfile,
         mock_makedirs,
         mock_get_template,
         mock_markdown,
@@ -258,9 +279,44 @@ class TestDashboardGenerationSuccess:
         )
 
         # Assert
-        mock_file.assert_called_once_with(
-            "/test/repo/output/custom_dashboard.html", "w"
-        )
+        expected_path = os.path.join("/test", "repo", "output", "custom_dashboard.html")
+        mock_file.assert_called_once_with(expected_path, "w")
+
+    @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
+    @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
+    @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("builtins.print")
+    def test_successful_generation_copies_css(
+        self,
+        mock_print,
+        mock_file,
+        mock_copyfile,
+        mock_makedirs,
+        mock_get_template,
+        mock_markdown,
+        sample_repo_data,
+        sample_ai_summary,
+    ):
+        """Test CSS file is copied to output directory."""
+        # Arrange
+        mock_template = Mock()
+        mock_template.render.return_value = "<html>Dashboard</html>"
+        mock_get_template.return_value = mock_template
+        mock_markdown.return_value = "<h1>Summary</h1>"
+
+        # Act
+        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+
+        # Assert
+        mock_copyfile.assert_called_once()
+        args = mock_copyfile.call_args[0]
+        # Check that source ends with the CSS file
+        assert args[0].endswith(os.path.join("static", "styles.css"))
+        # Check that destination is correct
+        expected_dest = os.path.join("/test", "repo", "output", "styles.css")
+        assert args[1] == expected_dest
 
 
 class TestDataHandling:
@@ -269,10 +325,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_empty_commits_list(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles empty commits list gracefully."""
         # Arrange
@@ -294,10 +351,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_missing_commits_key(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles missing 'commits' key with .get() default."""
         # Arrange
@@ -319,10 +377,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_missing_stats_key(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles missing 'stats' key with .get() default."""
         # Arrange
@@ -344,10 +403,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_missing_summary_key(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles missing 'summary' key in AI summary."""
         # Arrange
@@ -370,10 +430,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_missing_metadata_key(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles missing 'metadata' key in AI summary."""
         # Arrange
@@ -395,10 +456,11 @@ class TestDataHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_very_large_data(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles very large data sets (100+ commits)."""
         # Arrange
@@ -432,10 +494,11 @@ class TestFileSystemOperations:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_makedirs_with_exist_ok_true(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test os.makedirs is called with exist_ok=True."""
         # Arrange
@@ -451,15 +514,17 @@ class TestFileSystemOperations:
         generate_dashboard(repo_data, ai_summary, "/test/repo")
 
         # Assert
-        mock_makedirs.assert_called_once_with("/test/repo/output", exist_ok=True)
+        expected_path = os.path.join("/test", "repo", "output")
+        mock_makedirs.assert_called_once_with(expected_path, exist_ok=True)
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_file_opened_in_write_mode(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test file is opened in write mode ('w')."""
         # Arrange
@@ -475,15 +540,16 @@ class TestFileSystemOperations:
         generate_dashboard(repo_data, ai_summary, "/test/repo")
 
         # Assert
-        # Verify file opened with 'w' mode
-        mock_file.assert_called_with("/test/repo/output/dashboard.html", "w")
+        expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
+        mock_file.assert_called_with(expected_path, "w")
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.print")
     def test_file_write_error_propagates(
-        self, mock_print, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test file write errors propagate correctly."""
         # Arrange
@@ -508,10 +574,11 @@ class TestSpecialCharacterHandling:
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
     @patch("gitstory.visual_dashboard.dashboard_generator.os.makedirs")
+    @patch("gitstory.visual_dashboard.dashboard_generator.shutil.copyfile", return_value=None)
     @patch("builtins.open", new_callable=mock_open)
     @patch("builtins.print")
     def test_handles_unicode_in_data(
-        self, mock_print, mock_file, mock_makedirs, mock_get_template, mock_markdown
+        self, mock_print, mock_file, mock_copyfile, mock_makedirs, mock_get_template, mock_markdown
     ):
         """Test handles unicode characters in commit data."""
         # Arrange
