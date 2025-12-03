@@ -37,74 +37,11 @@ Stretch Goals
 
 ---
 
-## Quick Start
+## Buildings, Testing, and Running
 
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/vinamra57/gitstory.git
-cd gitstory
-
-# Install dependencies (requires Python 3.13+)
-uv pip install -e .
-```
-
-### API Key Setup
-
-GitStory uses Google's Gemini AI for generating summaries. You need a Gemini API key:
-
-1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Set it using the `key` command:
-
-```bash
-python -m gitstory key --key="your_gemini_api_key_here"
-```
-
-### Basic Usage
-
-**Generate a summary of your repository:**
-```bash
-python -m gitstory run ./ --branch=main
-```
-
-**Summarize commits from the last 2 weeks:**
-```bash
-python -m gitstory since ./ 2w
-```
-
-**Compare two branches:**
-```bash
-python -m gitstory compare ./ main feature-branch
-```
-
-**Generate a visual dashboard:**
-```bash
-python -m gitstory dashboard ./
-```
-
-For detailed command documentation, see [Run Commands Guide](docs/user/run-commands-guide.md).
-
----
-
-## Team
-
-| Name | Role | Email |
-|------|------|-------|
-| Vinamra Agarwal | AI Developer | vinamra1@cs.washington.edu
-| Adwita Garg | Backend Developer | adgarg12@cs.washington.edu
-| Vishal Sathambakkam | AI Developer | vishksat@cs.washington.edu
-| Ian Limasi | Backend Developer | imlimasi@cs.washington.edu
-| ShengYao Liu | Product Manager, UI Designer | sliu1229@cs.washington.edu
-| Derick Chiem | Backend Developer | dchiem@cs.washington.edu
-
-If there is a developer concern or an error in GitStory, **please create an Issue in the "Issues" tab for this Git Repo**, and our team will do the best to address the problem as soon as possible. To get in touch with the GitStory team for any other purposes however, please reach out to any of us through the email IDs listed above.
-
----
-
-## Living Document
-
-You can view our detailed proposal, use cases, requirements, and process plan here: [GitStory Living Document (Google Doc)](https://docs.google.com/document/d/1lqRVpxWHBmymRPX7l9FnYYCD0okzg7u-qnDOIQPh01U/edit?usp=sharing)
+To build + run GitStory as a **user** (i.e. a user who would like to use GitStory for individual purpose), click here to get started (or check /docs/user): [User Documentation](docs/user)\
+\
+To build + run GitStory as a **developer** (i.e. someone who would like to contribute to GitStory or run the GitStory code), click here to get started (or check /docs/dev): [Developer Documentation](docs/dev)
 
 ---
 
@@ -125,11 +62,26 @@ README.md      →  Project overview and setup instructions
 
 ---
 
-## Buildings, Testing, and Running
+## Living Document
 
-To build + run GitStory as a **user** (i.e. a user who would like to use GitStory for individual purpose), click here to get started (or check /docs/user): [User Documentation](docs/user)\
-\
-To build + run GitStory as a **developer** (i.e. someone who would like to contribute to GitStory or run the GitStory code), click here to get started (or check /docs/dev): [Developer Documentation](docs/dev)
+You can view our detailed proposal, use cases, requirements, and process plan here: [GitStory Living Document (Google Doc)](https://docs.google.com/document/d/1lqRVpxWHBmymRPX7l9FnYYCD0okzg7u-qnDOIQPh01U/edit?usp=sharing)
+
+---
+
+## Team
+
+| Name | Role | Email |
+|------|------|-------|
+| Vinamra Agarwal | AI Developer | vinamra1@cs.washington.edu
+| Adwita Garg | Backend Developer | adgarg12@cs.washington.edu
+| Vishal Sathambakkam | AI Developer | vishksat@cs.washington.edu
+| Ian Limasi | Backend Developer | imlimasi@cs.washington.edu
+| ShengYao Liu | Product Manager, UI Designer | sliu1229@cs.washington.edu
+| Derick Chiem | Backend Developer | dchiem@cs.washington.edu
+
+If there is a developer concern or an error in GitStory, **please create an Issue in the "Issues" tab for this Git Repo**, and our team will do the best to address the problem as soon as possible. To get in touch with the GitStory team for any other purposes however, please reach out to any of us through the email IDs listed above.
+
+---
 
 ## 📄 License
 
