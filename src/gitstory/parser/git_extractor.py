@@ -29,6 +29,12 @@ class GitExtractor:
     ) -> List[Dict]:
         if branch is None:
             branch = self.repo.active_branch.name
+        else:
+            # Validate that the requested branch exists
+            branch_list = [b.name for b in self.repo.branches]
+            if branch not in branch_list:
+                raise ValueError(f"Branch not found: {branch}. Available branches: {', '.join(branch_list)}")
+        
         since_dt = self._parse_time(since) if since else None
         until_dt = self._parse_time(until) if until else datetime.now()
         commits = []
@@ -42,19 +48,19 @@ class GitExtractor:
                 diff_text = self._get_commit_diff(commit)
             except Exception as e:
                 diff_text = f"Error extracting diff: {str(e)}"
-            commits.append(
-                {
-                    "hash": commit.hexsha[:8],
-                    "author": commit.author.name,
-                    "email": commit.author.email,
-                    "timestamp": commit_time.isoformat(),
-                    "message": commit.message.strip(),
-                    "files_changed": self._get_changed_files(commit),
-                    "insertions": commit.stats.total["insertions"],
-                    "deletions": commit.stats.total["deletions"],
-                    "diff": diff_text,
-                }
-            )
+            
+            commit_obj = {
+                "hash": commit.hexsha[:8],
+                "author": commit.author.name,
+                "email": commit.author.email,
+                "timestamp": commit_time.isoformat(),
+                "message": commit.message.strip(),
+                "files_changed": self._get_changed_files(commit),
+                "insertions": commit.stats.total["insertions"],
+                "deletions": commit.stats.total["deletions"],
+                "diff": diff_text,
+            }
+            commits.append(commit_obj)
         return commits
 
     def _parse_time(self, time_str: str) -> datetime:

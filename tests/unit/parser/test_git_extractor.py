@@ -377,6 +377,13 @@ class TestGetCommitsFiltering:
         # Arrange
         mock_repo = Mock()
         mock_repo.active_branch.name = "main"
+        
+        # Mock branches to include the requested branch
+        mock_branch1 = Mock()
+        mock_branch1.name = "main"
+        mock_branch2 = Mock()
+        mock_branch2.name = "feature-branch"
+        mock_repo.branches = [mock_branch1, mock_branch2]
 
         commit1 = self.create_mock_commit(
             "abc123", "feat: test", datetime(2025, 1, 10, 10, 0)
@@ -400,6 +407,11 @@ class TestGetCommitsFiltering:
         # Arrange
         mock_repo = Mock()
         mock_repo.active_branch.name = "main"
+        
+        # Mock branches
+        mock_branch = Mock()
+        mock_branch.name = "main"
+        mock_repo.branches = [mock_branch]
 
         commit1 = self.create_mock_commit(
             "abc123", "feat: test", datetime(2025, 1, 10, 10, 0)
@@ -415,6 +427,26 @@ class TestGetCommitsFiltering:
 
         # Assert
         mock_repo.iter_commits.assert_called_once_with("main")
+
+    @patch("gitstory.parser.git_extractor.Repo")
+    def test_get_commits_nonexistent_branch_raises_error(self, mock_repo_class):
+        """Test get_commits() with nonexistent branch raises ValueError."""
+        # Arrange
+        mock_repo = Mock()
+        mock_repo.active_branch.name = "main"
+        
+        # Mock branches - only main exists
+        mock_branch = Mock()
+        mock_branch.name = "main"
+        mock_repo.branches = [mock_branch]
+
+        mock_repo_class.return_value = mock_repo
+
+        extractor = GitExtractor("/fake/path")
+
+        # Act & Assert
+        with pytest.raises(ValueError, match="Branch not found: nonexistent"):
+            extractor.get_commits(branch="nonexistent")
 
 
 class TestGetChangedFiles:
