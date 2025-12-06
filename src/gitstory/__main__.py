@@ -68,7 +68,7 @@ def run(repo_path, branch, since, until, validation_fallback):
                 if len(report['warnings']) > 3:
                     click.echo(f"   ... and {len(report['warnings']) - 3} more warnings", err=False)
         except ValidationError as ve:
-            click.echo(f"❌ Error: Data validation failed", err=True)
+            click.echo("❌ Error: Data validation failed", err=True)
             # Show stage if available
             stage = getattr(ve, "stage", None)
             if stage:
