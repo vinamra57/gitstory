@@ -29,6 +29,12 @@ class GitExtractor:
     ) -> List[Dict]:
         if branch is None:
             branch = self.repo.active_branch.name
+        else:
+            # Validate that the requested branch exists
+            branch_list = [b.name for b in self.repo.branches]
+            if branch not in branch_list:
+                raise ValueError(f"Branch not found: {branch}. Available branches: {', '.join(branch_list)}")
+        
         since_dt = self._parse_time(since) if since else None
         until_dt = self._parse_time(until) if until else datetime.now()
         commits = []

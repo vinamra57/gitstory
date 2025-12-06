@@ -35,7 +35,14 @@ class RepoParser:
         """
         try:
             # Stage 1: Extract commits
-            raw_commits = self.extractor.get_commits(since, until, branch)
+            try:
+                raw_commits = self.extractor.get_commits(since, until, branch)
+            except ValueError as ve:
+                # Convert git extraction errors to ValidationError for consistent handling
+                err = ValidationError(str(ve))
+                err.report = self.validation_report.to_dict()
+                err.stage = "extraction"
+                raise err
             
             # Validate and sanitize commits
             validated_commits = validate_commits(raw_commits, self.validation_report)

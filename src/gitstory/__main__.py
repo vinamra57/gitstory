@@ -56,7 +56,7 @@ def run(repo_path, branch, since, until, validation_fallback):
 
         try:
             parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
-            parsed_data = parser.parse()
+            parsed_data = parser.parse(since=since, until=until, branch=branch)
 
             # Log validation warnings if any
             if 'metadata' in parsed_data and 'validation_report' in parsed_data['metadata']:
@@ -444,8 +444,14 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 @click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
 @click.option("--until", default=None, help="End time (ISO or relative)")
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
-def parse_repo(repo_path, since, until, branch):
-    parser = RepoParser(repo_path)
+@click.option(
+    "--validation-fallback",
+    is_flag=True,
+    default=False,
+    help="If set, parser will attempt best-effort fallbacks on validation failures",
+)
+def parse_repo(repo_path, since, until, branch, validation_fallback):
+    parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
     try:
         result = parser.parse(since=since, until=until, branch=branch)
     except Exception as e:
