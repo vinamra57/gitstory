@@ -167,7 +167,7 @@ def dashboard(repo_path):
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
-        from visual_dashboard.dashboard_generator import generate_dashboard
+        from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
 
         generate_dashboard(
             repo_data=parsed_data,
