@@ -2,14 +2,12 @@
 Tests for parser validation module.
 Ensures data integrity between pipeline stages.
 """
-import pytest
 from gitstory.parser.validation import (
     validate_commit,
     sanitize_commit,
     validate_commits,
     validate_grouped_data,
     validate_cleaned_data,
-    ValidationError,
     ValidationReport,
 )
 

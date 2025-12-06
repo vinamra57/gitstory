@@ -7,7 +7,6 @@ from git import Repo, InvalidGitRepositoryError
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict
 import re
-from .validation import validate_commit
 
 
 class GitExtractor:
