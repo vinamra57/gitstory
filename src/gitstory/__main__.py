@@ -154,6 +154,7 @@ def dashboard(repo_path):
             else:
                 click.echo(f"   Details: {error_msg}", err=True)
 
+            click.echo()
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
