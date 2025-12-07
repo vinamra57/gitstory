@@ -84,7 +84,7 @@ When development is complete, GitStory will run as a command-line tool from the 
 Takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
 
 ```
-uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
+uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"
 ```
 
 ### 3.1 `uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`
