@@ -23,7 +23,13 @@ def cli():
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
 @click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
 @click.option("--until", default=None, help="End time (ISO or relative)")
-def run(repo_path, branch, since, until):
+@click.option(
+    "--validation-fallback",
+    is_flag=True,
+    default=False,
+    help="If set, parser will attempt best-effort fallbacks on validation failures",
+)
+def run(repo_path, branch, since, until, validation_fallback):
     try:
         try:
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
@@ -38,8 +44,44 @@ def run(repo_path, branch, since, until):
 
         # Step 2: Parse repo
         click.echo("🔍 Analyzing repository...")
-        parser = RepoParser(repo_path)
-        parsed_data = parser.parse()
+        from gitstory.parser.validation import ValidationError
+
+        try:
+            parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
+            parsed_data = parser.parse(since=since, until=until, branch=branch)
+
+            # Log validation warnings if any
+            if 'metadata' in parsed_data and 'validation_report' in parsed_data['metadata']:
+                report = parsed_data['metadata']['validation_report']
+                if report['skipped_commits'] > 0:
+                    click.echo(f"⚠️  Skipped {report['skipped_commits']} invalid commits during parsing", err=False)
+                for warning in report['warnings'][:3]:  # Show first 3 warnings
+                    click.echo(f"   {warning}", err=False)
+                if len(report['warnings']) > 3:
+                    click.echo(f"   ... and {len(report['warnings']) - 3} more warnings", err=False)
+        except ValidationError as ve:
+            click.echo("❌ Error: Data validation failed", err=True)
+            # Show stage if available
+            stage = getattr(ve, "stage", None)
+            if stage:
+                click.echo(f"   Stage: {stage}", err=True)
+            click.echo(f"   {str(ve)}", err=True)
+            # If a validation report was attached, show a short summary
+            report = getattr(ve, "report", None)
+            if report:
+                try:
+                    skipped = report.get("skipped_commits", 0)
+                    warnings = report.get("warnings", [])
+                    click.echo(f"   Skipped commits: {skipped}", err=True)
+                    for w in warnings[:3]:
+                        click.echo(f"     - {w}", err=True)
+                    if len(warnings) > 3:
+                        click.echo(f"     ...and {len(warnings)-3} more warnings", err=True)
+                except Exception:
+                    # Best-effort display; do not mask original error
+                    pass
+            click.echo("   This might indicate corrupted commits in the repository.", err=True)
+            sys.exit(1)
 
         # Step 3: Summarize
         click.echo("🤖 Generating AI summary...")
@@ -97,7 +139,13 @@ def run(repo_path, branch, since, until):
 
 @cli.command("dashboard", short_help="Generates downloadable report about repo")
 @click.argument("repo_path", type=click.Path(exists=True))
-def dashboard(repo_path):
+@click.option(
+    "--validation-fallback",
+    is_flag=True,
+    default=False,
+    help="If set, parser will attempt best-effort fallbacks on validation failures",
+)
+def dashboard(repo_path, validation_fallback):
     try:
         # Step 1: Load configuration & validate API key
         try:
@@ -115,8 +163,24 @@ def dashboard(repo_path):
         click.echo("🔍 Analyzing repository...")
         from gitstory.parser import RepoParser
 
-        parser = RepoParser(repo_path)
-        parsed_data = parser.parse()
+        parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
+        try:
+            parsed_data = parser.parse()
+        except Exception as e:
+            # If it's a ValidationError, surface the report; otherwise re-raise
+            from gitstory.parser.validation import ValidationError as _VE
+            if isinstance(e, _VE):
+                click.echo("❌ Error: Data validation failed", err=True)
+                stage = getattr(e, "stage", None)
+                if stage:
+                    click.echo(f"   Stage: {stage}", err=True)
+                click.echo(f"   {str(e)}", err=True)
+                report = getattr(e, "report", None)
+                if report:
+                    skipped = report.get("skipped_commits", 0)
+                    click.echo(f"   Skipped commits: {skipped}", err=True)
+                sys.exit(1)
+            raise
 
         # Step 3: Generate AI summary
         click.echo("🤖 Generating AI summary in Visualization Dashboard...")
@@ -159,7 +223,7 @@ def dashboard(repo_path):
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
-        from visual_dashboard.dashboard_generator import generate_dashboard
+        from gitstory.visual_dashboard.dashboard_generator import generate_dashboard
 
         generate_dashboard(
             repo_data=parsed_data,
@@ -207,7 +271,22 @@ def since(repo_path, time_period, branch):
         # Step 2: Parse repo with since parameter
         click.echo(f"🔍 Analyzing repository from {time_period} ago...")
         parser = RepoParser(repo_path)
-        parsed_data = parser.parse(since=time_period, branch=branch)
+        try:
+            parsed_data = parser.parse(since=time_period, branch=branch)
+        except Exception as e:
+            from gitstory.parser.validation import ValidationError as _VE
+            if isinstance(e, _VE):
+                click.echo("❌ Error: Data validation failed", err=True)
+                stage = getattr(e, "stage", None)
+                if stage:
+                    click.echo(f"   Stage: {stage}", err=True)
+                click.echo(f"   {str(e)}", err=True)
+                report = getattr(e, "report", None)
+                if report:
+                    skipped = report.get("skipped_commits", 0)
+                    click.echo(f"   Skipped commits: {skipped}", err=True)
+                sys.exit(1)
+            raise
 
         # Step 3: Summarize
         click.echo("🤖 Generating AI summary...")
