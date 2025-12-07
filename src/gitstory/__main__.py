@@ -351,25 +351,6 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
         sys.exit(1)
 
 
-# NEED TO REMOVE THISSS
-@cli.command(
-    "parse-repo", short_help="parses the repository and returns structured commit data"
-)
-@click.argument("repo_path", type=click.Path(exists=True))
-@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
-@click.option("--until", default=None, help="End time (ISO or relative)")
-@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
-def parse_repo(repo_path, since, until, branch):
-    parser = RepoParser(repo_path)
-    result = parser.parse(since=since, until=until, branch=branch)
-    click.echo("Summary Text:")
-    click.echo(result["summary_text"])
-    click.echo("Stats:")
-    click.echo(result["stats"])
-    click.echo("Metadata:")
-    click.echo(result["metadata"])
-
-
 @cli.command("key", short_help="Sets Gemini API key internally to key passed in")
 @click.option("--key", help="Gemini key")
 def key(key):
