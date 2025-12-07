@@ -12,6 +12,7 @@ import pytest
 from unittest.mock import Mock, patch
 
 from gitstory.parser import RepoParser
+from gitstory.parser.validation import ValidationError
 
 
 class TestRepoParserInitialization:
@@ -289,7 +290,7 @@ class TestRepoParserErrorPropagation:
     def test_extractor_error_propagates(
         self, mock_cleaner_class, mock_grouper_class, mock_extractor_class
     ):
-        """Test errors from GitExtractor propagate correctly."""
+        """Test errors from GitExtractor are converted to ValidationError."""
         # Arrange
         mock_extractor = Mock()
         mock_extractor.get_commits.side_effect = ValueError("Invalid time format")
@@ -298,7 +299,8 @@ class TestRepoParserErrorPropagation:
         parser = RepoParser("/test/repo")
 
         # Act & Assert
-        with pytest.raises(ValueError, match="Invalid time format"):
+        # GitExtractor errors are now converted to ValidationError for consistency
+        with pytest.raises(ValidationError, match="Invalid time format"):
             parser.parse()
 
     @patch("gitstory.parser.GitExtractor")
@@ -310,7 +312,14 @@ class TestRepoParserErrorPropagation:
         """Test errors from CommitGrouper propagate correctly."""
         # Arrange
         mock_extractor = Mock()
-        mock_extractor.get_commits.return_value = [{"message": "test"}]
+        mock_extractor.get_commits.return_value = [
+            {
+                "hash": "abc123",
+                "author": "Test Author",
+                "message": "test commit",
+                "timestamp": "2025-01-01T00:00:00",
+            }
+        ]
         mock_extractor_class.return_value = mock_extractor
 
         mock_grouper = Mock()
@@ -332,11 +341,21 @@ class TestRepoParserErrorPropagation:
         """Test errors from DataCleaner propagate correctly."""
         # Arrange
         mock_extractor = Mock()
-        mock_extractor.get_commits.return_value = [{"message": "test"}]
+        mock_extractor.get_commits.return_value = [
+            {
+                "hash": "abc123",
+                "author": "Test Author",
+                "message": "test commit",
+                "timestamp": "2025-01-01T00:00:00",
+            }
+        ]
         mock_extractor_class.return_value = mock_extractor
 
         mock_grouper = Mock()
-        mock_grouper.group_commits.return_value = {"grouped_commits": {}}
+        mock_grouper.group_commits.return_value = {
+            "grouped_commits": {},
+            "stats": {"by_author": {}, "by_type": {}, "total_commits": 0},
+        }
         mock_grouper_class.return_value = mock_grouper
 
         mock_cleaner = Mock()
