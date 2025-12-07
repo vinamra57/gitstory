@@ -59,8 +59,7 @@ def run(repo_path, branch, since, until):
         # Check for errors before displaying
         if result.get("error"):
             error_msg = result["error"]
-            click.echo("❌ Error generating summary", err=True)
-
+            
             # Provide specific, actionable error messages
             if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
                 click.echo(
@@ -98,7 +97,6 @@ def run(repo_path, branch, since, until):
 
     except (Exception, SystemExit) as e:
         click.echo("❌ Error generating summary", err=True)
-        click.echo(f"Error: {e}")
         sys.exit(getattr(e, "code", 1))
 
 
