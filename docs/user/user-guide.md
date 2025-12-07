@@ -65,13 +65,24 @@ $env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
 [System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
 ```
 
-Then, install Python and create a virtual environment. This will install all necessary dependencies for development and testing:
+After running the UV installer on your Windows PC, restart your PowerShell window OR run (this allows `uv` commands to be recognized):
+
+```
+$env:Path = "C:\Users<your-username>.local\bin;$env:Path"
+```
+
+Once you have installed `uv` on your PC, install Python and create a virtual environment. This will install all necessary dependencies for development and testing:
 ```bash
+uv python install
+--OR--
 uv python install 3.13
+```
+```
 uv venv
+```
+```
 uv sync
 ```
-**Important: if you are a Windows user, you will need to add the path to the user and system variables in system enviornment variables when adding `uv`.** 
 
 ---
 
