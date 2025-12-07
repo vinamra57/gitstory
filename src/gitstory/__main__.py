@@ -13,16 +13,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from gitstory.parser import RepoParser
 from gitstory.read_key.read_key import read_key
 
-# make any changes to this file? it will certainly break
-# it's respective test file in tests/test_main.py
-# make sure you update those tests when you make changes
-# - Derick C.
-
-
 @click.group()
 def cli():
+    click.echo()
     click.echo("Welcome to GitStory: Turning git repos into readable stories\n")
-
 
 @cli.command("run", short_help="Generates a summary based on current code repo")
 @click.argument("repo_path", type=click.Path(exists=True))
@@ -41,11 +35,9 @@ def run(repo_path, branch, since, until, validation_fallback):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo("This is most likely due to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -101,8 +93,7 @@ def run(repo_path, branch, since, until, validation_fallback):
         # Check for errors before displaying
         if result.get("error"):
             error_msg = result["error"]
-            click.echo("❌ Error generating summary", err=True)
-
+            
             # Provide specific, actionable error messages
             if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
                 click.echo(
@@ -135,12 +126,14 @@ def run(repo_path, branch, since, until, validation_fallback):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
-
+        click.echo()
+        
         return "Summary generation complete!"
 
     except (Exception, SystemExit) as e:
         click.echo("❌ Error generating summary", err=True)
         click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(getattr(e, "code", 1))
 
 
@@ -160,10 +153,8 @@ def dashboard(repo_path, validation_fallback):
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
             click.echo("This is most likely to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -228,6 +219,7 @@ def dashboard(repo_path, validation_fallback):
             else:
                 click.echo(f"   Details: {error_msg}", err=True)
 
+            click.echo()
             sys.exit(1)
 
         # Step 4: Display results on Visualization Dashboard
@@ -240,19 +232,20 @@ def dashboard(repo_path, validation_fallback):
             repo_path=repo_path,
         )
         click.echo("✅ Dashboard saved!")
-
+        click.echo()
         return "Dashboard saved!"
 
     except Exception as e:
         click.echo("❌ Error generating dashboard", err=True)
         click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(1)
 
 
 @cli.command("since", short_help="Generate summary from specified time period")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("time_period")
-@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+@click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
 def since(repo_path, time_period, branch):
     """Generate repository summary starting from a relative time period.
 
@@ -268,11 +261,9 @@ def since(repo_path, time_period, branch):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo("This is most likely due to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -307,7 +298,6 @@ def since(repo_path, time_period, branch):
         # Check for errors before displaying
         if result.get("error"):
             error_msg = result["error"]
-            click.echo("❌ Error generating summary", err=True)
 
             # Provide specific, actionable error messages
             if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
@@ -341,24 +331,26 @@ def since(repo_path, time_period, branch):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
-
+        click.echo()
+        
         return "Summary generation complete!"
 
     except ValueError as e:
         click.echo("❌ Error parsing time period", err=True)
-        click.echo(f"Error: {e}", err=True)
         click.echo(
             "💡 Tip: Use formats like '2w' (weeks), '7d' (days), '3m' (months), '1y' (years)",
             err=True,
         )
+        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(1)
     except (Exception, SystemExit) as e:
-        click.echo("❌ Error generating summary", err=True)
         click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(getattr(e, "code", 1))
 
 
-@cli.command("compare", short_help="Compare two branches and generate summary")
+@cli.command("compare", short_help="Compares two branches in repository and generates summary & branch differences")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("base_branch")
 @click.argument("compare_branch")
@@ -375,12 +367,13 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
                 'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
-
+        
         # Step 2: Compare branches
         click.echo("🔍 Comparing branches...")
         parser = RepoParser(repo_path)
@@ -420,60 +413,28 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
+        click.echo()
 
         return "Comparison complete!"
 
     except ValueError as e:
         click.echo("❌ Error comparing branches", err=True)
-        click.echo(f"Error: {e}", err=True)
         if "not found" in str(e).lower():
             click.echo(
                 "💡 Tip: Run 'git branch -a' to see available branches", err=True
             )
+        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(1)
     except Exception as e:
         click.echo("❌ Error comparing branches", err=True)
-        click.echo(f"Error: {e}", err=True)
+        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(1)
 
 
-@cli.command(
-    "parse-repo", short_help="parses the repository and returns structured commit data"
-)
-@click.argument("repo_path", type=click.Path(exists=True))
-@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
-@click.option("--until", default=None, help="End time (ISO or relative)")
-@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
-@click.option(
-    "--validation-fallback",
-    is_flag=True,
-    default=False,
-    help="If set, parser will attempt best-effort fallbacks on validation failures",
-)
-def parse_repo(repo_path, since, until, branch, validation_fallback):
-    parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
-    try:
-        result = parser.parse(since=since, until=until, branch=branch)
-    except Exception as e:
-        from gitstory.parser.validation import ValidationError as _VE
-        if isinstance(e, _VE):
-            click.echo("❌ Error: Data validation failed", err=True)
-            click.echo(f"   {str(e)}", err=True)
-            report = getattr(e, "report", None)
-            if report:
-                click.echo(f"   Skipped commits: {report.get('skipped_commits', 0)}", err=True)
-            sys.exit(1)
-        raise
-    click.echo("Summary Text:")
-    click.echo(result["summary_text"])
-    click.echo("Stats:")
-    click.echo(result["stats"])
-    click.echo("Metadata:")
-    click.echo(result["metadata"])
-
-
-@cli.command("key", short_help="sets key to value")
-@click.option("--key", help="Gemini key")
+@cli.command("key", short_help="Sets Gemini API key internally to key passed in")
+@click.option("--key", help="Enter your Gemini API key")
 def key(key):
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     if not os.path.isdir(cur_folder + "/data"):
