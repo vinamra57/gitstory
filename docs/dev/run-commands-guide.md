@@ -7,10 +7,10 @@ Open up a CLI tab (ex: Terminal window for macOS users), and navigate to the Git
 ## Step 2: Run specific commands
 Run GitStory's commands as listed below (*copy the commands in the **blocks** rather the ones listed with the description*, we have included them to link how the user runs GitStory vs. how developers run GitStory):
 
-`gitstory key key="<YOUR_API_KEY>"`: takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
+`gitstory key --key="<YOUR_API_KEY>"`: takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
 
 ```
-uv run python3.13 src/gitstory/__main__.py key key="<YOUR_API_KEY>"
+uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"
 ```
 
 `gitstory run "<YOUR_REPO_LOCATION_PATH>"`: runs GitStory and generates a code-summary in the CLI itself (i.e. its printed on the CLI to user).
