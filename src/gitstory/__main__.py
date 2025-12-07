@@ -89,6 +89,8 @@ def run(repo_path, branch, since, until):
 
     except (Exception, SystemExit) as e:
         click.echo("❌ Error generating summary", err=True)
+        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(getattr(e, "code", 1))
 
 
@@ -169,6 +171,7 @@ def dashboard(repo_path):
 
     except Exception as e:
         click.echo("❌ Error generating dashboard", err=True)
+        click.echo(f"Error: {e}")
         click.echo()
         sys.exit(1)
 
@@ -257,10 +260,12 @@ def since(repo_path, time_period, branch):
             "💡 Tip: Use formats like '2w' (weeks), '7d' (days), '3m' (months), '1y' (years)",
             err=True,
         )
+        click.echo(f"Error: {e}")
         click.echo()
         sys.exit(1)
     except (Exception, SystemExit) as e:
         click.echo("❌ Error generating summary", err=True)
+        click.echo(f"Error: {e}")
         click.echo()
         sys.exit(getattr(e, "code", 1))
 
@@ -338,10 +343,12 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
             click.echo(
                 "💡 Tip: Run 'git branch -a' to see available branches", err=True
             )
+        click.echo(f"Error: {e}")
         click.echo()
         sys.exit(1)
     except Exception as e:
         click.echo("❌ Error comparing branches", err=True)
+        click.echo(f"Error: {e}")
         click.echo()
         sys.exit(1)
 
