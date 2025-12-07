@@ -75,7 +75,7 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         expected_path = os.path.join("/test", "repo", "output")
@@ -204,7 +204,7 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
@@ -274,7 +274,7 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(
             sample_repo_data,
             sample_ai_summary,
-            "/test/repo",
+            os.path.join("/test", "repo"),
             output_file="custom_dashboard.html",
         )
 
@@ -307,7 +307,7 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         mock_copyfile.assert_called_once()
@@ -511,7 +511,7 @@ class TestFileSystemOperations:
         mock_markdown.return_value = "<p>Test</p>"
 
         # Act
-        generate_dashboard(repo_data, ai_summary, "/test/repo")
+        generate_dashboard(repo_data, ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         expected_path = os.path.join("/test", "repo", "output")
@@ -537,7 +537,7 @@ class TestFileSystemOperations:
         mock_markdown.return_value = "<p>Test</p>"
 
         # Act
-        generate_dashboard(repo_data, ai_summary, "/test/repo")
+        generate_dashboard(repo_data, ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
