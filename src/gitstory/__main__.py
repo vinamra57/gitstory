@@ -169,12 +169,12 @@ def dashboard(repo_path):
             repo_path=repo_path,
         )
         click.echo("✅ Dashboard saved!")
-
+        click.echo()
         return "Dashboard saved!"
 
     except Exception as e:
         click.echo("❌ Error generating dashboard", err=True)
-        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(1)
 
 
@@ -221,7 +221,6 @@ def since(repo_path, time_period, branch):
         # Check for errors before displaying
         if result.get("error"):
             error_msg = result["error"]
-            click.echo("❌ Error generating summary", err=True)
 
             # Provide specific, actionable error messages
             if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
@@ -255,20 +254,21 @@ def since(repo_path, time_period, branch):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
-
+        click.echo()
+        
         return "Summary generation complete!"
 
     except ValueError as e:
         click.echo("❌ Error parsing time period", err=True)
-        click.echo(f"Error: {e}", err=True)
         click.echo(
             "💡 Tip: Use formats like '2w' (weeks), '7d' (days), '3m' (months), '1y' (years)",
             err=True,
         )
+        click.echo()
         sys.exit(1)
     except (Exception, SystemExit) as e:
         click.echo("❌ Error generating summary", err=True)
-        click.echo(f"Error: {e}")
+        click.echo()
         sys.exit(getattr(e, "code", 1))
 
 
@@ -339,18 +339,19 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 
     except ValueError as e:
         click.echo("❌ Error comparing branches", err=True)
-        click.echo(f"Error: {e}", err=True)
         if "not found" in str(e).lower():
             click.echo(
                 "💡 Tip: Run 'git branch -a' to see available branches", err=True
             )
+        click.echo()
         sys.exit(1)
     except Exception as e:
         click.echo("❌ Error comparing branches", err=True)
-        click.echo(f"Error: {e}", err=True)
+        click.echo()
         sys.exit(1)
 
 
+# NEED TO REMOVE THISSS
 @cli.command(
     "parse-repo", short_help="parses the repository and returns structured commit data"
 )
@@ -369,7 +370,7 @@ def parse_repo(repo_path, since, until, branch):
     click.echo(result["metadata"])
 
 
-@cli.command("key", short_help="sets key to value")
+@cli.command("key", short_help="Sets Gemini API key internally to key passed in")
 @click.option("--key", help="Gemini key")
 def key(key):
     cur_folder = os.path.dirname(os.path.abspath(__file__))
