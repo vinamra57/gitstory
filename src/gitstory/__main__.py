@@ -139,13 +139,16 @@ def run(repo_path, branch, since, until, validation_fallback):
 
 @cli.command("dashboard", short_help="Generates downloadable report about repo")
 @click.argument("repo_path", type=click.Path(exists=True))
+@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
+# UNTIL??
 @click.option(
     "--validation-fallback",
     is_flag=True,
     default=False,
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
-def dashboard(repo_path, validation_fallback):
+def dashboard(repo_path, branch, since, validation_fallback):
     try:
         # Step 1: Load configuration & validate API key
         try:
@@ -165,7 +168,7 @@ def dashboard(repo_path, validation_fallback):
 
         parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
         try:
-            parsed_data = parser.parse()
+            parsed_data = parser.parse(branch=branch, since=since)
         except Exception as e:
             # If it's a ValidationError, surface the report; otherwise re-raise
             from gitstory.parser.validation import ValidationError as _VE
