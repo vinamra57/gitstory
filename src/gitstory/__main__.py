@@ -84,7 +84,8 @@ def run(repo_path, branch, since, until):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
-
+        click.echo()
+        
         return "Summary generation complete!"
 
     except (Exception, SystemExit) as e:
