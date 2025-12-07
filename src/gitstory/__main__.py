@@ -265,7 +265,6 @@ def since(repo_path, time_period, branch):
         click.echo()
         sys.exit(1)
     except (Exception, SystemExit) as e:
-        click.echo("❌ Error generating summary", err=True)
         click.echo(f"Error: {e}")
         click.echo()
         sys.exit(getattr(e, "code", 1))
