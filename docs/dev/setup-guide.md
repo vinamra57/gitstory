@@ -18,13 +18,13 @@ The minimum version GitStory requires is Python 3.13. Grab it [here](https://www
 ## Step 2: Installing UV + Python (in GitStory folder)
 Next, install the UV Python project/package manager. The installation guide is linked [here](https://docs.astral.sh/uv/getting-started/installation/), but below will be commands that you can use to install it.
 
-For Mac/Linux users:
+**For Mac/Linux users**:
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh 
 --OR--
 wget -qO- https://astral.sh/uv/install.sh | sh
 ```
-For Windows:
+**For Windows**:
 ```
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
@@ -34,8 +34,13 @@ $env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
 
 [System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
 ```
+After running the UV installer on your Windows PC, restart your PowerShell window OR run (this allows `uv` commands to be recognized):
 
-Next, install Python locally to the directory (either command will work) + set up the virtual enviornment:
+```
+$env:Path = "C:\Users<your-username>.local\bin;$env:Path"
+```
+
+Once you have installed `uv` onto your PC, install Python locally to the directory + set up the virtual enviornment:
 ```
 uv python install
 --OR--
@@ -46,12 +51,16 @@ uv python install 3.13
 uv venv
 ```
 
+```
+uv sync
+```
+
 When you want to run a Python file from this point forward, you would do:
 ```
 uv run python <file_location>
 ```
 
-UV has a *lot* of features, to learn more about UV, read [the documentation](https://docs.astral.sh/uv/getting-started/).
+UV has a *lot* of features, to learn more about UV, [read the documentation](https://docs.astral.sh/uv/getting-started/).
 
 **IMPORTANT NOTE:** When committing to git, make sure that `uv.lock` is added to the commit if a change has occurred to it, otherwise there will be problems! 
 
