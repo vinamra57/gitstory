@@ -31,7 +31,7 @@ GitStory runs locally to maintain privacy and never sends source code outside th
 | **Python** | 3.13 or newer | Core runtime environment, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
 | **Git** | Latest stable | Repository access, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
 | **UV** | Latest | Virtual environment and package management, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
-| **Gemini API-Key** | N/A | Used in GitStory project, head over to [set-up-API.md](set-up-API.md) to obtain API-Key
+| **Gemini API-Key** | Latest | Used in GitStory project, head over to [set-up-API.md](set-up-API.md) to obtain API-Key
 
 ### 2.2 Clone the Repository
 
