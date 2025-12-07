@@ -1,4 +1,4 @@
-# How to Test
+# How to Test GitStory
 GitStory's tests use `pytest`, but everything regarding pytest will be automatically handled using our test handler tox.
 
 ## Running Tests
