@@ -13,14 +13,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from gitstory.parser import RepoParser
 from gitstory.read_key.read_key import read_key
 
-# make any changes to this file? it will certainly break
-# it's respective test file in tests/test_main.py
-# make sure you update those tests when you make changes
-# - Derick C.
-
-
 @click.group()
 def cli():
+    click.echo()
     click.echo("Welcome to GitStory: Turning git repos into readable stories\n")
 
 
