@@ -9,7 +9,7 @@ To setup GitStory as a developer, please head to these files in the following or
 - [test-guide.md](test-guide.md): Documents how to write and run tests
 - [run-commands-guide.md](run-commands-guide.md): Documents how to run certain GitStory commands as a developer
 
-To **build GitStory as a final product**, please head over to the [build-guide.md](build-guide.md).
+To **build GitStory as a final product and use as a GitStory user**, please head over to the [build-guide.md](build-guide.md).
 
 To learn more about how the GitStory team has organized and formatted the code in the repository, check out:
 - [coding-guidelines.md](coding-guidelines.md): Documents how to format the code and what tools the GitStory team will use to do so
