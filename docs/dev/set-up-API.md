@@ -27,7 +27,7 @@ Hit "Create" once done, and you will see the new API key pop up on your dashboar
 Copy the generated API key from Google AI Studio by clicking on the API key you created (and copying the long string, typically starting with "Alza..."), and paste it in while running GitStory's `key` command, which loads your generated API key into the GitStory project. 
 \
 \
-You may not be able to run this until you head back [here](setup-guide.md) and complete uv installation + other requirements, but once you have completed all those steps, you should load your key in using the following command:
+You will NOT be able to run this until you head back [here](setup-guide.md) and complete uv installation + other requirements, but once you *have* completed all those steps, you should load your key in using the following command:
 
 ```
 uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"
