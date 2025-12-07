@@ -31,9 +31,9 @@ Our long-term vision is to make project history as easy to understand as reading
 
 Stretch Goals
 - Interactive web-based visualization dashboard  
-- Enhanced contextual summaries across branches and contributors  
-- **Time-bound summarization mode 
-- Repository comparison and analytics  
+- Enhanced contextual summaries across branches and contributors (update 12/07/25: GitStory **has** implemented branch-comparison summaries! Check out our `compare` feature in the documentation below)  
+- Time-bound summarization mode 
+- Repository comparison and analytics   
 
 ---
 
