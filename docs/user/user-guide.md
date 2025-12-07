@@ -65,14 +65,13 @@ $env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
 [System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
 ```
 
-Then, install Python and create a virtual environment:
+Then, install Python and create a virtual environment. This will install all necessary dependencies for development and testing:
 ```bash
 uv python install 3.13
 uv venv
 uv sync
 ```
-
-This will install all necessary dependencies for development and testing.
+**Important: if you are a Windows user, you will need to add the path to the user and system variables in system enviornment variables when adding `uv`.** 
 
 ---
 
