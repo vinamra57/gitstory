@@ -18,7 +18,6 @@ def cli():
     click.echo()
     click.echo("Welcome to GitStory: Turning git repos into readable stories\n")
 
-
 @cli.command("run", short_help="Generates a summary based on current code repo")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
@@ -30,11 +29,9 @@ def run(repo_path, branch, since, until):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo("This is most likely due to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -105,10 +102,8 @@ def dashboard(repo_path):
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
             click.echo("This is most likely to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -181,7 +176,7 @@ def dashboard(repo_path):
 @cli.command("since", short_help="Generate summary from specified time period")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("time_period")
-@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+@click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
 def since(repo_path, time_period, branch):
     """Generate repository summary starting from a relative time period.
 
@@ -197,11 +192,9 @@ def since(repo_path, time_period, branch):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
-            click.echo("This is most likely due to your key being set wrong!", err=True)
-            click.echo("Please set your API key in one of these ways:", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
-                "1. Call 'gitstory key --key=\"key\" '",
-                err=True,
+                'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
@@ -272,7 +265,7 @@ def since(repo_path, time_period, branch):
         sys.exit(getattr(e, "code", 1))
 
 
-@cli.command("compare", short_help="Compare two branches and generate summary")
+@cli.command("compare", short_help="Compares two branches in repository and generates summary & branch differences")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("base_branch")
 @click.argument("compare_branch")
@@ -289,12 +282,13 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
         except Exception as ex:
             click.echo(f"❌ Error: {ex}\n", err=True)
+            click.echo("This is most likely to your key being set wrong!", err=True)
             click.echo(
                 'Please set your API key: gitstory key --key="your_key"', err=True
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
-
+        
         # Step 2: Compare branches
         click.echo("🔍 Comparing branches...")
         parser = RepoParser(repo_path)
@@ -334,6 +328,7 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
         click.echo("\n" + "=" * 60)
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
+        click.echo()
 
         return "Comparison complete!"
 
@@ -352,7 +347,7 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 
 
 @cli.command("key", short_help="Sets Gemini API key internally to key passed in")
-@click.option("--key", help="Gemini key")
+@click.option("--key", help="Enter your Gemini API key")
 def key(key):
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     if not os.path.isdir(cur_folder + "/data"):
