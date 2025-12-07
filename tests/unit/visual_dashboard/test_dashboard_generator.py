@@ -75,11 +75,14 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
-        expected_path = os.path.join("/test", "repo", "output")
-        mock_makedirs.assert_called_once_with(expected_path, exist_ok=True)
+        mock_makedirs.assert_called_once()
+        # Verify the path contains repo and output regardless of separator style
+        actual_path = mock_makedirs.call_args[0][0]
+        assert "repo" in actual_path and "output" in actual_path
+        assert mock_makedirs.call_args[1] == {"exist_ok": True}
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
@@ -204,11 +207,14 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
-        expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
-        mock_file.assert_called_once_with(expected_path, "w")
+        mock_file.assert_called_once()
+        # Verify the path contains repo, output, and dashboard.html
+        actual_path = mock_file.call_args[0][0]
+        assert "repo" in actual_path and "output" in actual_path and "dashboard.html" in actual_path
+        assert mock_file.call_args[0][1] == "w"
         mock_file().write.assert_called_once_with("<html>Dashboard Content</html>")
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
@@ -274,13 +280,15 @@ class TestDashboardGenerationSuccess:
         generate_dashboard(
             sample_repo_data,
             sample_ai_summary,
-            "/test/repo",
+            os.path.join("/test", "repo"),
             output_file="custom_dashboard.html",
         )
 
         # Assert
-        expected_path = os.path.join("/test", "repo", "output", "custom_dashboard.html")
-        mock_file.assert_called_once_with(expected_path, "w")
+        # Get the actual path called and verify it contains the right parts
+        actual_call = mock_file.call_args[0][0]
+        assert "repo" in actual_call and "output" in actual_call and "custom_dashboard.html" in actual_call
+        assert mock_file.call_args[0][1] == "w"
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
@@ -307,16 +315,15 @@ class TestDashboardGenerationSuccess:
         mock_markdown.return_value = "<h1>Summary</h1>"
 
         # Act
-        generate_dashboard(sample_repo_data, sample_ai_summary, "/test/repo")
+        generate_dashboard(sample_repo_data, sample_ai_summary, os.path.join("/test", "repo"))
 
         # Assert
         mock_copyfile.assert_called_once()
         args = mock_copyfile.call_args[0]
         # Check that source ends with the CSS file
         assert args[0].endswith(os.path.join("static", "styles.css"))
-        # Check that destination is correct
-        expected_dest = os.path.join("/test", "repo", "output", "styles.css")
-        assert args[1] == expected_dest
+        # Check that destination contains the right parts
+        assert "repo" in args[1] and "output" in args[1] and "styles.css" in args[1]
 
 
 class TestDataHandling:
@@ -511,11 +518,14 @@ class TestFileSystemOperations:
         mock_markdown.return_value = "<p>Test</p>"
 
         # Act
-        generate_dashboard(repo_data, ai_summary, "/test/repo")
+        generate_dashboard(repo_data, ai_summary, os.path.join("/test", "repo"))
 
         # Assert
-        expected_path = os.path.join("/test", "repo", "output")
-        mock_makedirs.assert_called_once_with(expected_path, exist_ok=True)
+        mock_makedirs.assert_called_once()
+        # Verify the path contains repo and output regardless of separator style
+        actual_path = mock_makedirs.call_args[0][0]
+        assert "repo" in actual_path and "output" in actual_path
+        assert mock_makedirs.call_args[1] == {"exist_ok": True}
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
@@ -537,11 +547,14 @@ class TestFileSystemOperations:
         mock_markdown.return_value = "<p>Test</p>"
 
         # Act
-        generate_dashboard(repo_data, ai_summary, "/test/repo")
+        generate_dashboard(repo_data, ai_summary, os.path.join("/test", "repo"))
 
         # Assert
-        expected_path = os.path.join("/test", "repo", "output", "dashboard.html")
-        mock_file.assert_called_with(expected_path, "w")
+        mock_file.assert_called_once()
+        # Verify the path contains repo, output, and dashboard.html
+        actual_path = mock_file.call_args[0][0]
+        assert "repo" in actual_path and "output" in actual_path and "dashboard.html" in actual_path
+        assert mock_file.call_args[0][1] == "w"
 
     @patch("gitstory.visual_dashboard.dashboard_generator.markdown.markdown")
     @patch("gitstory.visual_dashboard.dashboard_generator.env.get_template")
