@@ -212,16 +212,13 @@ Each issue should describe only one problem. More detailed reporting instruction
 
 ---
 
-## 8. Known Bugs and Limitations (updated November 24)
+## 8. Known Bugs and Limitations (updated December 7th)
 
-At this stage, any bugs that exist are currently being dealt with, seen in GitStory's Github Issues tab. Some current issues include:
+At this stage, any bugs that exist are currently listed below and in GitStory's Github Issues tab. As of December 7th, GitStory has no bugs. Previously, we ran into issues such as GitStory not working on Windows or GitStory build not functioning, but we are happy to say these are now resolved!
 
 | Area | Description | Status |
 |------|--------------|--------|
-| Build Packaging | GitStory currently runs from source; executable packaging planned. | Working on |
-| Windows Setup Issues | Users on Windows run into small issues when setting up GitStory. | Working on |
-
-This section will be updated as the project reaches the final version of GitStory and does further testing.
+|N/A|N/A|N/A|
 
 ---
 
