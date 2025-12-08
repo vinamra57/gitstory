@@ -148,7 +148,7 @@ def run(repo_path, branch, since, until, validation_fallback):
     default=False,
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
-def dashboard(repo_path, branch, since, validation_fallback):
+def dashboard(repo_path, branch, since, until, validation_fallback):
     try:
         # Step 1: Load configuration & validate API key
         try:
@@ -250,7 +250,7 @@ def dashboard(repo_path, branch, since, validation_fallback):
 @click.argument("time_period")
 @click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
 @click.option("--until", default=None, help="End time (ISO or relative like '2w')")
-def since(repo_path, time_period, branch):
+def since(repo_path, time_period, until, branch):
     """Generate repository summary starting from a relative time period.
 
     TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years)
