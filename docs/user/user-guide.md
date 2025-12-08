@@ -28,9 +28,6 @@ GitStory runs locally to maintain privacy and never sends source code outside th
 
 | Requirement | Version | Purpose |
 |--------------|----------|----------|
-| **Python** | 3.13 or newer | Core runtime environment, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
-| **Git** | Latest stable | Repository access, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
-| **UV** | Latest | Virtual environment and package management, head over to [setup-guide.md](https://github.com/vinamra57/gitstory/blob/release-branch/docs/dev/setup-guide.md) for more details |
 | **Gemini API-Key** | Latest | Used in GitStory project, head over to [set-up-API.md](set-up-API.md) to obtain API-Key
 
 ### 2.2 Clone the Repository
@@ -71,6 +68,7 @@ After running the UV installer on your Windows PC, restart your PowerShell windo
 $env:Path = "C:\Users<your-username>.local\bin;$env:Path"
 ```
 
+## 2.4 Install Python and create a virtual environment 
 Once you have installed `uv` on your PC, install Python and create a virtual environment. This will install all necessary dependencies for development and testing:
 ```bash
 uv python install
