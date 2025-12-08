@@ -4,56 +4,179 @@
     <meta charset="UTF-8">
     <title>GitStory Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 </head>
 <body>
-    <h1>GitStory Dashboard</h1>
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+        <span>☰</span>
+    </button>
 
-    <section>
-        <h2>AI Summary</h2>
-        <p>{{ ai_summary.summary }}</p>
+    <!-- Sidebar with Table of Contents -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Table of Contents</h3>
+            <button id="sidebar-minimize" class="sidebar-minimize" aria-label="Minimize sidebar">‹</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#repository-analysis" class="sidebar-link">Repository Analysis</a>
+            <div class="sidebar-subsection">
+                <a href="#executive-summary" class="sidebar-sublink">Executive Summary</a>
+                <a href="#development-focus" class="sidebar-sublink">Development Focus</a>
+                <a href="#major-technical-changes" class="sidebar-sublink">Major Technical Changes</a>
+                <a href="#code-health-signals" class="sidebar-sublink">Code Health Signals</a>
+                <a href="#team-dynamics" class="sidebar-sublink">Team Dynamics</a>
+                <a href="#forward-looking-assessment" class="sidebar-sublink">Forward-Looking Assessment</a>
+            </div>
+            <a href="#repository-stats" class="sidebar-link">Repository Stats</a>
+            <a href="#activity-timeline" class="sidebar-link">Activity Timeline</a>
+            <a href="#commits-section" class="sidebar-link">Commits Table</a>
+        </nav>
+
+        <!-- Settings Section -->
+        <div class="sidebar-settings">
+            <h4>Display Settings</h4>
+
+            <div class="setting-group">
+                <label for="theme-select">Color Mode:</label>
+                <select id="theme-select" class="setting-control">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="beige">Beige</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="font-select">Font:</label>
+                <select id="font-select" class="setting-control">
+                    <option value="system">System Default</option>
+                    <option value="serif">Serif (Georgia)</option>
+                    <option value="monospace">Monospace</option>
+                    <option value="sans-condensed">Sans Condensed</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Resize handle -->
+        <div id="sidebar-resizer" class="sidebar-resizer"></div>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="dashboard-title">GitStory Dashboard - Repository Analysis</h1>
+
+    <section id="repository-analysis">
+        <div class="ai-summary-content">
+            {{ ai_summary.summary }}
+        </div>
         <small>Model: {{ ai_summary.metadata.model }}, Tokens used: {{ ai_summary.metadata.tokens_used }}</small>
     </section>
 
-    <section>
+    <section id="repository-stats">
         <h2>Repository Stats</h2>
         <p>Total commits: {{ stats.total_commits }}</p>
-        <h3>Commits by type:</h3>
-        <ul>
-        {% for type, count in stats.by_type.items() %}
-            <li>{{ type }}: {{ count }}</li>
-        {% endfor %}
-        </ul>
 
-        <h3>Commits by author:</h3>
-        <ul>
-        {% for author, data in stats.by_author.items() %}
-            <li>{{ author }}: {{ data.count }} commits</li>
-        {% endfor %}
-        </ul>
+        <div class="visualizations">
+            <div class="viz-container">
+                <h3>Commits by Type</h3>
+                <div id="viz-by-type"></div>
+                <div class="viz-details">
+                    <h4>Breakdown:</h4>
+                    <ul>
+                    {% for type, count in stats.by_type.items() %}
+                        <li><span class="badge badge-{{ type }}">{{ type }}</span>: {{ count }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <h3>Commits by Author</h3>
+                <div id="viz-by-author"></div>
+                <div class="viz-details">
+                    <h4>Breakdown:</h4>
+                    <ul>
+                    {% for author, data in stats.by_author.items() %}
+                        <li>{{ author }}: {{ data.count }} commits</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section>
+    <section id="activity-timeline">
+        <h2>Activity Timeline</h2>
+        <p class="section-description">Commit frequency over time, showing development velocity and activity patterns</p>
+        <div class="visualizations">
+            <div class="viz-container viz-wide">
+                <div id="viz-timeline"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="commits-section">
         <h2>Commits</h2>
-        <table>
+
+        <div class="table-controls">
+            <div class="filter-group">
+                <label for="filter-author">Filter by Author:</label>
+                <select id="filter-author">
+                    <option value="">All Authors</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-type">Filter by Type:</label>
+                <select id="filter-type">
+                    <option value="">All Types</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-date-start">From Date:</label>
+                <input type="date" id="filter-date-start">
+            </div>
+
+            <div class="filter-group">
+                <label for="filter-date-end">To Date:</label>
+                <input type="date" id="filter-date-end">
+            </div>
+
+            <div class="filter-group">
+                <button id="reset-filters">Reset Filters</button>
+            </div>
+        </div>
+
+        <div class="table-info">
+            <span id="showing-count">Showing all commits</span>
+        </div>
+
+        <table id="commits-table">
             <thead>
                 <tr>
                     <th>Hash</th>
-                    <th>Author</th>
-                    <th>Timestamp</th>
+                    <th data-sort="author">Author <span class="sort-indicator"></span></th>
+                    <th data-sort="timestamp">Timestamp <span class="sort-indicator"></span></th>
                     <th>Message</th>
                     <th>Type</th>
-                    <th>Files Changed</th>
-                    <th>Changes</th>
+                    <th data-sort="files_changed">Files Changed <span class="sort-indicator"></span></th>
+                    <th data-sort="changes">Changes <span class="sort-indicator"></span></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="commits-tbody">
             {% for commit in commits %}
-                <tr>
+                <tr data-author="{{ commit.author }}" data-type="{{ commit.type }}" data-timestamp="{{ commit.timestamp }}">
                     <td>{{ commit.hash }}</td>
                     <td>{{ commit.author }}</td>
                     <td>{{ commit.timestamp }}</td>
                     <td>{{ commit.message }}</td>
-                    <td>{{ commit.type }}</td>
+                    <td><span class="badge badge-{{ commit.type }}">{{ commit.type }}</span></td>
                     <td>{{ commit.files_changed }}</td>
                     <td>{{ commit.changes }}</td>
                 </tr>
@@ -61,7 +184,19 @@
             </tbody>
         </table>
     </section>
+    </main>
 
+    <script>
+        // Data for visualizations
+        const statsData = {
+            byType: {{ stats.by_type | tojson }},
+            byAuthor: {{ stats.by_author | tojson }},
+            totalCommits: {{ stats.total_commits }}
+        };
+
+        // Commit data for detailed visualizations and table interactions
+        const commitsData = {{ commits | tojson }};
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
