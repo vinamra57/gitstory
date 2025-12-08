@@ -40,3 +40,12 @@ You can also pass in a specific date in the `since` command, such as 2025-12-07 
 ```
 uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx -OR- YYYY-MM-DD>
 ```
+
+We also have flags for certain commands:
+| Command | Purpose | Runs with |
+|---------|---------|---------|
+| `--help` | Help command, provides description of specific command | ALL COMMANDS |
+| `--since` | Summary *from* from time period | `run`, `dashboard`, `compare` |
+| `--until` | Summary *till* a certain time period | `run`, `dashboard`, `since`, `compare` |
+| `--branch` | Sets the branch the command needs to run on | `run`, `dashboard`, `since`|
+| `--validation-fallback` | If set, parser will attempt best-effort fallbacks on validation failures | `run` & `dashboard` |
