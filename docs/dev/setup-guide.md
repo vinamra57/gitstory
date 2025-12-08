@@ -64,8 +64,8 @@ UV has a *lot* of features, to learn more about UV, [read the documentation](htt
 
 **IMPORTANT NOTE:** When committing to git, make sure that `uv.lock` is added to the commit if a change has occurred to it, otherwise there will be problems! 
 
-## Step 3: Setting Up pre-commit
-All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit: 
+## Step 3: Setting Up Pre-Commit
+All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit. Pre-commit helps automate code quality checks (linting, formatting, testing) before commiting, catching errors locally for immediate feedback, ensuring consistency, and preventing bad code being pushed to the GitStory repo.
 ```
 uv tool install pre-commit
 ```
@@ -74,7 +74,7 @@ After this, we have to link so it runs automatically on every commit:
 pre-commit install
 ```
 
-## Step 4: Setting Up tox
+## Step 4: Setting Up Tox
 Tox is our one-command test suite that automatically does linting and testing. To install it:
 ```
 uv tool install tox --with tox-uv
