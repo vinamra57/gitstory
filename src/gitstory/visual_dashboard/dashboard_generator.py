@@ -55,7 +55,7 @@ def generate_dashboard(
     with open(output_path, "w", encoding='utf-8') as f:
         f.write(html_content)
 
-    print(f"Dashboard generated: {output_path}")
+    print(f"Dashboard generated: {os.path.abspath(output_path)}")
 
     # Didn't return output_path, since it would be hard to write tests for this
     # Might change this later, @Ian
