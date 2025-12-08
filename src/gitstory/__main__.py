@@ -178,7 +178,7 @@ def run(repo_path, branch, since, until, validation_fallback):
 )
 def dashboard(repo_path, branch, since, until, validation_fallback):
     """Generate Visual Dashboard (dashboard.html) based on current local repo copy (will
-    place dashboard.html in an \output directory, located at the root of the repo passed in).
+    place dashboard.html in an output directory, located at the root of the repo passed in).
 
     TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years), OR yyyy-mm-dd format for
     --until or --since flags
