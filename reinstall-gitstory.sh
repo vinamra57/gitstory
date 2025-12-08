@@ -9,4 +9,4 @@
 
 uv build --no-sources --sdist
 pipx uninstall gitstory
-pipx install ./dist/*.tar.gz
+pipx install ./dist/gitstory-*.tar.gz

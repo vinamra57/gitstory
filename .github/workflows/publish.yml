@@ -50,11 +50,11 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.tar.gz
+          files: dist/gitstory-*.tar.gz
 
 
       # Step 4: Publish to PyPI
       # This uses the uv build system to upload the package as well :)
       # - name: Publish package to PyPI
       #   run: |
-      #     uv publish dist/*.tar.gz
+      #     uv publish dist/gitstory-*.tar.gz
