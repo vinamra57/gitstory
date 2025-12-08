@@ -27,7 +27,7 @@ uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
 ```
 uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE-BRANCH> <YOUR_COMPARE-BRANCH>
 ```
-`gitstory since "<YOUR_REPO_LOCATION_PATH>" <Nx>`: Generates a concise summary of the repository’s commit history based on a given time-period on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors. For example, a user could run "since 2m", where GitStory would generate a summary based on only the last 2 months worth of commits. Look below for additional time formats:
+`gitstory since "<YOUR_REPO_LOCATION_PATH>" <Nx -OR- YYYY-MM-DD>`: Generates a concise summary of the repository’s commit history based on a given time-period on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors. For example, a user could run "since 2m", where GitStory would generate a summary based on only the last 2 months worth of commits. Look below for additional time formats:
 
 **Time Period Formats:**
 - `Nd` — N days ago (e.g., `5d` = last 5 days)
@@ -35,6 +35,8 @@ uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <
 - `Nm` — N months ago (e.g., `3m` = last 3 months)
 - `Ny` — N years ago (e.g., `1y` = last year)
 
+You can also pass in a specific date in the `since` command, such as 2025-12-07 (which would look like `since <YYYY-MM-DD>`)
+
 ```
-uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx>
+uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx -OR- YYYY-MM-DD>
 ```
