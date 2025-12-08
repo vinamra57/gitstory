@@ -4,41 +4,36 @@ This guide provides detailed examples and usage instructions for all GitStory co
 
 ## Prerequisites
 
-Before using GitStory, ensure you have:
-
-1. **Python 3.13+** installed
-2. **GitStory repository cloned** to your local machine
-3. **Dependencies installed** via `uv pip install -e .`
-4. **Gemini API key configured** using the `key` command
+Before using GitStory, ensure you have set-up GitStory with the [user-guide.md](user-guide.md).
 
 ## Quick Reference
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `run` | Generate summary for a branch | `python -m gitstory run ./ --branch=main` |
-| `since` | Summary from time period | `python -m gitstory since ./ 2w` |
-| `dashboard` | Generate HTML dashboard | `python -m gitstory dashboard ./` |
-| `compare` | Compare two branches | `python -m gitstory compare ./ main feature` |
-| `key` | Set API key | `python -m gitstory key --key="your_key"` |
-| `parse-repo` | View raw commit data | `python -m gitstory parse-repo ./` |
+| `run` | Generate summary for a branch | `gitstory run ./ --branch=main` |
+| `since` | Summary from time period | `gitstory since ./ 2w` |
+| `dashboard` | Generate HTML dashboard | `gitstory dashboard ./` |
+| `compare` | Compare two branches | `gitstory compare ./ main feature` |
+| `key` | Set API key | `gitstory key --key="your_key"` |
+
+We also have flags for certain commands:
+| Command | Purpose | Runs with |
+|---------|---------|---------|
+| `--help` | Help command, provides description of specific command | ALL COMMANDS |
+| `--since` | Summary starting from time period | `run`, `dashboard`, `compare` |
+| `--until` | Summary till a certain time period | `run`, `dashboard`, `since`, `compare` |
+| `--branch` | Sets the branch the command needs to run on | `run`, `dashboard`, `since`|
+| `--validation-fallback` | If set, parser will attempt best-effort fallbacks on validation failures | `run` & `dashboard` |
 
 ---
 
 ## 1. Setting Your API Key
 
-Before generating summaries, you must configure your Gemini API key.
+Before running the `key` command, you must get the API key, which is [here](set-up-API_user.md).
 
-### Get an API Key
-
-1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Sign in with your Google account
-3. Create a new API key
-4. Copy the key
-
-### Set the Key
-
+**Command:**
 ```bash
-python -m gitstory key --key="AIzaSyC-EXAMPLE_API_KEY_HERE"
+gitstory key --key="AIzaSyC-EXAMPLE_API_KEY_HERE"
 ```
 
 **Output:**
@@ -56,16 +51,15 @@ The key is stored locally and used for all AI-powered summary generation.
 
 Creates an AI-powered summary of your repository's commit history.
 
-### Basic Usage
-
+**Command:**
 ```bash
-python -m gitstory run ./ --branch=main
+gitstory run <YOUR_REPO_PATH> <any extra flags, such as --branch=main>
 ```
 
-### Command Options
+**Command Options:**
 
 ```
-python -m gitstory run <repo_path> [OPTIONS]
+gitstory run <repo_path> [OPTIONS]
 
 Arguments:
   repo_path                  Path to the Git repository
@@ -134,13 +128,13 @@ Generates a summary of commits from a specific time period in the past.
 ### Basic Usage
 
 ```bash
-python -m gitstory since ./ 2w
+gitstory since ./ 2w
 ```
 
 ### Command Options
 
 ```
-python -m gitstory since <repo_path> <time_period> [OPTIONS]
+gitstory since <repo_path> <time_period> [OPTIONS]
 
 Arguments:
   repo_path                  Path to the Git repository
