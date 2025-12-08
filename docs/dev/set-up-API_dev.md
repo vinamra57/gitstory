@@ -32,6 +32,12 @@ You will NOT be able to run this until you head back [here](setup-guide.md) and 
 ```
 uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"
 ```
+
+If you are instead trying to load the API key into the GitStory build you created, run:
+```
+gitstory key --key="<YOUR_API_KEY>"
+```
+
 **IMPORTANT: YOU MUST RUN THE KEY COMMAND BEFORE RUNNING ANY OTHER COMMANDS IN GITSTORY, otherwise you will recieve many errors.**
 
 # ALL DONE!
