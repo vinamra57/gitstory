@@ -30,6 +30,16 @@ def cli():
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
 def run(repo_path, branch, since, until, validation_fallback):
+    """Generate repository summary based on current local repo copy.
+    
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years), OR yyyy-mm-dd format for 
+    --until or --since flags
+
+    Examples:
+        gitstory run ./ --since=2w              # Generates summary based on the last 2 weeks on current branch
+        gitstory run ./ --until=2w              # Generates summary until the last 2 weeks on current branch
+        gitstory run ./ --branch=feature        # Generating summary on the feature branch
+    """
     try:
         try:
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
@@ -149,6 +159,17 @@ def run(repo_path, branch, since, until, validation_fallback):
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
 def dashboard(repo_path, branch, since, until, validation_fallback):
+    """Generate Visual Dashboard (dashboard.html) based on current local repo copy (will
+    place dashboard.html in an \output directory, located at the root of the repo passed in).
+    
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years), OR yyyy-mm-dd format for 
+    --until or --since flags
+
+    Examples:
+        gitstory dashboard ./ --since=2w              # Generates summary based on the last 2 weeks on current branch
+        gitstory dashboard ./ --until=2w              # Generates summary until the last 2 weeks on current branch
+        gitstory dashboard ./ --branch=feature        # Generating summary on the feature branch
+    """
     try:
         # Step 1: Load configuration & validate API key
         try:
@@ -251,13 +272,16 @@ def dashboard(repo_path, branch, since, until, validation_fallback):
 @click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
 @click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 def since(repo_path, time_period, until, branch):
-    """Generate repository summary starting from a relative time period.
+    """Generate repository summary starting from a relative time period based on the current local
+    repo copy.
 
-    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years)
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years) , OR yyyy-mm-dd format for 
+    --until flag or since command
 
     Examples:
-        gitstory since ./ 2w           # Last 2 weeks on current branch
-        gitstory since ./ 3m --branch=main  # Last 3 months on main branch
+        gitstory since ./ 2w                # Last 2 weeks on current branch
+        gitstory since ./ 4w --until=2w     # From the 4th last week to the 2nd last week
+        gitstory since ./ 3m --branch=feature  # Last 3 months on feature branch
     """
     try:
         # Step 1: Load API key
@@ -364,7 +388,15 @@ def since(repo_path, time_period, until, branch):
     "--context", default=5, type=int, help="Number of context commits from merge base"
 )
 def compare(repo_path, base_branch, compare_branch, since, until, context):
-    """Compare two branches and generate AI-powered comparison summary."""
+    """Compares two branches based on the current local repo copy.
+
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years) , OR yyyy-mm-dd format for 
+    --until flag or --since command
+
+    Examples:
+        gitstory compare . main feature --since=2w    # Compares from the last 2 weeks
+        gitstory compare . main feature --until=4w    # Until the 4th last week
+    """
     try:
         # Step 1: Load API key
         try:
@@ -440,6 +472,10 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 @cli.command("key", short_help="Sets Gemini API key internally to key passed in")
 @click.option("--key", help="Enter your Gemini API key")
 def key(key):
+    """Configures Gemini API key into GitStory.
+    Example:
+        gitstory key --key="<your-key"
+    """
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     if not os.path.isdir(cur_folder + "/data"):
         os.mkdir(cur_folder + "/data")
