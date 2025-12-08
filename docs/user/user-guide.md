@@ -84,66 +84,22 @@ uv sync
 
 ---
 
-## 3. Running GitStory commands
+## 3. Getting GitStory Build
 
-When development is complete, GitStory will run as a command-line tool from the terminal. Users will navigate to a Git repository and use the following commands to generate summaries or reports. Until then, here are the commands to use to run GitStory:
-
-### 3.0  `uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"`
-Takes the Gemini API key given by user and integrates it into GitStory, this is **THE FIRST COMMAND** that needs to be run, otherwise other commands will throw errors (as it doesn't have an API key that it can work with). If you have not obtained your key, follow instructions [here](set-up-API.md).
-
-```
-uv run python3.13 src/gitstory/__main__.py key --key="<YOUR_API_KEY>"
-```
-
-### 3.1 `uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"`
-Generates a concise summary of the repository’s commit history on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors.
-
-```
-uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"
-```
-
-### 3.2 `uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"`
-Creates a static HTML dashboard report containing:
-- A timeline of key commits  
-- Contributor statistics and activity charts  
-- Summaries grouped by time period or feature area  
-
-This report will be saved locally for offline viewing or sharing.
-
-```
-uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
-```
-
-### 3.3 `uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>`
-Compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
-
-```
-uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE_BRANCH> <YOUR_COMPARE-BRANCH>
-```
-
-### 3.4 `uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx>`
-Generates a concise summary of the repository’s commit history based on a given time-period on the current branch, highlighting major development events such as feature additions, bug fixes, and refactors. For example, a user could run "since 2m", where GitStory would generate a summary based on only the last 2 months worth of commits. Look below for additional time formats:
-
-**Time Period Formats:**
-- `Nd` — N days ago (e.g., `5d` = last 5 days)
-- `Nw` — N weeks ago (e.g., `2w` = last 2 weeks)
-- `Nm` — N months ago (e.g., `3m` = last 3 months)
-- `Ny` — N years ago (e.g., `1y` = last year)
-
-```
-uv run python3.13 src/gitstory/__main__.py since "<YOUR_REPO_LOCATION_PATH>" <Nx>
-```
+Now that you have set all the dependencies up, head over to the [build-guide.md](https://github.com/vinamra57/gitstory/blob/main/docs/dev/build-guide.md) to create a GitStory build that you can use as a user!
 
 ---
 
-## 4. Using GitStory
+## 4. Running GitStory!
+
+When set-up is complete, GitStory will run as a command-line tool from the terminal: 
 
 1. Navigate to a valid Git repository:
    ```bash
    cd path/to/repository
    ```
 
-2. Run one of the supported commands (see above).
+2. Run one of the supported commands, see [run-commands-guide.md](run-commands-guid.md) for more information on GitStory's commands.
 
 3. GitStory will:
    - Parse commit metadata from the repository.
