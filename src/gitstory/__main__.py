@@ -22,7 +22,7 @@ def cli():
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
 @click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
-@click.option("--until", default=None, help="End time (ISO or relative)")
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 @click.option(
     "--validation-fallback",
     is_flag=True,
@@ -141,7 +141,7 @@ def run(repo_path, branch, since, until, validation_fallback):
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
 @click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
-# UNTIL??
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 @click.option(
     "--validation-fallback",
     is_flag=True,
@@ -168,7 +168,7 @@ def dashboard(repo_path, branch, since, validation_fallback):
 
         parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
         try:
-            parsed_data = parser.parse(branch=branch, since=since)
+            parsed_data = parser.parse(branch=branch, since=since, until=until)
         except Exception as e:
             # If it's a ValidationError, surface the report; otherwise re-raise
             from gitstory.parser.validation import ValidationError as _VE
@@ -249,6 +249,7 @@ def dashboard(repo_path, branch, since, validation_fallback):
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("time_period")
 @click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 def since(repo_path, time_period, branch):
     """Generate repository summary starting from a relative time period.
 
@@ -275,7 +276,7 @@ def since(repo_path, time_period, branch):
         click.echo(f"🔍 Analyzing repository from {time_period} ago...")
         parser = RepoParser(repo_path)
         try:
-            parsed_data = parser.parse(since=time_period, branch=branch)
+            parsed_data = parser.parse(since=time_period, branch=branch, until=until)
         except Exception as e:
             from gitstory.parser.validation import ValidationError as _VE
             if isinstance(e, _VE):
