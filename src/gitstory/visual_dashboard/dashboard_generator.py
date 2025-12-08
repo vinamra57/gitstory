@@ -52,10 +52,10 @@ def generate_dashboard(
 
     # We write the html contents into the output file
     #'with ... as f' makes it so that it closes the file automatically over having to do f.close()
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding='utf-8') as f:
         f.write(html_content)
 
-    print(f"Dashboard generated: {output_path}")
+    print(f"Dashboard generated: {os.path.abspath(output_path)}")
 
     # Didn't return output_path, since it would be hard to write tests for this
     # Might change this later, @Ian
