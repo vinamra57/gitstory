@@ -13,16 +13,18 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from gitstory.parser import RepoParser
 from gitstory.read_key.read_key import read_key
 
+
 @click.group()
 def cli():
     click.echo()
     click.echo("Welcome to GitStory: Turning git repos into readable stories\n")
 
+
 @cli.command("run", short_help="Generates a summary based on current code repo")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.option("--branch", default=None, help="Branch name (defaults to current branch)")
 @click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
-@click.option("--until", default=None, help="End time (ISO or relative)")
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 @click.option(
     "--validation-fallback",
     is_flag=True,
@@ -30,6 +32,16 @@ def cli():
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
 def run(repo_path, branch, since, until, validation_fallback):
+    """Generate repository summary based on current local repo copy.
+
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years), OR yyyy-mm-dd format for
+    --until or --since flags
+
+    Examples:
+        gitstory run ./ --since=2w              # Generates summary based on the last 2 weeks on current branch
+        gitstory run ./ --until=2w              # Generates summary until the last 2 weeks on current branch
+        gitstory run ./ --branch=feature        # Generating summary on the feature branch
+    """
     try:
         try:
             api_key = read_key(os.path.dirname(os.path.abspath(__file__)))
@@ -47,18 +59,30 @@ def run(repo_path, branch, since, until, validation_fallback):
         from gitstory.parser.validation import ValidationError
 
         try:
-            parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
+            parser = RepoParser(
+                repo_path,
+                on_validation_error=("fallback" if validation_fallback else "raise"),
+            )
             parsed_data = parser.parse(since=since, until=until, branch=branch)
 
             # Log validation warnings if any
-            if 'metadata' in parsed_data and 'validation_report' in parsed_data['metadata']:
-                report = parsed_data['metadata']['validation_report']
-                if report['skipped_commits'] > 0:
-                    click.echo(f"⚠️  Skipped {report['skipped_commits']} invalid commits during parsing", err=False)
-                for warning in report['warnings'][:3]:  # Show first 3 warnings
+            if (
+                "metadata" in parsed_data
+                and "validation_report" in parsed_data["metadata"]
+            ):
+                report = parsed_data["metadata"]["validation_report"]
+                if report["skipped_commits"] > 0:
+                    click.echo(
+                        f"⚠️  Skipped {report['skipped_commits']} invalid commits during parsing",
+                        err=False,
+                    )
+                for warning in report["warnings"][:3]:  # Show first 3 warnings
                     click.echo(f"   {warning}", err=False)
-                if len(report['warnings']) > 3:
-                    click.echo(f"   ... and {len(report['warnings']) - 3} more warnings", err=False)
+                if len(report["warnings"]) > 3:
+                    click.echo(
+                        f"   ... and {len(report['warnings']) - 3} more warnings",
+                        err=False,
+                    )
         except ValidationError as ve:
             click.echo("❌ Error: Data validation failed", err=True)
             # Show stage if available
@@ -76,11 +100,15 @@ def run(repo_path, branch, since, until, validation_fallback):
                     for w in warnings[:3]:
                         click.echo(f"     - {w}", err=True)
                     if len(warnings) > 3:
-                        click.echo(f"     ...and {len(warnings)-3} more warnings", err=True)
+                        click.echo(
+                            f"     ...and {len(warnings) - 3} more warnings", err=True
+                        )
                 except Exception:
                     # Best-effort display; do not mask original error
                     pass
-            click.echo("   This might indicate corrupted commits in the repository.", err=True)
+            click.echo(
+                "   This might indicate corrupted commits in the repository.", err=True
+            )
             sys.exit(1)
 
         # Step 3: Summarize
@@ -93,7 +121,7 @@ def run(repo_path, branch, since, until, validation_fallback):
         # Check for errors before displaying
         if result.get("error"):
             error_msg = result["error"]
-            
+
             # Provide specific, actionable error messages
             if "empty" in error_msg.lower() or "no candidates" in error_msg.lower():
                 click.echo(
@@ -127,7 +155,7 @@ def run(repo_path, branch, since, until, validation_fallback):
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
         click.echo()
-        
+
         return "Summary generation complete!"
 
     except (Exception, SystemExit) as e:
@@ -139,13 +167,27 @@ def run(repo_path, branch, since, until, validation_fallback):
 
 @cli.command("dashboard", short_help="Generates downloadable report about repo")
 @click.argument("repo_path", type=click.Path(exists=True))
+@click.option("--branch", default=None, help="Branch name (defaults to current branch)")
+@click.option("--since", default=None, help="Start time (ISO or relative like '2w')")
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
 @click.option(
     "--validation-fallback",
     is_flag=True,
     default=False,
     help="If set, parser will attempt best-effort fallbacks on validation failures",
 )
-def dashboard(repo_path, validation_fallback):
+def dashboard(repo_path, branch, since, until, validation_fallback):
+    """Generate Visual Dashboard (dashboard.html) based on current local repo copy (will
+    place dashboard.html in an \output directory, located at the root of the repo passed in).
+
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years), OR yyyy-mm-dd format for
+    --until or --since flags
+
+    Examples:
+        gitstory dashboard ./ --since=2w              # Generates summary based on the last 2 weeks on current branch
+        gitstory dashboard ./ --until=2w              # Generates summary until the last 2 weeks on current branch
+        gitstory dashboard ./ --branch=feature        # Generating summary on the feature branch
+    """
     try:
         # Step 1: Load configuration & validate API key
         try:
@@ -163,12 +205,16 @@ def dashboard(repo_path, validation_fallback):
         click.echo("🔍 Analyzing repository...")
         from gitstory.parser import RepoParser
 
-        parser = RepoParser(repo_path, on_validation_error=("fallback" if validation_fallback else "raise"))
+        parser = RepoParser(
+            repo_path,
+            on_validation_error=("fallback" if validation_fallback else "raise"),
+        )
         try:
-            parsed_data = parser.parse()
+            parsed_data = parser.parse(branch=branch, since=since, until=until)
         except Exception as e:
             # If it's a ValidationError, surface the report; otherwise re-raise
             from gitstory.parser.validation import ValidationError as _VE
+
             if isinstance(e, _VE):
                 click.echo("❌ Error: Data validation failed", err=True)
                 stage = getattr(e, "stage", None)
@@ -245,15 +291,21 @@ def dashboard(repo_path, validation_fallback):
 @cli.command("since", short_help="Generate summary from specified time period")
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("time_period")
-@click.option("--branch", default=None, help="Branch name (defaults to current branch otherwise)")
-def since(repo_path, time_period, branch):
-    """Generate repository summary starting from a relative time period.
+@click.option(
+    "--branch", default=None, help="Branch name (defaults to current branch otherwise)"
+)
+@click.option("--until", default=None, help="End time (ISO or relative like '2w')")
+def since(repo_path, time_period, until, branch):
+    """Generate repository summary starting from a relative time period based on the current local
+    repo copy.
 
-    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years)
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years) , OR yyyy-mm-dd format for
+    --until flag or since command
 
     Examples:
-        gitstory since ./ 2w           # Last 2 weeks on current branch
-        gitstory since ./ 3m --branch=main  # Last 3 months on main branch
+        gitstory since ./ 2w                # Last 2 weeks on current branch
+        gitstory since ./ 4w --until=2w     # From the 4th last week to the 2nd last week
+        gitstory since ./ 3m --branch=feature  # Last 3 months on feature branch
     """
     try:
         # Step 1: Load API key
@@ -272,9 +324,10 @@ def since(repo_path, time_period, branch):
         click.echo(f"🔍 Analyzing repository from {time_period} ago...")
         parser = RepoParser(repo_path)
         try:
-            parsed_data = parser.parse(since=time_period, branch=branch)
+            parsed_data = parser.parse(since=time_period, branch=branch, until=until)
         except Exception as e:
             from gitstory.parser.validation import ValidationError as _VE
+
             if isinstance(e, _VE):
                 click.echo("❌ Error: Data validation failed", err=True)
                 stage = getattr(e, "stage", None)
@@ -332,7 +385,7 @@ def since(repo_path, time_period, branch):
         click.echo(result["summary"])
         click.echo("=" * 60 + "\n")
         click.echo()
-        
+
         return "Summary generation complete!"
 
     except ValueError as e:
@@ -350,7 +403,10 @@ def since(repo_path, time_period, branch):
         sys.exit(getattr(e, "code", 1))
 
 
-@cli.command("compare", short_help="Compares two branches in repository and generates summary & branch differences")
+@cli.command(
+    "compare",
+    short_help="Compares two branches in repository and generates summary & branch differences",
+)
 @click.argument("repo_path", type=click.Path(exists=True))
 @click.argument("base_branch")
 @click.argument("compare_branch")
@@ -360,7 +416,15 @@ def since(repo_path, time_period, branch):
     "--context", default=5, type=int, help="Number of context commits from merge base"
 )
 def compare(repo_path, base_branch, compare_branch, since, until, context):
-    """Compare two branches and generate AI-powered comparison summary."""
+    """Compares two branches based on the current local repo copy.
+
+    TIME_PERIOD supports: 4w (weeks), 6d (days), 8m (months), 9y (years) , OR yyyy-mm-dd format for
+    --until flag or --since command
+
+    Examples:
+        gitstory compare . main feature --since=2w    # Compares from the last 2 weeks
+        gitstory compare . main feature --until=4w    # Until the 4th last week
+    """
     try:
         # Step 1: Load API key
         try:
@@ -373,7 +437,7 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
             )
             sys.exit(1)
         click.echo("🔑 API key configured & loaded...")
-        
+
         # Step 2: Compare branches
         click.echo("🔍 Comparing branches...")
         parser = RepoParser(repo_path)
@@ -436,6 +500,10 @@ def compare(repo_path, base_branch, compare_branch, since, until, context):
 @cli.command("key", short_help="Sets Gemini API key internally to key passed in")
 @click.option("--key", help="Enter your Gemini API key")
 def key(key):
+    """Configures Gemini API key into GitStory.
+    Example:
+        gitstory key --key="<your-key"
+    """
     cur_folder = os.path.dirname(os.path.abspath(__file__))
     if not os.path.isdir(cur_folder + "/data"):
         os.mkdir(cur_folder + "/data")
