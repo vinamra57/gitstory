@@ -24,4 +24,4 @@ pipx install ./dist/*.tar.gz
 This will globally install GitStory to your computer, where you can open up a new terminal/command-line and run GitStory commands! (ex: `gitstory run <repo-path>`).
 
 ## Step 3: Use the GitStory build!
-Once you have downloaded the GitStory build, you will be able to use GitStory using our "regular" commands. To get a quick overview of how our commands look like in GitStory, head over to our [user-documentation](https://github.com/vinamra57/gitstory/tree/main/docs/user).
+Once you have downloaded the GitStory build, you will be able to use GitStory using our "regular" commands. To get a quick overview of how our commands look like in GitStory, head over to our [user-documentation](https://github.com/vinamra57/gitstory/tree/main/docs/user/run-commands-guide.md).
