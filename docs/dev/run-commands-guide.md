@@ -1,7 +1,7 @@
-# How to Run GitStory
+# How to Run GitStory (as Developer)
 To run GitStory's commands as you are working on the code, take the following steps:
 
-If you are runnning GitStory as a build, head over [here](https://github.com/vinamra57/gitstory/blob/main/docs/user/run-commands-guide.md) to get started instead.
+**If you are runnning GitStory as a build/final product, head over [here](https://github.com/vinamra57/gitstory/blob/main/docs/user/run-commands-guide.md) to get started instead.**
 
 ## Step 1: Run GitStory on shell, command-line interface (CLI)
 After you have setup GitStory (using [setup-guide.md](setup-guide.md), open up a CLI tab (ex: Terminal window for macOS users), and navigate to the GitStory directory (don't reach the src directory, just GitStory itself). (you may use the CLI integrated in your IDE, such as how Visual Studio Code has a terminal window, if provided).
