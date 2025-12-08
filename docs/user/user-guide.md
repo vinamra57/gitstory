@@ -28,7 +28,7 @@ GitStory runs locally to maintain privacy and never sends source code outside th
 
 | Requirement | Version | Purpose |
 |--------------|----------|----------|
-| **Gemini API-Key** | Latest | Used in GitStory project, head over to [set-up-API.md](set-up-API.md) to obtain API-Key
+| **Gemini API-Key** | Latest | Used in GitStory project, head over to [set-up-API_user.md](set-up-API_user.md) to obtain a Gemini API key.
 
 ### 2.2 Clone the Repository
 
