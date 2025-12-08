@@ -10,7 +10,7 @@ Use the `git clone` command to clone the repository using the link provided at t
 ```
 git clone https://github.com/vinamra57/gitstory.git
 ```
-Once cloned, use the [set-up-API.md](set-up-API.md) to grab the Gemini API key that is needed to run + work with GitStory. **You will need to come back and complete the steps listed here (such as getting Python or UV), but once you have done that, make sure to run the `key` command first in the CLI** (listed in the [run-commands-guide.md](run-commands-guide.md)) to load your Gemini API key into GitStory. 
+Once cloned, use the [set-up-API.md](set-up-API_dev.md) to grab the Gemini API key that is needed to run + work with GitStory. **You will need to come back and complete the steps listed here (such as getting Python or UV), but once you have done that, make sure to run the `key` command first in the CLI** (listed in the [run-commands-guide.md](run-commands-guide.md)) to load your Gemini API key into GitStory. 
 
 ## Step 1: Downloading Python 3.13 (or newer)
 The minimum version GitStory requires is Python 3.13. Grab it [here](https://www.python.org/downloads/). If you have a newer version of Python, that will also work (i.e. you don't need to download the specific 3.13 version).
@@ -18,13 +18,13 @@ The minimum version GitStory requires is Python 3.13. Grab it [here](https://www
 ## Step 2: Installing UV + Python (in GitStory folder)
 Next, install the UV Python project/package manager. The installation guide is linked [here](https://docs.astral.sh/uv/getting-started/installation/), but below will be commands that you can use to install it.
 
-For Mac/Linux users:
+**For Mac/Linux users**:
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh 
 --OR--
 wget -qO- https://astral.sh/uv/install.sh | sh
 ```
-For Windows:
+**For Windows**:
 ```
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
@@ -34,8 +34,13 @@ $env:Path = "$env:USERPROFILE\.local\bin;" + $env:Path
 
 [System.Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [System.Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
 ```
+After running the UV installer on your Windows PC, restart your PowerShell window OR run (this allows `uv` commands to be recognized):
 
-Next, install Python locally to the directory (either command will work) + set up the virtual enviornment:
+```
+$env:Path = "C:\Users<your-username>.local\bin;$env:Path"
+```
+
+Once you have installed `uv` onto your PC, install Python locally to the directory + set up the virtual enviornment:
 ```
 uv python install
 --OR--
@@ -46,17 +51,21 @@ uv python install 3.13
 uv venv
 ```
 
+```
+uv sync
+```
+
 When you want to run a Python file from this point forward, you would do:
 ```
 uv run python <file_location>
 ```
 
-UV has a *lot* of features, to learn more about UV, read [the documentation](https://docs.astral.sh/uv/getting-started/).
+UV has a *lot* of features, to learn more about UV, [read the documentation](https://docs.astral.sh/uv/getting-started/).
 
 **IMPORTANT NOTE:** When committing to git, make sure that `uv.lock` is added to the commit if a change has occurred to it, otherwise there will be problems! 
 
-## Step 3: Setting Up pre-commit
-All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit: 
+## Step 3: Setting Up Pre-Commit
+All commands from this point forward is very simple. We will use UV to install all our tools, starting with pre-commit. Pre-commit helps automate code quality checks (linting, formatting, testing) before commiting, catching errors locally for immediate feedback, ensuring consistency, and preventing bad code being pushed to the GitStory repo.
 ```
 uv tool install pre-commit
 ```
@@ -65,7 +74,7 @@ After this, we have to link so it runs automatically on every commit:
 pre-commit install
 ```
 
-## Step 4: Setting Up tox
+## Step 4: Setting Up Tox
 Tox is our one-command test suite that automatically does linting and testing. To install it:
 ```
 uv tool install tox --with tox-uv
