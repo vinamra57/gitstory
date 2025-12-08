@@ -1,9 +1,9 @@
 name: gitstory
 
 on:
-  release:
-    types: [created]
-
+  push:
+    branches:
+      - 'main'
 jobs:
   pypi-publish:
     name: gitstory
