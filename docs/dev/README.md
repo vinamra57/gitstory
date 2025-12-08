@@ -1,7 +1,7 @@
 # Developer Documentation
 
 To setup GitStory as a developer, please head to these files in the following order:
-1) [set-up-API.md](set-up-API.md): Documents how to create your own Gemini API key for GitStory, which is essential for this project
+1) [set-up-API_dev.md](set-up-API_dev.md): Documents how to create your own Gemini API key for GitStory, which is essential for this project
 2) [setup-guide.md](setup-guide.md): Documents how to setup the project for developers
 
 *Once you have setup GitStory using the above steps,* for testing, running, and adding packages while working on GitStory, please head over to:
