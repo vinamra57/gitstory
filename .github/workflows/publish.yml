@@ -2,8 +2,9 @@ name: gitstory
 
 on:
   push:
-    branches:
-      - 'main'
+    tags:
+      - "v*.*.*"
+      - "test_v*.*.*"
 jobs:
   pypi-publish:
     name: gitstory
