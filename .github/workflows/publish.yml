@@ -2,8 +2,9 @@ name: gitstory
 
 on:
   push:
-    branches:
-      - 'main'
+    tags:
+      - "v*.*.*"
+      - "test_v*.*.*"
 jobs:
   pypi-publish:
     name: gitstory
@@ -38,7 +39,7 @@ jobs:
       # This uses uv to synchronize the virtual environment based on pyproject.toml.
       - name: Install dependencies
         run: |
-          uv sync 
+          uv sync
 
       # Step 3: Build package distributions
       # uv build uses the uv_build backend and correctly bundles all files.
@@ -51,6 +52,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/gitstory-*.tar.gz
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
 
       # Step 4: Publish to PyPI
