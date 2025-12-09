@@ -39,7 +39,7 @@ jobs:
       # This uses uv to synchronize the virtual environment based on pyproject.toml.
       - name: Install dependencies
         run: |
-          uv sync 
+          uv sync
 
       # Step 3: Build package distributions
       # uv build uses the uv_build backend and correctly bundles all files.
