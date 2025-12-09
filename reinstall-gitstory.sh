@@ -7,6 +7,7 @@
 # It's three whole lines that I threw together in actually 10 seconds
 # - Derick Chiem
 
+rm -r ./dist/gitstory-*.tar.gz
 uv build --no-sources --sdist
 pipx uninstall gitstory
-pipx install ./dist/*.tar.gz
+pipx install ./dist/gitstory-*.tar.gz
