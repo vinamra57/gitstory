@@ -19,7 +19,7 @@ gitstory key --key="<YOUR_API_KEY>"
 gitstory run "<YOUR_REPO_LOCATION_PATH>"
 ```
 
-`gitstory dashboard "<YOUR_REPO_LOCATION_PATH>"`: this generates a HTML file called `dashboard.html` in an `output` folder, located in at the root of your chosen Git repository (the output directory will be created by GitStory).
+`gitstory dashboard "<YOUR_REPO_LOCATION_PATH>"`: this generates a HTML file called `dashboard.html` in an `output` folder, located in at the root of your chosen Git repository (the output directory will be created by GitStory). **YOU MUST RUN `git checkout` so the compare function can detect the branch.**
 ```
 gitstory dashboard "<YOUR_REPO_LOCATION_PATH>"
 ```
