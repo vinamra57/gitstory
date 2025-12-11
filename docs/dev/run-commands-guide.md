@@ -25,7 +25,7 @@ uv run python3.13 src/gitstory/__main__.py run "<YOUR_REPO_LOCATION_PATH>"
 ```
 uv run python3.13 src/gitstory/__main__.py dashboard "<YOUR_REPO_LOCATION_PATH>"
 ```
-`gitstory compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>`: compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch).
+`gitstory compare "<YOUR_REPO_LOCATION_PATH>" <base-branch> <compare-branch>`: compares the two given branches (specifically, the "compare-branch" from the "base-branch" you list accordingly) and generates a summary stating how the two branches are different (based on functionalities and commits that each differs in each branch). **YOU MUST RUN `git checkout` so the compare function can detect the branch.**
 ```
 uv run python3.13 src/gitstory/__main__.py compare "<YOUR_REPO_LOCATION_PATH>" <YOUR_BASE-BRANCH> <YOUR_COMPARE-BRANCH>
 ```
